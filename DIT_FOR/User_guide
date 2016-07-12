@@ -1,0 +1,81 @@
+User guide for Data integration Tool (DIT)
+
+Types of input files:
+cat    type      format  varname   description
+'in'   'varmap'  'ascii' 'na'      variable input to output mapping file
+'in'   'inpath'  'na'    'na'      path to input data files
+'out'  'outpath' 'na'    'na'      path to output data files
+'in'   'metadat' 'ascii' 'na'      path to input metadata file
+
+Types of data files
+type    in       out        in      out     map      meta      ncol  nhead   Description
+'data'  'infile' 'outfile'  inpath  outpath mappath  metapath  ncol  nhead   specs for regular data file
+'meta'  'infile' 'outfile'  inpath  outpath mappath  unused    ncol  nhead   specs for metadata file
+
+
+manipulation options
+doit  type         file ind1  ind2   ind3  val1  val2  val3  txt1  txt2  txt3  Description
+t     'mult_con'   num  var   0      0     con   0.    0.    'na'  'na'  'na'  multiply variable var by con
+t     'div_con'    num  var   0      0     con   0.    0.    'na'  'na'  'na'  divide variable var by con
+t     'add_con'    num  var   0      0     con   0.    0.    'na'  'na'  'na'  add con to variable var
+t     'sub_con'    num  var   0      0     con   0.    0.    'na'  'na'  'na'  subtract con from variable var
+t     'stats_var'  num  var   0      0     0.    0.    0.    'na'  'na'  'na'  calculates statistics for variable
+                                                                               var = variable number
+									       calculates min, max, std, mean,number valid points
+t     'rm_punct'   num  var   0      0     0.    0.    0.    'na'  'na'  'na'  removes punctuation
+                                                                               removes periods, replaces comma with semicolon
+t     'replace_eq' num  var   0      0     val1  val2  0.    'na'  'na'  'na'  replace values = val1 with val2
+                                                                               num= 1 (input data array) or 2 (output data array)
+									       var=variable number as specified in varmap
+t     'count_val'  num  var   0      0     miss  0.    0.    'na'  'na'  'na'  counts the number of different values of a single variable
+                                                                               use to count number of boreholes, number depths, etc.
+                                                                               assumes the data is stacked in order in a single file
+                                                                               num= 1 (input data array) or 2 (output data array)
+									       var=variable number as specified in varmap
+									       miss=missing value
+t     'count_rec'  num  var   0      0     miss  0.    0.    'na'  'na'  'na'  count valid records for variable
+                                                                               num= 1 (input data array) or 2 (output data array)
+									       var=variable number as specified in varmap
+									       miss=missing value
+t     'print_max'  num  var   0      0     miss  0.    0.    'na'  'na'  'na'  print max and min values for one variable
+                                                                               num= 1 (input data array) or 2 (output data array)
+									       var=variable number as specified in varmap
+									       miss=missing value
+t     'print_mean' num  var   0      0     miss  0.    0.    'na'  'na'  'na'  print mean and standard dev for one variable
+                                                                               num= 1 (input data array) or 2 (output data array)
+									       var=variable number as specified in varmap
+									       miss=missing value
+t     'rem_nodata' num  0     0      0     miss  0.    0.    'na'  'na'  'na'  remove layers with no data
+                                                                               num=1 (done to input data only)
+									       miss=missing value
+t     'rem_dup'    num  yr    mon    0     miss  0.    0.    'na'  'na'  'na'  removes duplicate records assuming monthly data
+                                                                               num=1 (done to input data only)
+									       yr=variable number of year as specified in varmap
+									       mon=variable number of month as specified in varmap
+									       miss=missing value
+t     'sort_inc'   num  var1  var2   0     0.    0.    0.    'na'  'na'  'na'  sorts data in increasing order by var1 first and var2 second
+                                                                               num=1 input data =2 output data
+									       var1= first variable number in varmap (typically year)
+									       var2= second variable number in varmap (typically month)
+                                                                               assumes var1 and var2 have no missing values
+t     'mid_mon'    date var   year   mon   0.    0.    0.    'na'  'na'  'na'  calculates midmonth date as a character string in the form YYYY-MM-DD
+                                                                               num=2 only works for output data
+									       date= output variable number for date
+									       year= year variable number in varmap
+									       mon= month variable number in varmap
+t     'map_lookup' num  map   code   var   0.    0.    0.  'grid' 'lon' 'lat'  extracts variable from a map
+                                                                               num=2 (done to output data only)
+									       map=path number of map
+									       code=path num ascii file mapping code num from map to text value
+									       grid=grid name
+									       lon=longitude variable name
+									       lat=latitude variable name
+t     'timezone'   num  map   in     out   0.   0.    0.    'na'  'na'  'na'   calculates time zone for point based only on longitude
+                                                                               map=2 (outfile only)
+									       in=input variable number (longitude)
+									       out=output variably number (timezone) 
+									       
+
+var<=0 makes calculation for all variables
+num=1  apply to input data file
+num=2  apply to output data file
