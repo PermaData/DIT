@@ -1,0 +1,27 @@
+ ----------------------------------------
+            3 AUPA298
+ ----------------------------------------
+ replace    -99999.00      with    -999.0000    
+ Made     15.00000      replacements
+ Replace values <    -200.0000      with    -999.0000    
+ Made     2.000000      replacements
+ Replace values >     200.0000      with    -999.0000    
+ Made     1.000000      replacements
+ Print values >     30.00000    
+ Print max and min 
+ Location,Minimum
+ 7,-25.3732796
+ 8,-25.3732796
+ Location,Maximum
+ 16,8.7374096
+ Make a pdf
+ 0.0091954
+ 0.0137931
+ 0.0321839
+ 0.0183908
+ 0.0229885
+ 0.1632184
+ 0.4896552
+ 0.1356322
+ 0.0873563
+ 	Construct output array
