@@ -361,7 +361,7 @@
 !
 ! internal variables
     integer z_dim ! z dimension
-    integer ix    ! x value index 
+    integer ix    ! x value index
     integer iy    ! y value index
     integer ista  ! statistic index
     integer icnt  ! count index
@@ -388,9 +388,9 @@
     integer cnt3  ! count 3
     integer cnt4  ! count 4
     integer nval  ! number values
-    real val1     ! temporary value 
+    real val1     ! temporary value
     real val2     ! temporary value
-    real valmin   ! min value 
+    real valmin   ! min value
     real valmax   ! max value
     real dval     ! temporary delta value
     Character*200 text  ! text string
@@ -447,7 +447,7 @@
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
          write(unit=33,*) 'Make a pdf'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do iy = 1, y_dim
@@ -603,7 +603,7 @@
 ! reformat date:time
 !----------------------------------------------------------
 ! reformats the date to a standard format using a python script
-! assumes in/out variables are both are character 
+! assumes in/out variables are both are character
 ! File_in/file_out refer to the input and output files of the python script
       case('date_refmt')
 	write(unit=33,*) '\treformat date to Std'
@@ -640,6 +640,89 @@
 	  temp1_char2(indx1,iy)=trim(temp)
         enddo
         close(unit=22)
+
+
+!
+!----------------------------------------------------------
+! Move specified text between columns
+!----------------------------------------------------------
+case('move_text')
+	write(unit=33,*) 'Move text from one column to another'
+	file_in = path(i_path_tmp)%path1//'temp1'
+	file_out = path(i_path_tmp)%path1//'temp2'
+
+	fmt = format(A,',',A)
+
+	!needs to be given indices of columns to read from
+	open(unit=200, file_in, format='formatted')
+	do indx1 = 1,y_dim
+		write(unit=200, fmt=fmt) temp1_txt2(man(iman)%ind1, indx1),temp1_txt2(man(iman)%ind2, indx1)
+	enddo
+	close(unit=200)
+
+	! -i <input file> -o <output file> -f <regex to move> -t <regex to move to>
+	cmd = path(i_path_python)%path1//' -i '//file_in//' -o '//file_out
+	cmd = trim(cmd)//' -f '//trim(man(iman)%txt1)//' -t '//trim(man(iman)%txt2)
+
+	call system(cmd)
+
+	open(unit=201, file_in, format='formatted')
+	do indx1 = 1,y_dim
+		read(unit=201, fmt=fmt) txt1, txt2
+		temp1_txt2(man(iman)%ind1, indx1) = txt1
+		temp1_txt2(man(iman)%ind2, indx1) = txt2
+	enddo
+	close(unit=201)
+
+!
+!----------------------------------------------------------
+! Replace text in a column
+!----------------------------------------------------------
+case('replace_text')
+	write(unit=33,*) 'Replace text in records'
+	file_in = path(i_path_tmp)%path1//'temp1'
+	file_out = path(i_path_tmp)%path1//'temp2'
+
+	fmt = format(A,',',A)
+
+	!needs to be given indices of columns to read from
+	open(unit=200, file_in, format='formatted')
+	do indx1 = 1,y_dim
+		write(unit=200, fmt=fmt) temp1_txt2(man(iman)%ind1, indx1),temp1_txt2(man(iman)%ind2, indx1)
+	enddo
+	close(unit=200)
+
+	! -i <input file> -o <output file> -t <text to replace> -w <replacement>
+	cmd = path(i_path_python)%path1//' -i '//file_in//' -o '//file_out
+	cmd = trim(cmd)//' -t '//trim(man(iman)%txt1)//' -w '//trim(man(iman)%txt2)
+
+	call system(cmd)
+
+	open(unit=201, file_in, format='formatted')
+	do indx1 = 1,y_dim
+		read(unit=201, fmt=fmt) txt1, txt2
+		temp1_txt2(man(iman)%ind1, indx1) = txt1
+		temp1_txt2(man(iman)%ind2, indx1) = txt2
+	enddo
+	close(unit=201)
+
+
+!
+!----------------------------------------------------------
+! write a metadata JSON file given a CSV
+!----------------------------------------------------------
+case('metadata')
+	write(unit=33,*) 'Write a metadata JSON file'
+	! template_file = '/sharehome/hwilcox/DIT/template.json'
+	file_in = path(i_path_tmp)%path1//'meta.csv'
+	file_out = path(i_path_out)%path1//'meta.json'
+
+	cmd = path(i_path_python)%path1//'create_gtnp_metadata_json.py'
+	cmd = trim(cmd)//' -t '//template_file
+	cmd = trim(cmd)//' -c '//file_in
+	cmd = trim(cmd)//' -o '//file_out
+
+	call system(cmd)
 !
 !----------------------------------------------------------
 ! create real date
@@ -777,7 +860,7 @@
         do ivar=1, n_var
 	  if(trim(head_in(indx2,1))==trim(var(ivar)%txt1)) imap2=ivar
 	  if(trim(head_in(indx3,1))==trim(var(ivar)%txt1)) imap3=ivar
-	enddo 
+	enddo
 !
 ! calculate date
         do iy=1,y_dim
@@ -878,7 +961,7 @@
 	do irec=1,y_dim
 	  print*, indx1,irec,data_in(indx1,irec)
 !
-! zone	  
+! zone
 	  fmt='(f4.1)'
 	  write(temp,fmt=fmt) data_in(indx1,irec)
 	  temp=adjustl(temp)
@@ -896,7 +979,7 @@
 	  write(unit=44,*) trim(text)
 	enddo
 !
-! read 
+! read
 	close(unit=44)
         fmt='(a4,2x,a4,2x,a20,2x,a15,2x,a15)'
 	write(unit=33,fmt=fmt) 'rec','zone','East','North', 'lat','lon'
@@ -912,7 +995,7 @@
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
          write(unit=33,*) 'Make a pdf'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do iy = 1, y_dim
@@ -982,8 +1065,8 @@
 !!$	  temp2_d2(ix,2)=val2
 !
 ! mean value, standard deviation, valid points, coverage frac
-!!$          val1=0. 
-!!$          val2=0. 
+!!$          val1=0.
+!!$          val2=0.
 !!$	  cnt1=0
 !!$	  do iy=1,y_dim
 !!$	    if(temp1_d2(ix,iy)/=miss_val_real) then
@@ -1059,7 +1142,7 @@
 	  if(indx(ivar)==indx2) typ(ivar)='dt'
 	enddo
 !
-! input/output data files for python script 
+! input/output data files for python script
         file_in=trim(path(i_pat_tmp)%path1)//'temp1'  ! input file to script
         file_out=trim(path(i_pat_tmp)%path1)//'temp2' ! output file from script
 !
@@ -1171,7 +1254,7 @@
 ! counts the number of different values for a combination of 2 variables
 ! i.e. number of values for variable 2 per value of variable 1
 ! assumes the data is presorted first by var1 then by var2
-      case('count_2val') 
+      case('count_2val')
 	indx1=man(iman)%ind1
 	indx2=man(iman)%ind2
 	write(unit=33,*) '\tcount ',trim(head_in(indx2,1)),' values per ',trim(head_in(indx1,1))
@@ -1225,7 +1308,7 @@
 	  endif
 	enddo
 !
-! save last set of values 
+! save last set of values
 	if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
 	if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
 !
@@ -1238,7 +1321,7 @@
 ! counts the number of different values of a single variable
 ! assumes the data is by the variable
 !
-      case('count_val') 
+      case('count_val')
 	indx1=man(iman)%ind1
 	write(unit=33,*) '\tcount values for ',trim(head_in(indx1,1))
 	fmt='(3(a15,2x))'
@@ -1276,7 +1359,7 @@
 !----------------------------------------------------------
 ! count records
 !----------------------------------------------------------
-      case('count_rec') 
+      case('count_rec')
 	do ix=lim1,lim2
 	  write(unit=33,*) '\tcount records'
 !
@@ -1314,7 +1397,7 @@
       case('mult_con')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1325,7 +1408,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing a float with the -n
          write(text,'(A,F14.7)') ' -n ',man(iman)%val1
          cmd = trim(path(i_pat_python)%path1)//'mult_const.py'
@@ -1358,7 +1441,7 @@
       case('div_con')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1369,7 +1452,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing a float with the -n
          write(text,'(A,F14.7)') ' -n ',man(iman)%val1
          cmd = trim(path(i_pat_python)%path1)//'div_const.py'
@@ -1406,7 +1489,7 @@
       case('add_con')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1417,7 +1500,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing a float with the -n
          write(text,'(A,F14.7)') ' -n ',man(iman)%val1
          cmd = trim(path(i_pat_python)%path1)//'add_const.py'
@@ -1449,7 +1532,7 @@
       case('sub_con')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1460,7 +1543,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing a float with the -n
          write(text,'(A,F14.7)') ' -n ',man(iman)%val1
          cmd = trim(path(i_pat_python)%path1)//'sub_const.py'
@@ -1478,7 +1561,7 @@
          enddo
          close(unit=201)
 !!$	do ix=lim1,lim2
-	  
+
 !!$	  val1=man(iman)%val1
 !!$	  do iy=1,y_dim
 !!$	    if(temp1_d2(ix,iy)/=miss_val_real) temp1_d2(ix,iy)=temp1_d2(ix,iy)-val1
@@ -1491,7 +1574,7 @@
       case('replace_eq')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1502,7 +1585,7 @@
          close(unit=200)
 
          write(unit=33,*) 'replace ',man(iman)%val1,' with ',man(iman)%val2
-         
+
          ! Build the command, including passing floats with the -n flags
          write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
          cmd = trim(path(i_pat_python)%path1)//'replace_eq.py'
@@ -1549,7 +1632,7 @@
       case('replace_gt')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          write(unit=33,*) 'Replace values > ', man(iman)%val1, ' with ', man(iman)%val2
 
          open(unit=200, file=trim(file_in), form='formatted')
@@ -1560,7 +1643,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing floats with the -n flags
          write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
          cmd = trim(path(i_pat_python)%path1)//'replace_gt.py'
@@ -1601,7 +1684,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing floats with the -n flags
          write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
          cmd = trim(path(i_pat_python)%path1)//'replace_ge.py'
@@ -1632,7 +1715,7 @@
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
          write(unit=33,*) 'Replace values < ', man(iman)%val1, ' with ', man(iman)%val2
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1641,7 +1724,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing floats with the -n flags
          write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
          cmd = trim(path(i_pat_python)%path1)//'replace_lt.py'
@@ -1672,7 +1755,7 @@
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
          write(unit=33,*) 'Replace values <= ', man(iman)%val1, ' with ', man(iman)%val2
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1681,7 +1764,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing floats with the -n flags
          write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
          cmd = trim(path(i_pat_python)%path1)//'replace_le.py'
@@ -1702,15 +1785,78 @@
             endif
          enddo
          close(unit=201)
+
+ !
+!----------------------------------------------------------
+! replace values not in a range
+!----------------------------------------------------------
+case('replace_notin_range')
+	write(unit=33,*) 'Replace values outside the range ', man(iman)%val1, '-', man(iman)%val2, ' with ', man(iman)%val3
+	file_in = path(i_path_tmp)//'temp1'
+	file_out = path(i_path_tmp)//'temp2'
+
+	open(unit=200, file_in, format='formatted')
+	do ix = man(iman)%ind1,man(iman)%ind2
+		do iy = 1,y_lim
+			write(unit=200,fmt='(f14.7)') temp1_d2(ix,iy)
+		enddo
+	enddo
+	close(unit=200)
+
+	write(text, '(A,F14.7)') ' -n ', man(iman)%val1, ' -n ', man(iman)%val2, ' -n ', man(iman)%val3
+	cmd = path(i_path_python)%path1//'replace_notin_rangex.py'
+	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+	cmd = trim(cmd)//trim(text)
+
+	open(unit=201, file_out, format='formatted')
+	do indx1 = 1,(lim2-lim1+1)*y_dim
+		ix = indx1/(y_dim+1) + lim1
+		iy = mod(indx1, y_dim+1)
+		read(unit=201,fmt='(f14.7)') val1
+		temp1_d2(ix, iy) = val1
+	enddo
+	close(unit=201)
+
+!
+!----------------------------------------------------------
+! replace values in a range
+!----------------------------------------------------------
+case('replace_range')
+	write(unit=33,*) 'Replace values outside the range ', man(iman)%val1, '-', man(iman)%val2, ' with ', man(iman)%val3
+	file_in = path(i_path_tmp)//'temp1'
+	file_out = path(i_path_tmp)//'temp2'
+
+	open(unit=200, file_in, format='formatted')
+	do ix = man(iman)%ind1,man(iman)%ind2
+		do iy = 1,y_lim
+			write(unit=200,fmt='(f14.7)') temp1_d2(ix,iy)
+		enddo
+	enddo
+	close(unit=200)
+
+	write(text, '(A,F14.7)') ' -n ', man(iman)%val1, ' -n ', man(iman)%val2, ' -n ', man(iman)%val3
+	cmd = path(i_path_python)%path1//'replace_rangex.py'
+	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+	cmd = trim(cmd)//trim(text)
+
+	open(unit=201, file_out, format='formatted')
+	do indx1 = 1,(lim2-lim1+1)*y_dim
+		ix = indx1/(y_dim+1) + lim1
+		iy = mod(indx1, y_dim+1)
+		read(unit=201,fmt='(f14.7)') val1
+		temp1_d2(ix, iy) = val1
+	enddo
+	close(unit=201)
+
 !
 !----------------------------------------------------------
 ! print values greater than
 !----------------------------------------------------------
-      case('print_gt') 
+      case('print_gt')
          write(unit=33,*) 'Print values > ', man(iman)%val1
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1719,7 +1865,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing a float with the -n flag
          write(text,'(A,F14.7)') ' -n ',man(iman)%val1
          cmd = trim(path(i_pat_python)%path1)//'print_gt.py'
@@ -1749,11 +1895,11 @@
 !----------------------------------------------------------
 ! print values less than
 !----------------------------------------------------------
-      case('print_lt') 
+      case('print_lt')
          write(unit=33,*) 'Print values < ', man(iman)%val1
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1762,7 +1908,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command, including passing a float with the -n flag
          write(text,'(A,F14.7)') ' -n ',man(iman)%val1
          cmd = trim(path(i_pat_python)%path1)//'print_lt.py'
@@ -1792,11 +1938,11 @@
 !----------------------------------------------------------
 ! print max and min values
 !----------------------------------------------------------
-      case('print_max') 
+      case('print_max')
          write(unit=33,*) 'Print max and min '
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1805,7 +1951,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          cmd = trim(path(i_pat_python)%path1)//'print_max.py'
          cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 
@@ -1850,7 +1996,7 @@
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
          write(unit=33,*) 'Print mean and standard deviation'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1859,7 +2005,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command
          cmd = trim(path(i_pat_python)%path1)//'print_mean.py'
          cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
@@ -1875,8 +2021,8 @@
 
 !!$	write(unit=33,*) '\tPrint mean and standard deviation'
 !!$	do ix=lim1,lim2
-!!$          val1=0. 
-!!$          val2=0. 
+!!$          val1=0.
+!!$          val2=0.
 !!$	  cnt1=0.
 !!$	  do iy=1,y_dim
 !!$	    if(temp1_d2(ix,iy)/=miss_val_real) then
@@ -1902,7 +2048,7 @@
          case('metadata')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_out)%path1)//'metadata.json'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1911,7 +2057,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command
          ! TODO: Complete this expression
          cmd = '/usr/bin/python/ /sharehome/hwilcox/DIT/create_gtnp_metadata_json.py'
@@ -1934,7 +2080,7 @@
          case('move_text')
          file_in = trim(path(i_pat_tmp)%path1)//'temp1'
          file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-         
+
          open(unit=200, file=trim(file_in), form='formatted')
          fmt = '(F14.7)'
          do ix=lim1,lim2
@@ -1943,7 +2089,7 @@
             enddo
          enddo
          close(unit=200)
-         
+
          ! Build the command
          ! TODO: Complete this expression
          cmd = '/usr/bin/python/ /sharehome/hwilcox/DIT/move_text.py'
@@ -2022,7 +2168,7 @@
     print*, '\t\tGrid def file: ', trim(filename)
     write(unit=33,*) '\t\tGrid def file: ', trim(filename)
     open(unit=9,file=trim(filename),form='formatted', status='old')
-	   
+
     read (9,11) junk,n_grid ! read number of grids defined in file
     read (9,10) junk
     do igrd=1,n_grid
