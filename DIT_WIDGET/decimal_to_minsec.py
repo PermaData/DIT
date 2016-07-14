@@ -18,4 +18,5 @@ def decimal_to_minsec(infile, outfile):
             rm = (rm*60) % 1
             second = rm*60
             out[row][col] = formatstr.format(deg=degree, min=minute, sec=second)
-    return out
+
+    io.push(out, outfile)

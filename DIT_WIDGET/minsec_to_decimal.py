@@ -1,5 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
+import re
+
 import common.readwrite as io
 import common.definitions as d
 
@@ -11,11 +13,31 @@ def minsec_to_decimal(infile, outfile):
 
     out = []
     for coord in data:
-        degrees = int(coord.split('°')[0])
-        minutes = int(coord.split("'")[0].split('°')[1])
-        seconds = float(coord.split('"')[1])
-        degrees += minutes/60. + seconds / 3600
-        out.append(degrees)
-    io.push(out, outfile)
+        # Splits each coordinate pair into degrees, minutes, seconds, and
+        # hemisphere marker.
+        coord = coord.upper()
+        subs = re.split(r'\s*[°"\',]\s*|.(?=[NESW])|(?<=[NESW]).|\n', coord)
+        subs = filter(None, subs)
 
-minsec_to_decimal('COORD.in','COORD.out')
+        names = ['degrees', 'minutes', 'seconds']
+        values = dict([(name, 0) for name in names])
+        pair = [0, 0]
+        for (which, section) in enumerate([subs[:len(subs)/2], subs[len(subs)/2:]]):
+            for (i, elem) in enumerate(section):
+                if (elem in 'NESW'):
+                    sign = -1 if elem in 'SW' else 1
+                else:
+                    values[names[i % (len(subs)/2)]] = float(elem)
+            pair[which] = (values['degrees'] + values['minutes']/60
+                           + values['seconds']/3600) * sign
+        out.append(pair)
+
+    io.push(interpret_out(out), outfile)
+
+def interpret_out(data):
+    out = []
+    for line in data:
+        out.append('{0:2.7f}, {1:3.7f}'.format(line[0], line[1]))
+    return out
+
+minsec_to_decimal(r'C:\Users\Nicholas Thurmes\Documents\Project Files\minsec.in',r'C:\Users\Nicholas Thurmes\Documents\Project Files\decimal.out')
