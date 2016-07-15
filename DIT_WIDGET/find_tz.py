@@ -27,4 +27,4 @@ def standardize(coordstring):
 def name_to_offset(name):
     # Perhaps use date/time data to process this into UTC times
     # Actually use pytz.timezone(name).localize(datetime object).strftime(necessary values)
-    pass
+    return name
