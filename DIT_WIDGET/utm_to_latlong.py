@@ -20,13 +20,15 @@ def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, hemisphere):
         with open(outfile, 'wb') as output:
             data = csv.reader(original)
             push = csv.writer(output)
+            header = True
             for row in data:
-                zone = row[zone_i]
-                east = row[E_i]
-                north = row[N_i]
+                if (header):
+                    header = False
+                    continue
+                zone = int(row[zone_i])
+                east = float(row[E_i])
+                north = float(row[N_i])
 
-                push.writerow(utm.to_latlon(east, north, zone,
-                                            northern=(hemisphere.lower() in
-                                                      ['n', 'north', 'northern'])))
-                #out.append(utm.to_latlon(east, north, zone, northern=(hemisphere == 'N')))
-
+                push.writerow(
+                    utm.to_latlon(east, north, zone, northern=(
+                        hemisphere.lower() in ['n', 'north', 'northern'])))

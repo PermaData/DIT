@@ -39,5 +39,3 @@ def interpret_out(data):
     for line in data:
         out.append('{0:2.7f}, {1:3.7f}'.format(line[0], line[1]))
     return out
-
-minsec_to_decimal(r'C:\Users\Nicholas Thurmes\Documents\Project Files\minsec.in',r'C:\Users\Nicholas Thurmes\Documents\Project Files\decimal.out')
