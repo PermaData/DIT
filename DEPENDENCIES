@@ -1,0 +1,9 @@
+find_tz
+	tzwhere ( https://github.com/pegler/pytzwhere )
+		OPTIONAL numpy ( http://www.scipy.org/scipylib/download.html )
+		OPTIONAL shapely ( https://pypi.python.org/pypi/Shapely )
+	pytz ( https://pypi.python.org/pypi/pytz? )
+
+utm_to_latlong
+	utm ( https://pypi.python.org/pypi/utm )
+
