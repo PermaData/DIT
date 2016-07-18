@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import sys
 
 import common.readwrite as io
 import common.definitions as d
+import common.parseargs as pa
 
 
 def decimal_to_minsec(infile, outfile):
@@ -20,21 +22,29 @@ def decimal_to_minsec(infile, outfile):
             minute = int(rm*60)
             rm = (rm*60) % 1
             second = rm*60
-            out[row][col] = formatstr.format(deg=abs(degree), min=minute, 
-                    sec=second, hemi=negatives[col] if degree < 0 else 
+            out[row][col] = formatstr.format(deg=abs(degree), min=minute,
+                    sec=second, hemi=negatives[col] if degree < 0 else
                     positives[col])
 
     io.push(interpret_out(out), outfile)
 
-    
+
 def standardize(coordstring):
     """Creates a tuple from a standard decimal coordinate string."""
     out = coordstring.replace('°','').replace('W','*-1').replace('S','*-1')
     out = out.replace('N','',).replace('E','')
     return eval(out)
-    
+
 def interpret_out(data):
     out = []
     for line in data:
         out.append('{0}, {1}'.format(line[0], line[1]))
     return out
+
+
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = pa.parse_args(sys.argv[1:])
+infile = args[0]
+outfile = args[1]
+
+decimal_to_minsec(infile, outfile)

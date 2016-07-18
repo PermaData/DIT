@@ -2,8 +2,10 @@
 
 from tzwhere import tzwhere
 import pytz
+import sys
 
 import common.readwrite as io
+import common.parseargs as pa
 
 def find_tz(infile, outfile):
     data = io.pull(infile, str)
@@ -28,3 +30,11 @@ def name_to_offset(name):
     # Perhaps use date/time data to process this into UTC times
     # Actually use pytz.timezone(name).localize(datetime object).strftime(necessary values)
     return name
+
+
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = pa.parse_args(sys.argv[1:])
+infile = args[0]
+outfile = args[1]
+
+find_tz(infile, outfile)

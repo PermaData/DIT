@@ -1,9 +1,11 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 import re
+import sys
 
 import common.readwrite as io
 import common.definitions as d
+import common.parseargs as pa
 
 
 def minsec_to_decimal(infile, outfile):
@@ -39,3 +41,10 @@ def interpret_out(data):
     for line in data:
         out.append('{0:2.7f}, {1:3.7f}'.format(line[0], line[1]))
     return out
+
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = pa.parse_args(sys.argv[1:])
+infile = args[0]
+outfile = args[1]
+
+minsec_to_decimal(infile, outfile)
