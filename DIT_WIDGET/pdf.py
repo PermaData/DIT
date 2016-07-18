@@ -89,8 +89,6 @@ def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
         return None
 
     # Push the correct data to outfile
-    print "Pushing the result out"
-    print norms[norm](out)
     io.push(norms[norm](out), outfile)
 
 

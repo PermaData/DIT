@@ -65,7 +65,7 @@ def mean_std(data):
 
 
 def min_max(data):
-    return(min(data), max(data))
+    return (min(data), max(data))
 
 
 def median(data):
