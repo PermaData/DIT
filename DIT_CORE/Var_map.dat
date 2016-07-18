@@ -1,0 +1,12 @@
+9
+num  In_var         Out_var     in out  o_in o_out  map_typ    typ         fmt         units           Description                
+1    'Borehole'     'Borehole'  t  t    1    1      'copy'     'integer'   '(i3.3)'    '(-)'           'Station ID'
+2    'mon'          'mon'       t  f    2    0      'copy'     'integer'   '(i2)'      '(mon)'         'month'
+3    'day'          'day'       t  f    3    0      'copy'     'integer'   '(i2)'      '(day)'         'day of month'
+4    'year'         'year'      t  f    4    0      'copy'     'integer'   '(i4)'      '(yr)'          'year'
+5    'Depth'        'Depth'     t  t    5    3      'copy'     'real'      '(f8.3)'    '(m)'           'depth of measurement'
+6    'Temperature'  'Temp'      t  t    6    4      'copy'     'real'      '(f8.3)'    '(deg C)'       'Temperature'
+7    'QC_flag'      'QC_Flag'   t  t    7    5      'copy'     'integer'   '(i2)'      '(-)'           'Quality Control Flag'
+8    'na'           'Date'      f  t    0    2      'calc'     'char'      '(a7)'      '(yyyy-mm-dd)'  'date of measurement'
+9    'na'           'Date_real' f  t    0    6      'calc'     'real'      '(f15.7)'   '(yr)'          'date of measurement'
+
