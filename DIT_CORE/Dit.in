@@ -4,7 +4,7 @@ Data Integration Tool input file------------|
 data manipulations--------------------------|
                         number manipulations=18
 doit  type         file   ind1    ind2   ind3   ind4   ind5   ind6   val1   val2   val3   txt1    txt2    txt3
-f     'date_refmt' 1      2       0      0      0      0      0      -999.  0.     0.     '%Y%m%dT%H%M'    'na'    'na'
+t     'date_refmt' 1      2       0      0      0      0      0      -999.  0.     0.     '%Y%m%dT%H%M'    'na'    'na'
 t     'replace_eq' 1      5       0      0      0      0      0      -99999. -999.     0.     'na'    'na'    'na'
 f     'replace_eq' 1      5       0      0      0      0      0      -6999. -999.     0.     'na'    'na'    'na'
 f     'mult_con'   1      5       0      0      0      0      0      0.01   0.     0.     'na'    'na'    'na'
@@ -18,7 +18,7 @@ f     'replace_ge' 1      5       0      0      0      0      0      100     -99
 f     'print_gt'   1      5       0      0      0      0      0      30     0.  0.     'na'    'na'    'na'
 f     'print_max'  1      5       0      0      0      0      0     0.     0.  0.     'na'    'na'    'na'
 f     'make_pdf'   1      5       10     0      0      0      0      0.   0.     0.     'auto'    'exclude'    'probability'
-t     'stats_var'  1      1       0      0      0      0      0      0.     0.     0.     'na'    'na'    'na'
+t     'stats_var'  1      5       0      0      0      0      0      0.     0.     0.     'na'    'na'    'na'
 f     'sort'       2      1       3      2      0      0      0      2.     0.     0.     'na'    'na'    'na'
 f     'csv'        3      1       3      2      4      0      0      2.     0.     0.     'na'    'na'    'na'
 f     'shred'      3      1       3      2      4      0      0      2.     0.     0.     'na'    'na'    'na'
