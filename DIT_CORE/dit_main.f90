@@ -29,7 +29,7 @@
 !
 ! print file name
       print*, ifil, trim(file(ifil)%path1)
-      open(unit=33, file='/home/nith2593/code/DIT/output/'//trim(file(ifil)%path1))
+      open(unit=33, file=trim(path(i_pat_out)%path1)//trim(file(ifil)%path1))
       write(unit=33,*) '----------------------------------------'
       write(unit=33,*) ifil, trim(file(ifil)%path1)
       write(unit=33,*) '----------------------------------------'

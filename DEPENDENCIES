@@ -7,3 +7,8 @@ find_tz
 utm_to_latlong
 	utm ( https://pypi.python.org/pypi/utm )
 
+plot_locations
+	mpl_toolkits
+	matplotlib
+	numpy
+	pandas
