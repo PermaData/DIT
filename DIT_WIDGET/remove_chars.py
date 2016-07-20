@@ -1,4 +1,5 @@
 import re
+import sys
 
 import common.readwrite as io
 import common.parseargs as pa
@@ -13,7 +14,7 @@ def remove_chars(infile, outfile, chars):
     out = []
     for s in data:
         out.append(re.sub(pun, '', s))
-
+    print out[:20]
     io.push([out], outfile)
 
 

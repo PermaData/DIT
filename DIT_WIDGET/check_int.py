@@ -1,9 +1,11 @@
+import sys
+
 import common.readwrite as io
 import common.parseargs as pa
 
 
 def check_ints(infile, outfile):
-    """Check whether a value is an integer."""
+    """Check whether a value is not an integer."""
     data = io.pull(infile, float)
 
     out = []

@@ -34,9 +34,11 @@ def push(data, outfile):
 
     with open(outfile, mode='w') as f:
         for line in data:
-            if(isinstance(line, str)):
+            if (isinstance(line, str)):
                 # Write strings directly on their own line
                 f.write(line + '\n')
+            elif (isinstance(line, int)):
+                f.write('{n}\n'.format(n=line))
             else:
                 # Write numbers with 7 decimal points precision
                 f.write('{n:0.{p}f}\n'.format(n=line, p=7))

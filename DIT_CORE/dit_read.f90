@@ -646,7 +646,7 @@
 !----------------------------------------------------------
 ! Move specified text between columns
 !----------------------------------------------------------
-case('move_text')
+case('move_text')		! TODO: Test move_text
 	write(unit=33,*) 'Move text from one column to another'
 	file_in = path(i_pat_tmp)%path1//'temp1'
 	file_out = path(i_pat_tmp)%path1//'temp2'
@@ -678,7 +678,7 @@ case('move_text')
 !----------------------------------------------------------
 ! Replace text in a column
 !----------------------------------------------------------
-case('replace_text')
+case('replace_text')		! TODO: Test replace_text
 	write(unit=33,*) 'Replace text in records'
 	file_in = path(i_pat_tmp)%path1//'temp1'
 	file_out = path(i_pat_tmp)%path1//'temp2'
@@ -688,7 +688,8 @@ case('replace_text')
 	!needs to be given indices of columns to read from
 	open(unit=200, file=trim(file_in), form='formatted')
 	do indx1 = 1,y_dim
-		write(unit=200, fmt=fmt) temp1_char2(man(iman)%ind1, indx1),temp1_char2(man(iman)%ind2, indx1)
+		! ind1 is place
+		write(unit=200, fmt=fmt) temp1_char2(man(iman)%ind1, indx1)
 	enddo
 	close(unit=200)
 
@@ -831,7 +832,7 @@ case('replace_text')
 ! create character mid-month date
 !----------------------------------------------------------
 ! calculates a mid-month character date given year and month
-	  case('mid_mon')
+	  case('mid_mon')		! TODO: Test mid_mon
 		indx1=man(iman)%ind1 ! output variable number
 		indx2=man(iman)%ind2 ! input year variable number
 		indx3=man(iman)%ind3 ! input month variable number
@@ -851,7 +852,7 @@ case('replace_text')
 		call system(cmd)
 
 	  open(unit=201, file=trim(file_out), form='formatted')
-	  do iy = i,y_dim
+	  do iy = 1,y_dim
 		read(unit=201, fmt='(A16)') temp
 		temp1_char2(indx1, iy) = temp
 	  enddo
@@ -896,9 +897,8 @@ case('replace_text')
 ! calculate time zone
 !----------------------------------------------------------
 ! right now this is restricted to commas and periods
-	  case('timezone')
+	  case('timezone')		! TODO: complete timezone
 	  write(unit=33,*) '\tcalculate time zone'
-	  ! TODO: This thing
 	   file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
@@ -934,7 +934,7 @@ case('replace_text')
 !----------------------------------------------------------
 ! remove a set of characters from character data
 !----------------------------------------------------------
-	case('rm_chars')
+	case('rm_chars')		! TODO: Test rm_chars
 		write(unit=33,*) '\tremove characters'
 		indx1 = man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
@@ -942,7 +942,7 @@ case('replace_text')
 
 		open(unit=200, file=trim(file_in), form='formatted')
 		do iy = 1, y_dim
-			write(unit=200,fmt='(a)') temp1_char2(indx1, iy)
+			write(unit=200,fmt='(a)') trim(temp1_char2(indx1, iy))
 		enddo
 		close(unit=200)
 
@@ -956,6 +956,7 @@ case('replace_text')
 		open(unit=201, file=trim(file_out), form='formatted')
 		do indx1 = 1, y_dim
 			read(unit=201, fmt='(a)') temp 
+			print*,trim(temp)
 			temp1_char2(indx1, iy) = trim(temp)
 		enddo
 		close(unit=201)
@@ -1008,7 +1009,7 @@ case('replace_text')
 ! convert utm coordinates to latitude and longitude
 !----------------------------------------------------------
 ! exit to external python script to convert from utm coordinates to latitude and longitude
-	  case('conv_utm')
+	  case('conv_utm')		! TODO: Test conv_utm
 		write(unit=33,*) 'convert utm to lat/lon'
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -1079,7 +1080,7 @@ case('replace_text')
 !----------------------------------------------------------
 ! convert latitude/longitude coordinates to utm
 !----------------------------------------------------------
-	  case('conv_latlon')
+	  case('conv_latlon')		! TODO: Test conv_latlon
 		write(unit=33,*) 'convert lat/lon to utm'
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -1294,7 +1295,7 @@ case('replace_text')
 !----------------------------------------------------------
 ! remove duplicate records
 !----------------------------------------------------------
-	  case('rem_dup')
+	  case('rem_dup')		! TODO: Write and complete and test rem_dup
 		write(unit=33,*) '\tRemove duplicate records'
 	if(man(iman)%num==2) then
 	  write(unit=33,*) 'Error: only do this to input array'
@@ -1340,7 +1341,7 @@ case('replace_text')
 !----------------------------------------------------------
 ! remove layers with no data from variable mapping file
 !----------------------------------------------------------
-	  case('rem_nodata')
+	  case('rem_nodata')		! TODO: Write and complete and test rem_nodata
 		write(unit=33,*) '\tRemove layers with no data'
 	if(man(iman)%num==2) then
 	  write(unit=33,*) 'Error: only do this to input array'
@@ -1372,7 +1373,7 @@ case('replace_text')
 ! counts the number of different values for a combination of 2 variables
 ! i.e. number of values for variable 2 per value of variable 1
 ! assumes the data is presorted first by var1 then by var2
-	  case('count_2val')
+	  case('count_2val')		! TODO: Write and complete and test count_2val
 	indx1=man(iman)%ind1
 	indx2=man(iman)%ind2
 	write(unit=33,*) '\tcount ',trim(head_in(indx2,1)),' values per ',trim(head_in(indx1,1))
@@ -1439,7 +1440,7 @@ case('replace_text')
 ! counts the number of different values of a single variable
 ! assumes the data is by the variable
 !
-	  case('count_val')
+	  case('count_val')		! TODO: Test count_val
 	  write(unit=33,*) 'Count values'
 		indx1=man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
@@ -1457,9 +1458,9 @@ case('replace_text')
 		call system(cmd)
 
 	  open(unit=201, file=trim(file_out), form='formatted')
-	  do iy = i,y_dim
+	  do iy = 1,y_dim
 		read(unit=201, fmt='(A)') temp
-		write(unit=33, fmt='(A)') trim(tmp)
+		write(unit=33, fmt='(A)') trim(temp)
 	  enddo
 	  close(unit=201)
 	! indx1=man(iman)%ind1
@@ -1499,7 +1500,7 @@ case('replace_text')
 !----------------------------------------------------------
 ! count records
 !----------------------------------------------------------
-	  case('count_rec')
+	  case('count_rec')		! TODO: test count_rec
 	  write(unit=33,*) 'count the number of valid records'
 		indx1=man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
@@ -1518,7 +1519,7 @@ case('replace_text')
 
 	  open(unit=201, file=trim(file_out), form='formatted')
 		read(unit=201, fmt='(A)') temp
-		write(unit=33, fmt='(A)') trim(tmp)
+		write(unit=33, fmt='(A)') trim(temp)
 	  close(unit=201)
 	! do ix=lim1,lim2
 	  ! write(unit=33,*) '\tcount records'
@@ -1537,7 +1538,7 @@ case('replace_text')
 !----------------------------------------------------------
 ! check for non-integer values
 !----------------------------------------------------------
-	  case('chk_int')
+	  case('chk_int')		! TODO: test chk_int
 	  write(unit=33,*) 'check for non-integer values'
 		indx1=man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
@@ -1557,7 +1558,7 @@ case('replace_text')
 	  open(unit=201, file=trim(file_out), form='formatted')
 	  do iy = 1,y_dim
 		read(unit=201, fmt='(A)') temp
-		write(unit=33, fmt='(A)') trim(tmp)
+		write(unit=33, fmt='(A)') trim(temp)
 	  enddo
 	  close(unit=201)
 
@@ -2244,7 +2245,7 @@ case('replace_range')
 
 		 ! Build the command
 		 ! TODO: Complete this expression
-		 cmd = '/usr/bin/python/ /sharehome/hwilcox/DIT/create_gtnp_metadata_json.py'
+		 cmd = path(i_pat_python)%path1//'create_gtnp_metadata_json.py'
 		 cmd = trim(cmd)//' -t /sharehome/hwilcox/DIT/template.json'
 		 cmd = trim(cmd)//' -c '
 
@@ -2275,7 +2276,6 @@ case('replace_range')
 		 ! close(unit=200)
 
 		 ! ! Build the command
-		 ! ! TODO: Complete this expression
 		 ! cmd = '/usr/bin/python/ /sharehome/hwilcox/DIT/move_text.py'
 		 ! cmd = trim(cmd)//' -i '//file_in
 		 ! cmd = trim(cmd)//' -o '//file_out
