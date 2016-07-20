@@ -832,40 +832,65 @@ case('replace_text')
 !----------------------------------------------------------
 ! calculates a mid-month character date given year and month
 	  case('mid_mon')
-	write(unit=33,*) '\tcreate character mid-month date'
-	if(man(iman)%num==1) then
-	  write(unit=33,*) 'Error: only do this to output data'
-	  stop
-	endif
-	indx1=man(iman)%ind1 ! output variable number
-	indx2=man(iman)%ind2 ! input year variable number
-	indx3=man(iman)%ind3 ! input month variable number
-!
-! locate inout variables
-		do ivar=1, n_var
-	  if(trim(head_in(indx2,1))==trim(var(ivar)%txt1)) imap2=ivar
-	  if(trim(head_in(indx3,1))==trim(var(ivar)%txt1)) imap3=ivar
-	enddo
-!
-! calculate date
-		do iy=1,y_dim
-!
-! year
-	  fmt=trim(var(imap2)%fmt1)
-	  year=data_in(indx2,iy)
-	  write(temp,fmt=fmt) year
-	  text=trim(temp)//'-'
-!
-! month
-	  fmt=trim(var(imap3)%fmt1)
-	  mon=data_in(indx3,iy)
-	  write(temp,fmt=fmt) mon
-	  text=trim(text)//trim(temp)
-!
-! day-of-month
-		  text=trim(text)//trim(mid_month(mon))
-	  temp1_char2(indx1,iy)=trim(text)
+		indx1=man(iman)%ind1 ! output variable number
+		indx2=man(iman)%ind2 ! input year variable number
+		indx3=man(iman)%ind3 ! input month variable number
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		open(unit=200, file=trim(file_in), form='formatted')
+		do iy = 1, y_dim
+			write(unit=200, fmt='(I4.4,I2.2)') temp1_d2(indx2, iy), temp1_d2(indx3, iy)
 		enddo
+		close(unit=200)
+
+		cmd = trim(path(i_pat_python)%path1)//'mid_month.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+		cmd = trim(cmd)//' -f '//trim(man(iman)%txt1)
+
+		call system(cmd)
+
+	  open(unit=201, file=trim(file_out), form='formatted')
+	  do iy = i,y_dim
+		read(unit=201, fmt='(A16)') temp
+		temp1_char2(indx1, iy) = temp
+	  enddo
+	  close(unit=201)
+
+	! write(unit=33,*) '\tcreate character mid-month date'
+	! if(man(iman)%num==1) then
+	  ! write(unit=33,*) 'Error: only do this to output data'
+	  ! stop
+	! endif
+	! indx1=man(iman)%ind1 ! output variable number
+	! indx2=man(iman)%ind2 ! input year variable number
+	! indx3=man(iman)%ind3 ! input month variable number
+! !
+! ! locate inout variables
+		! do ivar=1, n_var
+	  ! if(trim(head_in(indx2,1))==trim(var(ivar)%txt1)) imap2=ivar
+	  ! if(trim(head_in(indx3,1))==trim(var(ivar)%txt1)) imap3=ivar
+	! enddo
+! !
+! ! calculate date
+		! do iy=1,y_dim
+! !
+! ! year
+	  ! fmt=trim(var(imap2)%fmt1)
+	  ! year=data_in(indx2,iy)
+	  ! write(temp,fmt=fmt) year
+	  ! text=trim(temp)//'-'
+! !
+! ! month
+	  ! fmt=trim(var(imap3)%fmt1)
+	  ! mon=data_in(indx3,iy)
+	  ! write(temp,fmt=fmt) mon
+	  ! text=trim(text)//trim(temp)
+! !
+! ! day-of-month
+		  ! text=trim(text)//trim(mid_month(mon))
+	  ! temp1_char2(indx1,iy)=trim(text)
+		! enddo
 !
 !----------------------------------------------------------
 ! calculate time zone
@@ -905,47 +930,79 @@ case('replace_text')
 	  ! stop
 	! endif
 		! call calc_time_zone(iman)
-!
+
+!----------------------------------------------------------
+! remove a set of characters from character data
+!----------------------------------------------------------
+	case('rm_chars')
+		write(unit=33,*) '\tremove characters'
+		indx1 = man(iman)%ind1
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		open(unit=200, file=trim(file_in), form='formatted')
+		do iy = 1, y_dim
+			write(unit=200,fmt='(a)') temp1_char2(indx1, iy)
+		enddo
+		close(unit=200)
+
+		! Build the command, using all the arguments
+		cmd = trim(path(i_pat_python)%path1)//'remove_chars.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+		cmd = trim(cmd)//' -f '//man(iman)%txt1
+
+		call system(cmd)
+
+		open(unit=201, file=trim(file_out), form='formatted')
+		do indx1 = 1, y_dim
+			read(unit=201, fmt='(a)') temp 
+			temp1_char2(indx1, iy) = trim(temp)
+		enddo
+		close(unit=201)
+
+
+
+		!
 !----------------------------------------------------------
 ! remove punctuation from character data
 !----------------------------------------------------------
 ! right now this is restricted to commas and periods
-	  case('rm_punct')
-	write(unit=33,*) '\tremove punctuation'
-		fmt='(a4,2x,a4,2x,a4,2x,a50,2x,a50)'
-	write(unit=33,fmt=fmt) 'rec','id','qc_flg','old text', 'new text'
-		fmt='(i4,2x,i4,2x,i4,2x,a50,2x,a50)'
-	indx1=man(iman)%ind1 ! variable index
-	idvar=man(iman)%ind2 ! id index
-	indx3=man(iman)%ind3 ! qc flag index
-	do irec=1,y_dim
-	  temp=trim(temp1_char2(indx1,irec))
-	  temp=adjustl(temp)
-	  num=len(temp)
-	  cnt1=0
-	  text=''
-	  flag=.false.
-	  do itxt=1,num
-	    if(temp(itxt:itxt)=='.') then
-	      flag=.true.
-	      temp1_d2(indx3,irec)=1
-	    elseif(temp(itxt:itxt)==',') then
-	      flag=.true.
-	      cnt1=cnt1+1
-	      text(cnt1:cnt1)=';'
-	      temp1_d2(indx3,irec)=1
-	    else
-	      cnt1=cnt1+1
-	      text(cnt1:cnt1)=temp(itxt:itxt)
-	    endif
-	  enddo
-	  if(flag) then
-	    itxt=temp1_d2(idvar,irec)
-	    ivar=temp1_d2(indx3,irec)
-	    write(unit=33,fmt=fmt) irec,itxt,ivar,trim(temp1_char2(indx1,irec)),trim(text)
-	  endif
-	  temp1_char2(indx1,irec)=trim(text)
-	enddo
+	  ! case('rm_punct')
+	! write(unit=33,*) '\tremove punctuation'
+		! fmt='(a4,2x,a4,2x,a4,2x,a50,2x,a50)'
+	! write(unit=33,fmt=fmt) 'rec','id','qc_flg','old text', 'new text'
+		! fmt='(i4,2x,i4,2x,i4,2x,a50,2x,a50)'
+	! indx1=man(iman)%ind1 ! variable index
+	! idvar=man(iman)%ind2 ! id index
+	! indx3=man(iman)%ind3 ! qc flag index
+	! do irec=1,y_dim
+	  ! temp=trim(temp1_char2(indx1,irec))
+	  ! temp=adjustl(temp)
+	  ! num=len(temp)
+	  ! cnt1=0
+	  ! text=''
+	  ! flag=.false.
+	  ! do itxt=1,num
+	    ! if(temp(itxt:itxt)=='.') then
+	      ! flag=.true.
+	      ! temp1_d2(indx3,irec)=1
+	    ! elseif(temp(itxt:itxt)==',') then
+	      ! flag=.true.
+	      ! cnt1=cnt1+1
+	      ! text(cnt1:cnt1)=';'
+	      ! temp1_d2(indx3,irec)=1
+	    ! else
+	      ! cnt1=cnt1+1
+	      ! text(cnt1:cnt1)=temp(itxt:itxt)
+	    ! endif
+	  ! enddo
+	  ! if(flag) then
+	    ! itxt=temp1_d2(idvar,irec)
+	    ! ivar=temp1_d2(indx3,irec)
+	    ! write(unit=33,fmt=fmt) irec,itxt,ivar,trim(temp1_char2(indx1,irec)),trim(text)
+	  ! endif
+	  ! temp1_char2(indx1,irec)=trim(text)
+	! enddo
 !
 !----------------------------------------------------------
 ! convert utm coordinates to latitude and longitude
@@ -1383,74 +1440,139 @@ case('replace_text')
 ! assumes the data is by the variable
 !
 	  case('count_val')
-	indx1=man(iman)%ind1
-	write(unit=33,*) '\tcount values for ',trim(head_in(indx1,1))
-	fmt='(3(a15,2x))'
-	write(unit=33,fmt) 'Value','numrec','lastrec'
-	fmt='(f15.7,2x,i15,2x,i15)'
+	  write(unit=33,*) 'Count values'
+		indx1=man(iman)%ind1
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
-!
-! count valid records
-	val1=temp1_d2(indx1,1)
-	cnt1=1 ! number different values
-	cnt2=0 ! number valid records per value
-	cnt3=0 ! total valid values
-	do iy=1,y_dim
-	  if(temp1_d2(indx1,iy)==miss_val_real) print*, indx1,iy,temp1_d2(indx1,iy)
-	  if(temp1_d2(indx1,iy)/=miss_val_real.and.temp1_d2(indx1,iy)==val1) then
-	    cnt2=cnt2+1
-	    cnt3=cnt3+1
-	  else
-	    write(unit=33,fmt) val1, cnt2, iy-1
-	    cnt1=cnt1+1
-	    cnt2=1
-	    cnt3=cnt3+1
-	    val1=temp1_d2(indx1,iy)
-	  endif
-	enddo
-!
-! save last set of values
-	write(unit=33,fmt) val1, cnt2, iy-1
-!
-! write totals
-	write(unit=33,*) '\t\t',trim(head_in(indx1,1))//' has ',cnt1, ' different values'
-	write(unit=33,*) '\t\t','Total valid values: ',cnt3
-	write(unit=33,*) '\t\t','total number records: ',y_dim
+		open(unit=200, file=trim(file_in), form='formatted')
+		do iy = 1, y_dim
+			write(unit=200, fmt='(F14.7)') temp1_d2(indx1, iy)
+		enddo
+		close(unit=200)
+
+		cmd = trim(path(i_pat_python)%path1)//'count_values.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+
+		call system(cmd)
+
+	  open(unit=201, file=trim(file_out), form='formatted')
+	  do iy = i,y_dim
+		read(unit=201, fmt='(A)') temp
+		write(unit=33, fmt='(A)') trim(tmp)
+	  enddo
+	  close(unit=201)
+	! indx1=man(iman)%ind1
+	! write(unit=33,*) '\tcount values for ',trim(head_in(indx1,1))
+	! fmt='(3(a15,2x))'
+	! write(unit=33,fmt) 'Value','numrec','lastrec'
+	! fmt='(f15.7,2x,i15,2x,i15)'
+
+! !
+! ! count valid records
+	! val1=temp1_d2(indx1,1)
+	! cnt1=1 ! number different values
+	! cnt2=0 ! number valid records per value
+	! cnt3=0 ! total valid values
+	! do iy=1,y_dim
+	  ! if(temp1_d2(indx1,iy)==miss_val_real) print*, indx1,iy,temp1_d2(indx1,iy)
+	  ! if(temp1_d2(indx1,iy)/=miss_val_real.and.temp1_d2(indx1,iy)==val1) then
+	    ! cnt2=cnt2+1
+	    ! cnt3=cnt3+1
+	  ! else
+	    ! write(unit=33,fmt) val1, cnt2, iy-1
+	    ! cnt1=cnt1+1
+	    ! cnt2=1
+	    ! cnt3=cnt3+1
+	    ! val1=temp1_d2(indx1,iy)
+	  ! endif
+	! enddo
+! !
+! ! save last set of values
+	! write(unit=33,fmt) val1, cnt2, iy-1
+! !
+! ! write totals
+	! write(unit=33,*) '\t\t',trim(head_in(indx1,1))//' has ',cnt1, ' different values'
+	! write(unit=33,*) '\t\t','Total valid values: ',cnt3
+	! write(unit=33,*) '\t\t','total number records: ',y_dim
 !
 !----------------------------------------------------------
 ! count records
 !----------------------------------------------------------
 	  case('count_rec')
-	do ix=lim1,lim2
-	  write(unit=33,*) '\tcount records'
-!
-! count valid records
-	  cnt1=0
-	  do iy=1,y_dim
-	    if(temp1_d2(ix,iy)/=miss_val_real) then
-	      cnt1=cnt1+1
-	    endif
-	  enddo
-	  write(unit=33,*) '\t\t',trim(head_in(ix,1))//': ',cnt1, ' valid values'
-	  write(unit=33,*) '\t\t','total number records: ',y_dim
-	enddo
+	  write(unit=33,*) 'count the number of valid records'
+		indx1=man(iman)%ind1
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		open(unit=200, file=trim(file_in), form='formatted')
+		do iy = 1, y_dim
+			write(unit=200, fmt='(F14.7)') temp1_d2(indx1, iy)
+		enddo
+		close(unit=200)
+
+		cmd = trim(path(i_pat_python)%path1)//'count_records.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+
+		call system(cmd)
+
+	  open(unit=201, file=trim(file_out), form='formatted')
+		read(unit=201, fmt='(A)') temp
+		write(unit=33, fmt='(A)') trim(tmp)
+	  close(unit=201)
+	! do ix=lim1,lim2
+	  ! write(unit=33,*) '\tcount records'
+! !
+! ! count valid records
+	  ! cnt1=0
+	  ! do iy=1,y_dim
+	    ! if(temp1_d2(ix,iy)/=miss_val_real) then
+	      ! cnt1=cnt1+1
+	    ! endif
+	  ! enddo
+	  ! write(unit=33,*) '\t\t',trim(head_in(ix,1))//': ',cnt1, ' valid values'
+	  ! write(unit=33,*) '\t\t','total number records: ',y_dim
+	! enddo
 !
 !----------------------------------------------------------
 ! check for non-integer values
 !----------------------------------------------------------
 	  case('chk_int')
-	do ix=lim1,lim2
-	  write(unit=33,*) '\tCheck ',trim(head_in(ix,1)), ' for non-integer values'
-	  val1=man(iman)%val1
-	  cnt1=0
-	  do iy=1,y_dim
-	    val1=mod(temp1_d2(ix,iy),1.)
-	    if(val1/=0.) then
-	      cnt1=cnt1+1
-	      print*, cnt1,iy,temp1_d2(ix,iy)
-	    endif
+	  write(unit=33,*) 'check for non-integer values'
+		indx1=man(iman)%ind1
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		open(unit=200, file=trim(file_in), form='formatted')
+		do iy = 1, y_dim
+			write(unit=200, fmt='(F14.7)') temp1_d2(indx1, iy)
+		enddo
+		close(unit=200)
+
+		cmd = trim(path(i_pat_python)%path1)//'check_int.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+
+		call system(cmd)
+
+	  open(unit=201, file=trim(file_out), form='formatted')
+	  do iy = 1,y_dim
+		read(unit=201, fmt='(A)') temp
+		write(unit=33, fmt='(A)') trim(tmp)
 	  enddo
-	enddo
+	  close(unit=201)
+
+	! do ix=lim1,lim2
+	  ! write(unit=33,*) '\tCheck ',trim(head_in(ix,1)), ' for non-integer values'
+	  ! val1=man(iman)%val1
+	  ! cnt1=0
+	  ! do iy=1,y_dim
+	    ! val1=mod(temp1_d2(ix,iy),1.)
+	    ! if(val1/=0.) then
+	      ! cnt1=cnt1+1
+	      ! print*, cnt1,iy,temp1_d2(ix,iy)
+	    ! endif
+	  ! enddo
+	! enddo
 !
 !----------------------------------------------------------
 ! multiply by constant
