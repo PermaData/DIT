@@ -661,7 +661,8 @@ case('move_text')		! TODO: Test move_text
 	close(unit=200)
 
 	! -i <input file> -o <output file> -f <regex to move> -t <regex to move to>
-	cmd = path(i_pat_python)%path1//' -i '//file_in//' -o '//file_out
+	cmd = path(i_pat_python)%path1//'move_text.py'
+	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 	cmd = trim(cmd)//' -f '//trim(man(iman)%txt1)//' -t '//trim(man(iman)%txt2)
 
 	call system(cmd)
@@ -678,12 +679,12 @@ case('move_text')		! TODO: Test move_text
 !----------------------------------------------------------
 ! Replace text in a column
 !----------------------------------------------------------
-case('replace_text')		! TODO: Test replace_text
+case('repl_text')		! TODO: Test replace_text
 	write(unit=33,*) 'Replace text in records'
-	file_in = path(i_pat_tmp)%path1//'temp1'
-	file_out = path(i_pat_tmp)%path1//'temp2'
+	file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+	file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
-	fmt = 'A,A'
+	fmt = '(A,A)'
 
 	!needs to be given indices of columns to read from
 	open(unit=200, file=trim(file_in), form='formatted')
@@ -694,8 +695,10 @@ case('replace_text')		! TODO: Test replace_text
 	close(unit=200)
 
 	! -i <input file> -o <output file> -t <text to replace> -w <replacement>
-	cmd = path(i_pat_python)%path1//' -i '//file_in//' -o '//file_out
+	cmd = trim(path(i_pat_python)%path1)//'replace_text.py'
+	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 	cmd = trim(cmd)//' -t '//trim(man(iman)%txt1)//' -w '//trim(man(iman)%txt2)
+	print*,cmd
 
 	call system(cmd)
 

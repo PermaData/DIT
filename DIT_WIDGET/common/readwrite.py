@@ -15,8 +15,14 @@ def pull(infile, mode):
 
     with open(infile) as f:
         for line in f:
-            data = mode(line)
-            out.append(data)
+            sub = line.split(',')
+            for i, field in enumerate(sub):
+                sub[i] = mode(field)
+            if (len(sub) == 1):
+                # Single value, you don't want it wrapped in a list
+                out.append(sub[0])
+            else:
+                out.append(sub)
     return out
 
 

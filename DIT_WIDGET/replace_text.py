@@ -69,8 +69,9 @@ def parse_arguments(argv):
         print "Text within field to replace '-t' argument required."
         sys.exit(2)
     if not found_with_replace:
-        print "Replacement text '-w' argument required."
-        sys.exit(2)
+        #print "Replacement text '-w' argument required."
+        #sys.exit(2)
+        with_replace = ''
     return (ggd361_csv, out_file, to_replace, with_replace)
 
 

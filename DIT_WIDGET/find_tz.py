@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-import datetime as dt
+import datetime 
 import csv
 
 from tzwhere import tzwhere
@@ -28,8 +28,8 @@ def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
                     coord = (float(data[lat_i]), float(data[lon_i]))
                     tzname = finder.tzNameAt(*coord)
                     out.append(tzname)
-                    datetime = dt.strptime('%Y-%m-%d %H:%M', data[dt_i])
-                    offset = name_to_offset(tzname, datetime)
+                    dt = datetime.strptime('%Y-%m-%d %H:%M', data[dt_i])
+                    offset = name_to_offset(tzname, dt)
                     
                     push.writerow(line + [offset])
 
@@ -41,11 +41,11 @@ def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
     # out = out.replace('N','',).replace('E','')
     # return eval(out)
 
-def name_to_offset(name, datetime):
+def name_to_offset(name, dt):
     # Perhaps use date/time data to process this into UTC times
     # Actually use pytz.timezone(name).localize(datetime object).strftime(necessary values)
     tz = pytz.timezone(name)
-    actual = tz.localize(datetime)
+    actual = tz.localize(dt)
     offset = actual.strftime('%z')
     return int(offset) * 36 / 60 / 60   # Returns offset in possibly fractional hours
 
