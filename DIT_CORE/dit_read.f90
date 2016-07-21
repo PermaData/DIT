@@ -936,7 +936,7 @@ case('repl_text')
 !----------------------------------------------------------
 ! remove a set of characters from character data
 !----------------------------------------------------------
-	case('rm_chars')		! TODO: Test rm_chars
+	case('rm_chars')
 		write(unit=33,*) 'remove characters: '//trim(man(iman)%txt1)
 		indx1 = man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
@@ -1377,12 +1377,13 @@ case('repl_text')
 	  case('count_2val')		! TODO: Test count_2val
 		write(unit=33,*) 'Count values'
 		indx1=man(iman)%ind1
+		indx2=man(iman)%ind2
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
 		open(unit=200, file=trim(file_in), form='formatted')
 		do iy = 1, y_dim
-			write(unit=200, fmt='(F14.7)') temp1_d2(indx1, iy)
+			write(unit=200, fmt='(F14.7,A,F14.7)') temp1_d2(indx1, iy), ',',temp1_d2(indx2, iy)
 		enddo
 		close(unit=200)
 
@@ -1393,7 +1394,8 @@ case('repl_text')
 		call system(cmd)
 
 	  open(unit=201, file=trim(file_out), form='formatted')
-	  do iy = 1,y_dim
+	  read(unit=201, fmt='(I7)') num 
+	  do iy = 1,num
 		read(unit=201, fmt='(A)') temp
 		write(unit=33, fmt='(A)') trim(temp)
 	  enddo

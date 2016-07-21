@@ -34,7 +34,7 @@ def double(data):
             values[first].add(second)
     out = [len(values)]
     for key in sorted(values.keys()):
-        out.append('{0:0.7f}: {1}'.format(key, len(values[key])))
+        out.append('{0:0.7f}: {1}'.format(float(key), len(values[key])))
     return out
 
 
