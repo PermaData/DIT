@@ -464,7 +464,7 @@
 		 call system(cmd)
 
 		 open(unit=201, file=trim(file_out), form='formatted')
-		 do indx1 = 1,(man(iman)%ind2 - 1)
+		 do indx1 = 1,(man(iman)%ind2 + 2)
 			read(unit=201, fmt='(A)') text
 			write(unit=33,*) trim(text)
 		 enddo
@@ -606,7 +606,7 @@
 ! assumes in/out variables are both are character
 ! File_in/file_out refer to the input and output files of the python script
 	  case('date_refmt')
-	write(unit=33,*) '\treformat date to Std'
+	write(unit=33,*) 'reformat date to GTN-P standard'
 	indx1=man(iman)%ind1 ! output variable number
 !
 ! input/output data files for python script
@@ -937,7 +937,7 @@ case('repl_text')
 ! remove a set of characters from character data
 !----------------------------------------------------------
 	case('rm_chars')		! TODO: Test rm_chars
-		write(unit=33,*) 'remove characters'
+		write(unit=33,*) 'remove characters: '//trim(man(iman)%txt1)
 		indx1 = man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -1130,7 +1130,7 @@ case('repl_text')
 		call system(cmd)
 
 		open(unit=201, file=trim(file_out), form='formatted')
-		do indx1 = 1,2
+		do indx1 = 1,7
 			read(unit=201, fmt='(A)') text
 			write(unit=33,*) trim(text)
 		enddo
@@ -1464,8 +1464,8 @@ case('repl_text')
 ! counts the number of different values of a single variable
 ! assumes the data is by the variable
 !
-	  case('count_val')		! TODO: Test count_val
-	  write(unit=33,*) 'Count unique values'
+	  case('count_val')
+	  write(unit=33,*) 'Count unique, valid values'
 		indx1=man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -1483,7 +1483,7 @@ case('repl_text')
 
 	  open(unit=201, file=trim(file_out), form='formatted')
 		read(unit=201, fmt='(A)') temp
-		write(unit=33, fmt='(A)') trim(temp)
+		write(unit=33, fmt=' (A)') trim(temp)
 	  close(unit=201)
 	! indx1=man(iman)%ind1
 	! write(unit=33,*) '\tcount values for ',trim(head_in(indx1,1))
@@ -1522,8 +1522,8 @@ case('repl_text')
 !----------------------------------------------------------
 ! count records
 !----------------------------------------------------------
-	  case('count_rec')		! TODO: test count_rec
-	  write(unit=33,*) 'count the number of valid records'
+	  case('count_rec')
+	  write(unit=33,*) 'Count the number of valid records'
 		indx1=man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -1541,7 +1541,7 @@ case('repl_text')
 
 	  open(unit=201, file=trim(file_out), form='formatted')
 		read(unit=201, fmt='(A)') temp
-		write(unit=33, fmt='(A)') trim(temp)
+		write(unit=33, fmt=' (A)') trim(temp)
 	  close(unit=201)
 	! do ix=lim1,lim2
 	  ! write(unit=33,*) '\tcount records'
@@ -1790,7 +1790,7 @@ case('repl_text')
 		 enddo
 		 close(unit=200)
 
-		 write(unit=33,*) 'replace ',man(iman)%val1,' with ',man(iman)%val2
+		 write(unit=33,*) 'Replace ',man(iman)%val1,' with ',man(iman)%val2
 
 		 ! Build the command, including passing floats with the -n flags
 		 write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
@@ -2268,8 +2268,8 @@ case('replace_range')
 		 ! Build the command
 		 ! TODO: Complete this expression
 		 cmd = path(i_pat_python)%path1//'create_gtnp_metadata_json.py'
-		 cmd = trim(cmd)//' -t /sharehome/hwilcox/DIT/template.json'
-		 cmd = trim(cmd)//' -c '
+		 cmd = trim(cmd)//' -t '!//template_file
+		 cmd = trim(cmd)//' -c '!//csv file
 
 		 call system( cmd )
 

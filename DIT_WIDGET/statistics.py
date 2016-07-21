@@ -18,12 +18,18 @@ def statistics(infile, outfile):
     distribution = mean_std(filtered)
     minmax = min_max(filtered)
 
-    formatstr = ''
-    for i in range(7):
-        formatstr += '{' + str(i) + ':0.{p}f},'
-    formatstr = formatstr[:-1]  # Remove trailing ,
-    out = ['min,max,mean,std,totpts,valid_pts,pts_frac',
-           formatstr.format(*(minmax + distribution + point_stats), p=7)]
+    out = []
+    names = ['Min', 'Max', 'Mean', 'Std', 'Total points', 'Valid points', 'Valid fraction']
+    formatstr = '{0}: {1:0.{p}f}'
+    for name, value in zip(names, minmax+distribution+point_stats):
+        out.append(formatstr.format(name, value, p=7))
+    
+    # formatstr = ''
+    # for i in range(7):
+        # formatstr += '{' + str(i) + ':0.{p}f},'
+    # formatstr = formatstr[:-1]  # Remove trailing ,
+    # out = ['min,max,mean,std,totpts,valid_pts,pts_frac',
+           # formatstr.format(*(minmax + distribution + point_stats), p=7)]
     io.push(out, outfile)
 
 

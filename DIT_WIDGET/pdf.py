@@ -88,8 +88,13 @@ def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
         print "Use a valid form for the norm argument"
         return None
 
+    out = norms[norm](out)
+        
+    out.insert(0, 'Minimum: {0}'.format(mini))
+    out.append('Maximum: {0}'.format(maxi))
+
     # Push the correct data to outfile
-    io.push(norms[norm](out), outfile)
+    io.push(out, outfile)
 
 
 def raw(data):
