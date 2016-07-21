@@ -7,15 +7,14 @@ import common.definitions as d
 
 
 def remove_chars(infile, outfile, chars):
-    """Count how many valid records there are."""
+    """Remove all from a set of characters from a column."""
     data = io.pull(infile, str)
 
     pun = '[' + chars + ']'
     out = []
     for s in data:
         out.append(re.sub(pun, '', s))
-    print out[:20]
-    io.push([out], outfile)
+    io.push(out, outfile)
 
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #

@@ -679,18 +679,18 @@ case('move_text')		! TODO: Test move_text
 !----------------------------------------------------------
 ! Replace text in a column
 !----------------------------------------------------------
-case('repl_text')		! TODO: Test replace_text
-	write(unit=33,*) 'Replace text in records'
+case('repl_text')
+	write(unit=33,*) 'Replace text: '//trim(man(iman)%txt1)//' with '//trim(man(iman)%txt2)
 	file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 	file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
-	fmt = '(A,A)'
+	fmt = '(A)'
 
 	!needs to be given indices of columns to read from
 	open(unit=200, file=trim(file_in), form='formatted')
 	do indx1 = 1,y_dim
 		! ind1 is place
-		write(unit=200, fmt=fmt) temp1_char2(man(iman)%ind1, indx1)
+		write(unit=200, fmt=fmt) trim(temp1_char2(man(iman)%ind1, indx1))
 	enddo
 	close(unit=200)
 
@@ -698,15 +698,14 @@ case('repl_text')		! TODO: Test replace_text
 	cmd = trim(path(i_pat_python)%path1)//'replace_text.py'
 	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 	cmd = trim(cmd)//' -t '//trim(man(iman)%txt1)//' -w '//trim(man(iman)%txt2)
-	print*,cmd
 
 	call system(cmd)
 
 	open(unit=201, file=trim(file_out), form='formatted')
 	do indx1 = 1,y_dim
-		read(unit=201, fmt=fmt) text, temp
+		read(unit=201, fmt=fmt) text
 		temp1_char2(man(iman)%ind1, indx1) = text
-		temp1_char2(man(iman)%ind2, indx1) = temp
+		! temp1_char2(man(iman)%ind2, indx1) = temp
 	enddo
 	close(unit=201)
 
@@ -938,7 +937,7 @@ case('repl_text')		! TODO: Test replace_text
 ! remove a set of characters from character data
 !----------------------------------------------------------
 	case('rm_chars')		! TODO: Test rm_chars
-		write(unit=33,*) '\tremove characters'
+		write(unit=33,*) 'remove characters'
 		indx1 = man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -957,9 +956,8 @@ case('repl_text')		! TODO: Test replace_text
 		call system(cmd)
 
 		open(unit=201, file=trim(file_out), form='formatted')
-		do indx1 = 1, y_dim
+		do iy = 1, y_dim
 			read(unit=201, fmt='(a)') temp 
-			print*,trim(temp)
 			temp1_char2(indx1, iy) = trim(temp)
 		enddo
 		close(unit=201)
@@ -1376,66 +1374,89 @@ case('repl_text')		! TODO: Test replace_text
 ! counts the number of different values for a combination of 2 variables
 ! i.e. number of values for variable 2 per value of variable 1
 ! assumes the data is presorted first by var1 then by var2
-	  case('count_2val')		! TODO: Write and complete and test count_2val
-	indx1=man(iman)%ind1
-	indx2=man(iman)%ind2
-	write(unit=33,*) '\tcount ',trim(head_in(indx2,1)),' values per ',trim(head_in(indx1,1))
-	if(man(iman)%txt1=='all') then
-	  write(unit=33,*) '\t\tsave everything in processing file'
-	  fmt='(5(a15,2x))'
-	  write(unit=33,fmt) 'Val1','val2','numval2','numrec','lastrec'
-	  fmt='(f15.7,2x,f15.7,2x,i15,2x,i15,2x,i15)'
-	endif
-	if(man(iman)%txt1=='sum') then
-	  write(unit=33,*) '\t\tsave only summary data in processing file'
-	  fmt='(5(a15,2x))'
-	  write(unit=33,fmt) trim(head_in(indx1,1)),'num '//trim(head_in(indx2,1)), 'totrec','firstrec','lastrec'
-	  fmt='(f15.7,2x,i15,2x,i15,2x,i15,2x,i15)'
-	endif
-!
-! set counting variables
-	val1=temp1_d2(indx1,1)
-	val2=temp1_d2(indx2,1)
-	cnt1=1 ! number different values for val1
-	cnt2=1 ! number different values for val2 for each val1
-	cnt3=0 ! total number records for val2
-	cnt4=0 ! total number records for val1
-!
-! loop through all records
-	do iy=1,y_dim
-!
-! start counting with first record
-	  if(temp1_d2(indx1,iy)==val1.and.temp1_d2(indx2,iy)==val2) then
-	    cnt3=cnt3+1
-	    cnt4=cnt4+1
-!
-! var2 changes, but not var1: cnt2 increases by 1, reset cnt3
-	  elseif(temp1_d2(indx1,iy)==val1.and.temp1_d2(indx2,iy)/=val2) then
-	    if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2,cnt3, iy-1
-	    cnt2=cnt2+1
-	    cnt3=1
-	    cnt4=cnt4+1
-	    val2=temp1_d2(indx2,iy)
-!
-! var1 changes: cnt1 increases by 1, reset cnt2 and cnt3
-	  elseif(temp1_d2(indx1,iy)/=val1.and.temp1_d2(indx2,iy)/=val2) then
-	    if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
-	    if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
-	    cnt1=cnt1+1
-	    cnt2=1
-	    cnt3=1
-	    cnt4=1
-	    val1=temp1_d2(indx1,iy)
-	    val2=temp1_d2(indx2,iy)
-	  endif
-	enddo
-!
-! save last set of values
-	if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
-	if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
-!
-! write totals
-	write(unit=33,*) '\t\t',trim(head_in(indx1,1))//' has ',cnt1, ' different values'
+	  case('count_2val')		! TODO: Test count_2val
+		write(unit=33,*) 'Count values'
+		indx1=man(iman)%ind1
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		open(unit=200, file=trim(file_in), form='formatted')
+		do iy = 1, y_dim
+			write(unit=200, fmt='(F14.7)') temp1_d2(indx1, iy)
+		enddo
+		close(unit=200)
+
+		cmd = trim(path(i_pat_python)%path1)//'count_values.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+		cmd = trim(cmd)//' -f '//'double'
+
+		call system(cmd)
+
+	  open(unit=201, file=trim(file_out), form='formatted')
+	  do iy = 1,y_dim
+		read(unit=201, fmt='(A)') temp
+		write(unit=33, fmt='(A)') trim(temp)
+	  enddo
+	  close(unit=201)
+	! indx1=man(iman)%ind1
+	! indx2=man(iman)%ind2
+	! write(unit=33,*) '\tcount ',trim(head_in(indx2,1)),' values per ',trim(head_in(indx1,1))
+	! if(man(iman)%txt1=='all') then
+	  ! write(unit=33,*) '\t\tsave everything in processing file'
+	  ! fmt='(5(a15,2x))'
+	  ! write(unit=33,fmt) 'Val1','val2','numval2','numrec','lastrec'
+	  ! fmt='(f15.7,2x,f15.7,2x,i15,2x,i15,2x,i15)'
+	! endif
+	! if(man(iman)%txt1=='sum') then
+	  ! write(unit=33,*) '\t\tsave only summary data in processing file'
+	  ! fmt='(5(a15,2x))'
+	  ! write(unit=33,fmt) trim(head_in(indx1,1)),'num '//trim(head_in(indx2,1)), 'totrec','firstrec','lastrec'
+	  ! fmt='(f15.7,2x,i15,2x,i15,2x,i15,2x,i15)'
+	! endif
+! !
+! ! set counting variables
+	! val1=temp1_d2(indx1,1)
+	! val2=temp1_d2(indx2,1)
+	! cnt1=1 ! number different values for val1
+	! cnt2=1 ! number different values for val2 for each val1
+	! cnt3=0 ! total number records for val2
+	! cnt4=0 ! total number records for val1
+! !
+! ! loop through all records
+	! do iy=1,y_dim
+! !
+! ! start counting with first record
+	  ! if(temp1_d2(indx1,iy)==val1.and.temp1_d2(indx2,iy)==val2) then
+	    ! cnt3=cnt3+1
+	    ! cnt4=cnt4+1
+! !
+! ! var2 changes, but not var1: cnt2 increases by 1, reset cnt3
+	  ! elseif(temp1_d2(indx1,iy)==val1.and.temp1_d2(indx2,iy)/=val2) then
+	    ! if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2,cnt3, iy-1
+	    ! cnt2=cnt2+1
+	    ! cnt3=1
+	    ! cnt4=cnt4+1
+	    ! val2=temp1_d2(indx2,iy)
+! !
+! ! var1 changes: cnt1 increases by 1, reset cnt2 and cnt3
+	  ! elseif(temp1_d2(indx1,iy)/=val1.and.temp1_d2(indx2,iy)/=val2) then
+	    ! if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
+	    ! if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
+	    ! cnt1=cnt1+1
+	    ! cnt2=1
+	    ! cnt3=1
+	    ! cnt4=1
+	    ! val1=temp1_d2(indx1,iy)
+	    ! val2=temp1_d2(indx2,iy)
+	  ! endif
+	! enddo
+! !
+! ! save last set of values
+	! if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
+	! if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
+! !
+! ! write totals
+	! write(unit=33,*) '\t\t',trim(head_in(indx1,1))//' has ',cnt1, ' different values'
 !
 !----------------------------------------------------------
 ! count values
@@ -1444,7 +1465,7 @@ case('repl_text')		! TODO: Test replace_text
 ! assumes the data is by the variable
 !
 	  case('count_val')		! TODO: Test count_val
-	  write(unit=33,*) 'Count values'
+	  write(unit=33,*) 'Count unique values'
 		indx1=man(iman)%ind1
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -1461,10 +1482,8 @@ case('repl_text')		! TODO: Test replace_text
 		call system(cmd)
 
 	  open(unit=201, file=trim(file_out), form='formatted')
-	  do iy = 1,y_dim
 		read(unit=201, fmt='(A)') temp
 		write(unit=33, fmt='(A)') trim(temp)
-	  enddo
 	  close(unit=201)
 	! indx1=man(iman)%ind1
 	! write(unit=33,*) '\tcount values for ',trim(head_in(indx1,1))
@@ -1588,8 +1607,8 @@ case('repl_text')		! TODO: Test replace_text
 		 open(unit=200, file=trim(file_in), form='formatted')
 		 fmt = '(F14.7)'
 		 do ix=lim1,lim2
-			if(man(iman)%num==1) write(unit=33,*) '\tMultiply ',trim(head_in(ix,1)), ' by ',man(iman)%val1
-	    if(man(iman)%num==2) write(unit=33,*) '\tMultiply ',trim(head_out(ix,1)), ' by ',man(iman)%val1
+			if(man(iman)%num==1) write(unit=33,*) 'Multiply ',trim(head_in(ix,1)), ' by ',man(iman)%val1
+	    if(man(iman)%num==2) write(unit=33,*) 'Multiply ',trim(head_out(ix,1)), ' by ',man(iman)%val1
 			do iy = 1, y_dim
 			   write(unit=200,fmt=fmt) temp1_d2(ix,iy)
 			enddo
@@ -1632,8 +1651,8 @@ case('repl_text')		! TODO: Test replace_text
 		 open(unit=200, file=trim(file_in), form='formatted')
 		 fmt = '(F14.7)'
 		 do ix=lim1,lim2
-			if(man(iman)%num==1) write(unit=33,*) '\tDivide ',trim(head_in(ix,1)), ' by ',man(iman)%val1
-			if(man(iman)%num==2) write(unit=33,*) '\tDivide ',trim(head_out(ix,1)), ' by ',man(iman)%val1
+			if(man(iman)%num==1) write(unit=33,*) 'Divide ',trim(head_in(ix,1)), ' by ',man(iman)%val1
+			if(man(iman)%num==2) write(unit=33,*) 'Divide ',trim(head_out(ix,1)), ' by ',man(iman)%val1
 			do iy = 1, y_dim
 			   write(unit=200,fmt=fmt) temp1_d2(ix,iy)
 			enddo
@@ -1680,8 +1699,8 @@ case('repl_text')		! TODO: Test replace_text
 		 open(unit=200, file=trim(file_in), form='formatted')
 		 fmt = '(F14.7)'
 		 do ix=lim1,lim2
-			if(man(iman)%num==1) write(unit=33,*) '\tAdd ',man(iman)%val1, ' to ',trim(head_in(ix,1))
-			if(man(iman)%num==2) write(unit=33,*) '\tAdd ',man(iman)%val1, ' to ',trim(head_out(ix,1))
+			if(man(iman)%num==1) write(unit=33,*) 'Add ',man(iman)%val1, ' to ',trim(head_in(ix,1))
+			if(man(iman)%num==2) write(unit=33,*) 'Add ',man(iman)%val1, ' to ',trim(head_out(ix,1))
 			do iy = 1, y_dim
 			   write(unit=200,fmt=fmt) temp1_d2(ix,iy)
 			enddo
@@ -1723,8 +1742,8 @@ case('repl_text')		! TODO: Test replace_text
 		 open(unit=200, file=trim(file_in), form='formatted')
 		 fmt = '(F14.7)'
 		 do ix=lim1,lim2
-			if(man(iman)%num==1) write(unit=33,*) '\tSubtract ',man(iman)%val1, ' from ',trim(head_in(ix,1))
-			if(man(iman)%num==2) write(unit=33,*) '\tSubtract ',man(iman)%val1, ' from ',trim(head_out(ix,1))
+			if(man(iman)%num==1) write(unit=33,*) 'Subtract ',man(iman)%val1, ' from ',trim(head_in(ix,1))
+			if(man(iman)%num==2) write(unit=33,*) 'Subtract ',man(iman)%val1, ' from ',trim(head_out(ix,1))
 			do iy = 1, y_dim
 			   write(unit=200,fmt=fmt) temp1_d2(ix,iy)
 			enddo
@@ -2316,7 +2335,7 @@ case('replace_range')
 	end subroutine
 !
 !===================================================
-	subroutine map_look_up(iman)
+	subroutine map_look_up(iman) ! TODO: Convert map_lookup
 !===================================================
 !
 	use dit_variables
