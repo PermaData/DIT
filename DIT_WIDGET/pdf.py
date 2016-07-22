@@ -108,18 +108,70 @@ def probability(data):
     return [float(len(group)) / npoints for group in data]
 
 
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = pa.parse_args(sys.argv[1:])
-infile = args[0]
-outfile = args[1]
-bins = args[2][0]
-minmax = args[3][0]
-if(minmax == 'manual'):
-    lower = args[2][1]
-    upper = args[2][2]
-else:
-    lower = upper = 0
-outliers = args[3][1]
-norm = args[3][2]
+def parse_args(args):
+    def help():
+        print 'pdf.py -i <input file> -o <output file> -b <number of bins> -m <min/max behavior> -l <input minimum> -u <input maximum> -t <outlier behavior> -n <output behavior>'
 
-pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm)
+
+    infile = None
+    outfile = None
+    bins = None
+    minmax = None
+    outliers = None
+    norm = None
+    
+    lower = 0
+    upper = 0
+
+    options = ('i:o:b:m:l:u:t:n:',
+               ['input', 'output', 'bins', 'minmax', 'lower', 'upper',
+                'outliers', 'norm'])
+    readoptions = zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]])
+
+    try:
+        (vals, extras) = getopt.getopt(args, *options)
+    except getopt.GetoptError as e:
+        print str(e)
+        help()
+        sys.exit(2)
+
+    for (option, value) in vals:
+        if (option in readoptions[0]):
+            infile = value
+        elif (option in readoptions[1]):
+            outfile = value
+        elif (option in readoptions[2]):
+            bins = int(value)
+        elif (option in readoptions[3]):
+            minmax = value
+        elif (option in readoptions[4]):
+            lower = float(value)
+        elif (option in readoptions[5]):
+            upper = float(value)
+        elif (option in readoptions[6]):
+            outliers = value
+        elif (option in readoptions[7]):
+            norm = value
+
+    if (any(val is None for val in
+            [infile, outfile, bins, minmax, outliers, norm])):
+        help()
+        sys.exit(2)
+
+    return infile, outfile, bins, minmax, lower, upper, outliers, norm
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = parse_args(sys.argv[1:])
+# infile = args[0]
+# outfile = args[1]
+# bins = args[2][0]
+# minmax = args[3][0]
+# if(minmax == 'manual'):
+    # lower = args[2][1]
+    # upper = args[2][2]
+# else:
+    # lower = upper = 0
+# outliers = args[3][1]
+# norm = args[3][2]
+
+pdf(*args)

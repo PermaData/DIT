@@ -957,7 +957,7 @@ case('repl_text')
 
 		open(unit=201, file=trim(file_out), form='formatted')
 		do iy = 1, y_dim
-			read(unit=201, fmt='(a)') temp 
+			read(unit=201, fmt='(a)') temp
 			temp1_char2(indx1, iy) = trim(temp)
 		enddo
 		close(unit=201)
@@ -1394,7 +1394,7 @@ case('repl_text')
 		call system(cmd)
 
 	  open(unit=201, file=trim(file_out), form='formatted')
-	  read(unit=201, fmt='(I7)') num 
+	  read(unit=201, fmt='(I7)') num
 	  do iy = 1,num
 		read(unit=201, fmt='(A)') temp
 		write(unit=33, fmt='(A)') trim(temp)
@@ -2412,9 +2412,9 @@ case('replace_range')
 	allocate(temp1_d1(y_dim))
 	allocate(temp1_char1(y_dim))
 	do irec=1,y_dim
-	  indx_lonmap=(data_in(indx_varlon,irec)-grid_r%lonmin)/grid_r%dlon+1
-	  indx_latmap=(data_in(indx_varlat,irec)-grid_r%latmin)/grid_r%dlat+1
-	  temp1_d1(irec)=temp2_d2(indx_lonmap,indx_latmap)
+		indx_lonmap=(data_in(indx_varlon,irec)-grid_r%lonmin)/grid_r%dlon+1
+		indx_latmap=(data_in(indx_varlat,irec)-grid_r%latmin)/grid_r%dlat+1
+		temp1_d1(irec)=temp2_d2(indx_lonmap,indx_latmap)
 	enddo
 !
 ! read in number to text matching file
@@ -2427,20 +2427,20 @@ case('replace_range')
 	allocate(class_name(n_class))
 	read (9,*) junk
 	do icls=1,n_class
-	  read (9,*) class_num(icls),class_name(icls)
+		read (9,*) class_num(icls),class_name(icls)
 	enddo
 	close(unit=9)
 !
 ! match map value to text class
 	do irec=1,y_dim
-	  do icls=1,n_class
-	if(temp1_d1(irec)==class_num(icls)) then
-	  temp1_char1(irec)=trim(class_name(icls))
-	  exit
-	endif
-	  enddo
+		do icls=1,n_class
+			if(temp1_d1(irec)==class_num(icls)) then
+				temp1_char1(irec)=trim(class_name(icls))
+				exit
+			endif
+		enddo
 !      print*, irec,temp1_d1(irec),trim(temp1_char1(irec))
-	  write(unit=33,*) irec,temp1_d1(irec),trim(temp1_char1(irec))
+		write(unit=33,*) irec,temp1_d1(irec),trim(temp1_char1(irec))
 	enddo
 !
 ! put into data array

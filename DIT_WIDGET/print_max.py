@@ -5,7 +5,7 @@ import sys
 import common.readwrite as io
 import common.definitions as d
 import printfamily.prints as p
-import common.parseargs as pa
+# import common.parseargs as pa
 
 
 def print_max(infile, outfile):
@@ -36,9 +36,41 @@ def print_max(infile, outfile):
     io.push(rv, outfile)
 
 
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = pa.parse_args(sys.argv[1:])
-infile = args[0]
-outfile = args[1]
+def parse_args(args):
+    def help():
+        print 'print_max.py -i <input file> -o <output file>'
+        print 'Prints max and mean'
 
-print_max(infile, outfile)
+
+    infile = None
+    outfile = None
+
+    options = ('i:o:',
+                ['input', 'output'])
+    readoptions = zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]])
+
+    try:
+        (vals, extras) = getopt.getopt(args, *options)
+    except getopt.GetoptError as e:
+        print str(e)
+        help()
+        sys.exit(2)
+
+    for (option, val) in vals:
+        if (option in readoptions[0]):
+            infile = val
+        elif (option in readoptions[1]):
+            outfile = val
+
+    if (any(val is None for val in [infile, outfile])):
+        help()
+        sys.exit(2)
+
+    return infile, outfile
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = parse_args(sys.argv[1:])
+# infile = args[0]
+# outfile = args[1]
+
+print_max(*args)

@@ -27,11 +27,50 @@ def modify_row(row, ENZL, lat_i, long_i):
     return out
 
 
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = pa.parse_args(sys.argv[1:])
-infile = args[0]
-outfile = args[1]
-lat_i = args[2][0]
-long_i = args[2][1]
+def parse_args(args):
+    def help():
+        print 'latlong_to_utm.py -i <input CSV file> -o <output csv file> -t <latitude column index> -n <longitude column index>'
 
-latlong_to_utm(infile, outfile, lat_i, long_i)
+
+    infile = None
+    outfile = None
+    lat_col = None
+    long_col = None
+
+    hemisphere = 'north'
+
+    options = ('i:o:t:n:',
+               ['input', 'output', 'latitude_index', 'longitude_index'])
+    readoptions = zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]])
+
+    try:
+        (vals, extras) = getopt.getopt(args, *options)
+    except getopt.GetoptError as e:
+        print str(e)
+        help()
+        sys.exit(2)
+
+    for (option, value) in vals:
+        if (option in readoptions[0]):
+            infile = value
+        elif (option in readoptions[1]):
+            outfile = value
+        elif (option in readoptions[2]):
+            zone_col = int(value)
+        elif (option in readoptions[3]):
+            east_col = int(value)
+
+    if (any(val is None for val in [infile, outfile, lat_col, long_col])):
+        help()
+        sys.exit(2)
+
+    return infile, outfile, lat_col, long_col
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = parse_args(sys.argv[1:])
+# infile = args[0]
+# outfile = args[1]
+# lat_i = args[2][0]
+# long_i = args[2][1]
+
+latlong_to_utm(*args)
