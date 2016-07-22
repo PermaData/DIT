@@ -4,14 +4,13 @@ import sys
 import getopt
 
 import replacefamily.replacements as r
-# import common.parseargs as pa
 
 
 def replace_gt(infile, outfile, threshold, value):
     r.replace_conditional(infile, outfile, threshold, value,
                           lambda x, y: x > y)
 
-                          
+
 def parse_args(args):
     def help():
         print 'replace_gt.py -i <input file> -o <output file> -t <threshold> -v <replacement value>'
@@ -41,9 +40,9 @@ def parse_args(args):
         elif (option in readoptions[1]):
             outfile = val
         elif (option in readoptions[2]):
-            threshold = int(val)
+            threshold = float(val)
         elif (option in readoptions[3]):
-            value = int(val)
+            value = float(val)
 
     if (any(val is None for val in
             [infile, outfile, threshold, value])):
@@ -51,11 +50,9 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, threshold, value
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# threshold = args[2][0]
-# value = args[2][1]
+
 
 replace_gt(*args)

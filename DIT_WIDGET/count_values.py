@@ -2,7 +2,6 @@ import sys
 import getopt
 
 import common.readwrite as io
-# import common.parseargs as pa
 import common.definitions as d
 
 
@@ -69,8 +68,7 @@ def parse_args(args):
         elif (option in readoptions[2]):
             mode = value
 
-    if (any(val is None for val in
-            [infile, outfile, zone_col, east_col, north_col])):
+    if (any(val is None for val in [infile, outfile])):
         help()
         sys.exit(2)
 
@@ -78,12 +76,5 @@ def parse_args(args):
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# try:
-    # mode = args[3][0]
-# except IndexError:
-    # # no mode was given explicitly
-    # mode = 'single'
 
 count_values(*args)

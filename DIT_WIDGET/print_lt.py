@@ -4,7 +4,6 @@ import sys
 import getopt
 
 import printfamily.prints as p
-# import common.parseargs as pa
 
 
 def print_lt(infile, outfile, threshold):
@@ -40,17 +39,16 @@ def parse_args(args):
         elif (option in readoptions[1]):
             outfile = val
         elif (option in readoptions[2]):
-            threshold = int(val)
+            threshold = float(val)
 
     if (any(val is None for val in [infile, outfile, threshold])):
         help()
         sys.exit(2)
 
     return infile, outfile, threshold
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# threshold = args[2][0]
+
 
 print_lt(*args)

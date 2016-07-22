@@ -4,7 +4,6 @@ import sys
 import getopt
 
 import printfamily.prints as p
-# import common.parseargs as pa
 
 
 def print_rangex(infile, outfile, num):
@@ -55,10 +54,9 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, threshold
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = pa.parse_args(sys.argv[1:])
-infile = args[0]
-outfile = args[1]
-threshold = args[2][0]
 
-print_le(infile, outfile, threshold)
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+args = parse_args(sys.argv[1:])
+
+
+print_le(*args)

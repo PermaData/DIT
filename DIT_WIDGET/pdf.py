@@ -4,7 +4,6 @@ import getopt
 
 import common.readwrite as io
 import common.definitions as d
-# import common.parseargs as pa
 
 
 def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
@@ -90,7 +89,7 @@ def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
         return None
 
     out = norms[norm](out)
-        
+
     out.insert(0, 'Minimum: {0}'.format(mini))
     out.append('Maximum: {0}'.format(maxi))
 
@@ -120,7 +119,7 @@ def parse_args(args):
     minmax = None
     outliers = None
     norm = None
-    
+
     lower = 0
     upper = 0
 
@@ -161,18 +160,9 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, bins, minmax, lower, upper, outliers, norm
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# bins = args[2][0]
-# minmax = args[3][0]
-# if(minmax == 'manual'):
-    # lower = args[2][1]
-    # upper = args[2][2]
-# else:
-    # lower = upper = 0
-# outliers = args[3][1]
-# norm = args[3][2]
+
 
 pdf(*args)

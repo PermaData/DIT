@@ -1,9 +1,8 @@
-#!/usr/bin/python 
+#!/usr/bin/python
 import sys
 import getopt
 
 import mathfamily.arithmetic as a
-# import common.parseargs as pa
 
 
 def add_const(infile, outfile, constant):
@@ -47,10 +46,8 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, constant
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# constant = args[2][0]
 
 add_const(*args)

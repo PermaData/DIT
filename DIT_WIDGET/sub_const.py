@@ -4,7 +4,6 @@ import sys
 import getopt
 
 import mathfamily.arithmetic as a
-# import common.parseargs as pa
 
 
 def sub_const(infile, outfile, constant):
@@ -16,7 +15,7 @@ def sub_const(infile, outfile, constant):
 
 def parse_args(args):
     def help():
-        print 'sub_const.py -i <input file> -o <output file> -n <number>\nCheck that your argument list is correct.'
+        print 'sub_const.py -i <input file> -o <output file> -n <number>'
 
 
     infile = None
@@ -52,8 +51,5 @@ def parse_args(args):
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# constant = args[2][0]
 
 sub_const(*args)

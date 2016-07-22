@@ -3,7 +3,6 @@ import utm
 import sys
 import getopt
 
-# import common.parseargs as pa
 
 def latlong_to_utm(infile, outfile, lat_i, long_i, header=True):
     with open(infile, 'rb') as original:
@@ -67,11 +66,9 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, lat_col, long_col
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# lat_i = args[2][0]
-# long_i = args[2][1]
+
 
 latlong_to_utm(*args)

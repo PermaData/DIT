@@ -4,7 +4,6 @@ import sys
 import getopt
 
 import replacefamily.replacements as r
-# import common.parseargs as pa
 
 
 def replace_notin_rangex(infile, outfile, threshold, value):
@@ -56,11 +55,8 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, threshold, value
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# threshold = (args[2][0], args[2][1])
-# value = args[2][2]
 
 replace_notin_rangex(*args)

@@ -2,7 +2,6 @@ import time
 import getopt
 
 import common.readwrite as io
-# import common.parseargs as pa
 
 
 def mid_month(infile, outfile, format):
@@ -81,8 +80,6 @@ def parse_args(args):
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
-# format = args[3][0]
+
 
 mid_month(*args)

@@ -2,7 +2,6 @@ import sys
 import getopt
 
 import common.readwrite as io
-# import common.parseargs as pa
 import common.definitions as d
 
 
@@ -49,9 +48,8 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
 
 count_records(*args)

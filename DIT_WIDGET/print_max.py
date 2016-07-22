@@ -6,7 +6,6 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 import printfamily.prints as p
-# import common.parseargs as pa
 
 
 def print_max(infile, outfile):
@@ -69,9 +68,8 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
 
 print_max(*args)

@@ -57,7 +57,7 @@ def calculate(data):
 
     return (mean, std)
 
-    
+
 def parse_args(args):
     def help():
         print 'print_mean.py -i <input file> -o <output file>'
@@ -84,18 +84,14 @@ def parse_args(args):
             infile = val
         elif (option in readoptions[1]):
             outfile = val
-        elif (option in readoptions[2]):
-            threshold = int(val)
-        elif (option in readoptions[3]):
-            value = int(val)
 
     if (any(val is None for val in [infile, outfile])):
         help()
         sys.exit(2)
 
     return infile, outfile
-    
-    
+
+
 args = parse_args(sys.argv[1:])
 
 print_mean(*args)

@@ -6,7 +6,6 @@ import getopt
 
 import common.readwrite as io
 import common.definitions as d
-# import common.parseargs as pa
 
 
 def statistics(infile, outfile):
@@ -117,9 +116,9 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 infile, outfile = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
+
 
 statistics(infile, outfile)
