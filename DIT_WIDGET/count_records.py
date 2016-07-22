@@ -1,4 +1,5 @@
 import sys
+import getopt
 
 import common.readwrite as io
 # import common.parseargs as pa

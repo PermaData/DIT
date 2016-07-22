@@ -1,8 +1,9 @@
 import re
 import sys
+import getopt
 
 import common.readwrite as io
-import common.parseargs as pa
+# import common.parseargs as pa
 import common.definitions as d
 
 

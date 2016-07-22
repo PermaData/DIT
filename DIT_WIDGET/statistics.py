@@ -2,10 +2,11 @@
 
 import math
 import sys
+import getopt
 
 import common.readwrite as io
 import common.definitions as d
-import common.parseargs as pa
+# import common.parseargs as pa
 
 
 def statistics(infile, outfile):

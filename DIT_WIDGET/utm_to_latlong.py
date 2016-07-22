@@ -5,7 +5,6 @@ import utm
 import string
 import sys
 import getopt
-import optparse
 
 
 def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, hemisphere='', header=True):

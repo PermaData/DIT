@@ -456,7 +456,7 @@
 		 close(unit=200)
 
 		 ! Build the command, using all the arguments
-		 write(text,'(A,I5,A,A,A,F14.7,A,F14.7,A,A,A,A)') ' -n ',man(iman)%ind2,' -f ',trim(man(iman)%txt1),' -n ',man(iman)%val1,' -n ',man(iman)%val2,' -f ',trim(man(iman)%txt2),' -f ',trim(man(iman)%txt3)
+		 write(text,'(A,I5,A,A,A,F14.7,A,F14.7,A,A,A,A)') ' -b ',man(iman)%ind2,' -m ',trim(man(iman)%txt1),' -l ',man(iman)%val1,' -u ',man(iman)%val2,' -t ',trim(man(iman)%txt2),' -n ',trim(man(iman)%txt3)
 		 cmd = trim(path(i_pat_python)%path1)//'pdf.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -951,7 +951,7 @@ case('repl_text')
 		! Build the command, using all the arguments
 		cmd = trim(path(i_pat_python)%path1)//'remove_chars.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
-		cmd = trim(cmd)//' -f '//man(iman)%txt1
+		cmd = trim(cmd)//' -c '//man(iman)%txt1
 
 		call system(cmd)
 
@@ -1025,8 +1025,8 @@ case('repl_text')
 		! Build the command, using all the arguments
 		cmd = trim(path(i_pat_python)%path1)//'utm_to_latlong.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
-		cmd = trim(cmd)//' -n '//'0'//' -n '//'1'//' -n '//'2'
-		cmd = trim(cmd)//' -f '//man(iman)%txt1
+		cmd = trim(cmd)//' -z '//'0'//' -e '//'1'//' -n '//'2'
+		cmd = trim(cmd)//' -h '//man(iman)%txt1
 
 		call system(cmd)
 
@@ -1096,8 +1096,7 @@ case('repl_text')
 		! Build the command, using all the arguments
 		cmd = trim(path(i_pat_python)%path1)//'latlong_to_utm.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
-		cmd = trim(cmd)//' -n '//'0'//' -n '//'1'
-		cmd = trim(cmd)//' -f '//man(iman)%txt1
+		cmd = trim(cmd)//' -t '//'0'//' -n '//'1'
 
 		call system(cmd)
 
@@ -1389,7 +1388,7 @@ case('repl_text')
 
 		cmd = trim(path(i_pat_python)%path1)//'count_values.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
-		cmd = trim(cmd)//' -f '//'double'
+		cmd = trim(cmd)//' -m '//'double'
 
 		call system(cmd)
 
@@ -1543,7 +1542,7 @@ case('repl_text')
 
 	  open(unit=201, file=trim(file_out), form='formatted')
 		read(unit=201, fmt='(A)') temp
-		write(unit=33, fmt=' (A)') trim(temp)
+		write(unit=33, fmt='(A)') trim(temp)
 	  close(unit=201)
 	! do ix=lim1,lim2
 	  ! write(unit=33,*) '\tcount records'
@@ -1795,7 +1794,7 @@ case('repl_text')
 		 write(unit=33,*) 'Replace ',man(iman)%val1,' with ',man(iman)%val2
 
 		 ! Build the command, including passing floats with the -n flags
-		 write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
+		 write(text,'(A,F14.7,A,F14.7)') ' -t ',man(iman)%val1,' -v ',man(iman)%val2
 		 cmd = trim(path(i_pat_python)%path1)//'replace_eq.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -1853,7 +1852,7 @@ case('repl_text')
 		 close(unit=200)
 
 		 ! Build the command, including passing floats with the -n flags
-		 write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
+		 write(text,'(A,F14.7,A,F14.7)') ' -t ',man(iman)%val1,' -v ',man(iman)%val2
 		 cmd = trim(path(i_pat_python)%path1)//'replace_gt.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -1894,7 +1893,7 @@ case('repl_text')
 		 close(unit=200)
 
 		 ! Build the command, including passing floats with the -n flags
-		 write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
+		 write(text,'(A,F14.7,A,F14.7)') ' -t ',man(iman)%val1,' -v ',man(iman)%val2
 		 cmd = trim(path(i_pat_python)%path1)//'replace_ge.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -1934,7 +1933,7 @@ case('repl_text')
 		 close(unit=200)
 
 		 ! Build the command, including passing floats with the -n flags
-		 write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
+		 write(text,'(A,F14.7,A,F14.7)') ' -t ',man(iman)%val1,' -v ',man(iman)%val2
 		 cmd = trim(path(i_pat_python)%path1)//'replace_lt.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -1974,7 +1973,7 @@ case('repl_text')
 		 close(unit=200)
 
 		 ! Build the command, including passing floats with the -n flags
-		 write(text,'(A,F14.7,A,F14.7)') ' -n ',man(iman)%val1,' -n ',man(iman)%val2
+		 write(text,'(A,F14.7,A,F14.7)') ' -t ',man(iman)%val1,' -v ',man(iman)%val2
 		 cmd = trim(path(i_pat_python)%path1)//'replace_le.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -2012,7 +2011,7 @@ case('replace_notin_range')
 	enddo
 	close(unit=200)
 
-	write(text, '(A,F14.7)') ' -n ', man(iman)%val1, ' -n ', man(iman)%val2, ' -n ', man(iman)%val3
+	write(text, '(A,F14.7)') ' -l ', man(iman)%val1, ' -u ', man(iman)%val2, ' -v ', man(iman)%val3
 	cmd = path(i_pat_python)%path1//'replace_notin_rangex.py'
 	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 	cmd = trim(cmd)//trim(text)
@@ -2043,7 +2042,7 @@ case('replace_range')
 	enddo
 	close(unit=200)
 
-	write(text, '(A,F14.7)') ' -n ', man(iman)%val1, ' -n ', man(iman)%val2, ' -n ', man(iman)%val3
+	write(text, '(A,F14.7)') ' -l ', man(iman)%val1, ' -u ', man(iman)%val2, ' -v ', man(iman)%val3
 	cmd = path(i_pat_python)%path1//'replace_rangex.py'
 	cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 	cmd = trim(cmd)//trim(text)
@@ -2076,7 +2075,7 @@ case('replace_range')
 		 close(unit=200)
 
 		 ! Build the command, including passing a float with the -n flag
-		 write(text,'(A,F14.7)') ' -n ',man(iman)%val1
+		 write(text,'(A,F14.7)') ' -t ',man(iman)%val1
 		 cmd = trim(path(i_pat_python)%path1)//'print_gt.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text
@@ -2119,7 +2118,7 @@ case('replace_range')
 		 close(unit=200)
 
 		 ! Build the command, including passing a float with the -n flag
-		 write(text,'(A,F14.7)') ' -n ',man(iman)%val1
+		 write(text,'(A,F14.7)') ' -t ',man(iman)%val1
 		 cmd = trim(path(i_pat_python)%path1)//'print_lt.py'
 		 cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 		 cmd = trim(cmd)//text

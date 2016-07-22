@@ -2,6 +2,7 @@
 
 import sys
 import math
+import getopt
 
 import common.readwrite as io
 import common.definitions as d

@@ -1,8 +1,9 @@
 import csv
 import utm
 import sys
+import getopt
 
-import common.parseargs as pa
+# import common.parseargs as pa
 
 def latlong_to_utm(infile, outfile, lat_i, long_i, header=True):
     with open(infile, 'rb') as original:

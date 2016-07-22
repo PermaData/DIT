@@ -1,7 +1,8 @@
 import sys
+import getopt
 
 import common.readwrite as io
-import common.parseargs as pa
+# import common.parseargs as pa
 
 
 def check_ints(infile, outfile):

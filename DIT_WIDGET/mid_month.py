@@ -1,7 +1,8 @@
 import time
+import getopt
 
 import common.readwrite as io
-import common.parseargs as pa
+# import common.parseargs as pa
 
 
 def mid_month(infile, outfile, format):

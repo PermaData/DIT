@@ -1,9 +1,10 @@
 #! /usr/bin/python
 
 import sys
+import getopt
 
 import replacefamily.replacements as r
-import common.parseargs as pa
+# import common.parseargs as pa
 
 
 def replace_lt(infile, outfile, threshold, value):

@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import sys
+import getopt
 
 import replacefamily.replacements as r
 # import common.parseargs as pa

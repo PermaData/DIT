@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import sys
+import getopt
 
 import mathfamily.arithmetic as a
 # import common.parseargs as pa

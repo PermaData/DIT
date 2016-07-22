@@ -2,12 +2,13 @@
 import sys
 import datetime 
 import csv
+import getopt
 
 from tzwhere import tzwhere
 import pytz
 
 import common.readwrite as io
-import common.parseargs as pa
+# import common.parseargs as pa
 
 def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
     """Needs lat and lon in decimal format and needs date/time in GTN-P standard."""

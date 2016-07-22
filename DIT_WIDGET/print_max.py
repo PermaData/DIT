@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import sys
+import getopt
 
 import common.readwrite as io
 import common.definitions as d
