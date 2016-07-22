@@ -13,20 +13,18 @@ def replace_rangex(infile, outfile, threshold, value):
 
 def parse_args(args):
     def help():
-        print 'replace_rangex.py -i <input file> -o <output file> -z <zone column index> -e <easting column index> -n <northing column index> [-h <hemisphere>]\nCheck that your argument list is correct.'
+        print 'replace_rangex.py -i <input file> -o <output file> -l <lower bound> -u <upper bound> -v <replacement value>'
+        print 'Replaces values within a range with replacement value'
 
 
     infile = None
     outfile = None
-    zone_col = None
-    east_col = None
-    north_col = None
+    lower = None
+    upper = None
+    value = None
 
-    hemisphere = 'north'
-
-    options = ('i:o:z:e:n:h:',
-                ['input', 'output', 'zone_index', 'easting_index',
-                'northing_index', 'hemisphere'])
+    options = ('i:o:l:u:v:',
+               ['input', 'output', 'lower', 'upper', 'value'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 
@@ -37,31 +35,31 @@ def parse_args(args):
         help()
         sys.exit(2)
 
-    for (option, value) in vals:
+    threshold = [0, 0]
+    for (option, val) in vals:
         if (option in readoptions[0]):
-            infile = value
+            infile = val
         elif (option in readoptions[1]):
-            outfile = value
+            outfile = val
         elif (option in readoptions[2]):
-            zone_col = int(value)
+            lower = float(val)
+            threshold[0] = lower
         elif (option in readoptions[3]):
-            east_col = int(value)
+            upper = float(val)
+            threshold[1] = upper
         elif (option in readoptions[4]):
-            north_col = int(value)
-        elif (option in readoptions[5]):
-            hemisphere = value
+            value = float(val)
 
-    if (any(val is None for val in
-            [infile, outfile, zone_col, east_col, north_col])):
+    if (any(val is None for val in [infile, outfile, upper, lower, value])):
         help()
         sys.exit(2)
 
-    return infile, outfile, zone_col, east_col, north_col, hemisphere
+    return infile, outfile, threshold, value
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = pa.parse_args(sys.argv[1:])
-infile = args[0]
-outfile = args[1]
-threshold = (args[2][0], args[2][1])
-value = args[2][2]
+args = parse_args(sys.argv[1:])
+# infile = args[0]
+# outfile = args[1]
+# threshold = (args[2][0], args[2][1])
+# value = args[2][2]
 
-replace_rangex(infile, outfile, threshold, value)
+replace_rangex(*args)

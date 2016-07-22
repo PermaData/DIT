@@ -3,7 +3,7 @@
 import sys
 
 import printfamily.prints as p
-import common.parseargs as pa
+# import common.parseargs as pa
 
 
 def print_rangex(infile, outfile, num):
@@ -15,17 +15,17 @@ def print_rangex(infile, outfile, num):
 
 def parse_args(args):
     def help():
-        print 'replace_le.py -i <input file> -o <output file> -t <threshold> -v <replacement value>'
-        print 'Replaces values less than threshold with replacement'
+        print 'print_rangex.py -i <input file> -o <output file> -l <lower bound> -u <upper bound>'
+        print 'Prints values within a range'
 
 
     infile = None
     outfile = None
-    threshold = None
-    value = None
+    lower = None
+    upper = None
 
-    options = ('i:o:t:v:',
-                ['input', 'output', 'threshold', 'value'])
+    options = ('i:o:l:u:',
+                ['input', 'output', 'lower', 'upper'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 
@@ -36,21 +36,24 @@ def parse_args(args):
         help()
         sys.exit(2)
 
+    threshold = [0, 0]
     for (option, val) in vals:
         if (option in readoptions[0]):
             infile = val
         elif (option in readoptions[1]):
             outfile = val
         elif (option in readoptions[2]):
-            threshold = int(val)
+            lower = float(val)
+            threshold[0] = lower
         elif (option in readoptions[3]):
-            value = int(val)
+            upper = float(val)
+            threshold[1] = upper
 
-    if (any(val is None for val in [infile, outfile, threshold, value])):
+    if (any(val is None for val in [infile, outfile, upper, lower])):
         help()
         sys.exit(2)
 
-    return infile, outfile, threshold, value
+    return infile, outfile, threshold
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = pa.parse_args(sys.argv[1:])
 infile = args[0]
