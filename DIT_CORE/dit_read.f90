@@ -1230,7 +1230,7 @@ case('repl_text')
 ! sort records in increasing order
 !----------------------------------------------------------
 ! uses external python script
-	  case('sort')
+	  case('sort')		! TODO: copy sort
 		if(man(iman)%num==1) then
 	  write(unit=33,*) '\tSort input records in increasing order'
 	  case='in_temp'
@@ -1343,28 +1343,28 @@ case('repl_text')
 !----------------------------------------------------------
 	  case('rem_nodata')		! TODO: Write and complete and test rem_nodata
 		write(unit=33,*) '\tRemove layers with no data'
-	if(man(iman)%num==2) then
-	  write(unit=33,*) 'Error: only do this to input array'
-	  stop
-	endif
+		if(man(iman)%num==2) then
+			write(unit=33,*) 'Error: only do this to input array'
+			stop
+		endif
 !
 ! identify layers with no data and turn off copy flags
 ! treat empty layers like other extraneous variables
 	num=0
 		do ivar=1,n_var
-		  if(var(ivar)%flg2.and.var(ivar)%map=='copy') then
-			do ix=1, in%n_var
-	      if(trim(var(ivar)%txt1)==trim(head_in(ix,1))) exit
-			enddo
-	    if(maxval(temp1_d2(ix,:))==miss_val_real) then
-	      if(var(ivar)%map=='copy') then
-	        num=num+1
-	        var(ivar)%flg2=.false.
-	        var(ivar)%map='na'
-	        write(unit=33,*) num,ivar,trim(var(ivar)%txt1)
-	      endif
-	    endif
-		  endif
+			if(var(ivar)%flg2.and.var(ivar)%map=='copy') then
+				do ix=1, in%n_var
+					if(trim(var(ivar)%txt1)==trim(head_in(ix,1))) exit
+				enddo
+				if(maxval(temp1_d2(ix,:))==miss_val_real) then
+					if(var(ivar)%map=='copy') then
+						num=num+1
+						var(ivar)%flg2=.false.
+						var(ivar)%map='na'
+						write(unit=33,*) num,ivar,trim(var(ivar)%txt1)
+					endif
+				endif
+			endif
 		enddo
 !
 !----------------------------------------------------------
@@ -1373,7 +1373,7 @@ case('repl_text')
 ! counts the number of different values for a combination of 2 variables
 ! i.e. number of values for variable 2 per value of variable 1
 ! assumes the data is presorted first by var1 then by var2
-	  case('count_2val')		! TODO: Test count_2val
+	  case('count_2val')
 		write(unit=33,*) 'Count values'
 		indx1=man(iman)%ind1
 		indx2=man(iman)%ind2
@@ -2374,6 +2374,7 @@ case('replace_range')
 	enddo
 	print*, '\t\tGrid def file: ', trim(filename)
 	write(unit=33,*) '\t\tGrid def file: ', trim(filename)
+
 	open(unit=9,file=trim(filename),form='formatted', status='old')
 
 	read (9,11) junk,n_grid ! read number of grids defined in file

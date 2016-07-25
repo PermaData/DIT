@@ -17,6 +17,12 @@ def count_values(infile, outfile, mode='single'):
 
 
 def single(data):
+    """Count the number of unique values that occur in a data set.
+    Inputs:
+        data: A 1-dimensional list of values
+    Outputs:
+        out: The number of unique values collected
+    """
     values = set()  # Maps value: number of occurrences
     for item in data:
         values.add(item)
@@ -25,7 +31,14 @@ def single(data):
 
 
 def double(data):
-    """Takes a list of 2-element row lists."""
+    """Count the number of unique values of one data set matched with another.
+    Inputs:
+        data: A list of 2-element lists that represent rows. The first
+            one is assumed to be the primary.
+    Outputs:
+        out: A list of strings showing primary value: number of 
+            secondary values
+    """
     values = {}  # Maps value: set of occurrences
     for first, second in data:
         if (first not in values and first not in d.missing_values):

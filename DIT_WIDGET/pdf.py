@@ -126,6 +126,8 @@ def parse_args(args):
     options = ('i:o:b:m:l:u:t:n:',
                ['input', 'output', 'bins', 'minmax', 'lower', 'upper',
                 'outliers', 'norm'])
+    # readoptions is a list of -short_option --long_option pairs in 
+    # the order shown above.
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 
