@@ -1232,13 +1232,13 @@ case('repl_text')
 ! uses external python script
 	  case('sort')		! TODO: copy sort
 		if(man(iman)%num==1) then
-	  write(unit=33,*) '\tSort input records in increasing order'
-	  case='in_temp'
+		  write(unit=33,*) 'Sort input records in increasing order'
+		  case='in_temp'
 		endif
-	if(man(iman)%num==2) then
-	  write(unit=33,*) '\tSort output records in increasing order'
-	  case='out_temp'
-	endif
+		if(man(iman)%num==2) then
+		  write(unit=33,*) 'Sort output records in increasing order'
+		  case='out_temp'
+		endif
 		call make_csv_data_file(ifil,case)
 !
 ! local sort variable numbers
@@ -1297,10 +1297,10 @@ case('repl_text')
 !----------------------------------------------------------
 	  case('rem_dup')		! TODO: Write and complete and test rem_dup
 		write(unit=33,*) '\tRemove duplicate records'
-	if(man(iman)%num==2) then
-	  write(unit=33,*) 'Error: only do this to input array'
-	  stop
-	endif
+		if(man(iman)%num==2) then
+		  write(unit=33,*) 'Error: only do this to input array'
+		  stop
+		endif
 !
 ! identify duplicate records
 	allocate(temp_int1(y_dim))
@@ -2268,9 +2268,9 @@ case('replace_range')
 
 		 ! Build the command
 		 ! TODO: Complete this expression
-		 cmd = path(i_pat_python)%path1//'create_gtnp_metadata_json.py'
-		 cmd = trim(cmd)//' -t '!//template_file
-		 cmd = trim(cmd)//' -c '!//csv file
+		 cmd = trim(path(i_pat_python)%path1)//'create_gtnp_metadata_json.py'
+		 cmd = trim(cmd)//' -t '//trim(path(i_pat_python)%path1)//'gtnp_metadata_template.json'
+		 cmd = trim(cmd)//' -c '//
 
 		 call system( cmd )
 

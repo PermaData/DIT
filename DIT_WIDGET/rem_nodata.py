@@ -58,4 +58,4 @@ def parse_args(args):
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
 
-count_records(*args)
+remove_null(*args)

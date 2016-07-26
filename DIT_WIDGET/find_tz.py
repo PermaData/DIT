@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import datetime
+import time
 import csv
 import getopt
 
@@ -13,22 +14,23 @@ def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
     """Needs lat and lon in decimal format and needs date/time in GTN-P standard."""
     #data = io.pull(infile, str)
 
-    with open(infile) as input:
-        with open(outfile) as output:
+    with open(infile, 'r') as input:
+        with open(outfile, 'w') as output:
             data = csv.reader(input)
             push = csv.writer(output)
 
             finder = tzwhere.tzwhere()
-            out = []
+            #out = []
             for line in data:
                 if (header):
                     push.writerow(line+['UTC Offset'])
                     header = False
                 else:
-                    coord = (float(data[lat_i]), float(data[lon_i]))
+                    coord = (float(line[lat_i]), float(line[lon_i]))
                     tzname = finder.tzNameAt(*coord)
-                    out.append(tzname)
-                    dt = datetime.strptime('%Y-%m-%d %H:%M', data[dt_i])
+                    #out.append(tzname)
+                    tm = time.strptime(line[dt_i].strip(), '%Y-%m-%d %H:%M')
+                    dt = datetime.datetime(tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min)
                     offset = name_to_offset(tzname, dt)
 
                     push.writerow(line + [offset])

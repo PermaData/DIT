@@ -6,7 +6,6 @@ import getopt
 
 import common.readwrite as io
 import common.definitions as d
-# import common.parseargs as pa
 
 
 def minsec_to_decimal(infile, outfile):
@@ -18,6 +17,7 @@ def minsec_to_decimal(infile, outfile):
     for coord in data:
         # Splits each coordinate pair into degrees, minutes, seconds, and
         # hemisphere marker.
+        coord = ','.join(coord)
         coord = coord.upper()
         subs = re.split(r'\s*[°"\',]\s*|.(?=[NESW])|(?<=[NESW]).|\n', coord)
         subs = filter(None, subs)
@@ -26,11 +26,12 @@ def minsec_to_decimal(infile, outfile):
         values = dict([(name, 0) for name in names])
         pair = [0, 0]
         for (which, section) in enumerate([subs[:len(subs)/2], subs[len(subs)/2:]]):
+            sign = 1
             for (i, elem) in enumerate(section):
                 if (elem in 'NESW'):
                     sign = -1 if elem in 'SW' else 1
                 else:
-                    values[names[i % (len(subs)/2)]] = float(elem)
+                    values[names[i]] = float(elem)
             pair[which] = (values['degrees'] + values['minutes']/60
                            + values['seconds']/3600) * sign
         out.append(pair)
@@ -75,9 +76,8 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile
+
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
-# infile = args[0]
-# outfile = args[1]
 
 minsec_to_decimal(*args)

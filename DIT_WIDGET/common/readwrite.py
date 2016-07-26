@@ -1,6 +1,3 @@
-import common.definitions as d
-
-
 def pull(infile, mode):
     """Read data from infile into a list of numbers.
 

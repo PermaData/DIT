@@ -1,5 +1,6 @@
 import time
 import getopt
+import sys
 
 import common.readwrite as io
 
@@ -13,14 +14,14 @@ def mid_month(infile, outfile, format):
 
     out = []
     for date in dates:
-        t = time.strptime(format, date)
+        t = time.strptime(date.strip(), format)
         year = t.tm_year
         leap = leap_year(year)
-        month = t.tm_month
-        mid_day = month_days[leap][month-1] / 2
+        month = t.tm_mon
+        mid_day = month_days[leap][month-1] / 2.
         hour = mid_day % 1 * 24
 
-        outputdate = (year, month, day, hour, 0, 0, 0, 0, -1)
+        outputdate = (year, month, int(mid_day), int(hour), 0, 0, 0, 0, -1)
 
         out.append(time.strftime('%Y-%m-%d %H:%M', outputdate))
 
@@ -70,13 +71,6 @@ def parse_args(args):
         sys.exit(2)
 
     return infile, outfile, format
-# def doy(month, day, leap, month_days):
-    # count = 0
-    # for i in range(month-1):
-        # count += month_days[leap][month-1]
-    # count += day
-    # return count
-
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])

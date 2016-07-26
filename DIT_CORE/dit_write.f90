@@ -420,8 +420,8 @@
 !
 ! open output csv file
     filename=trim(path(ipat)%path1)//trim(temp_file)
-    print*, '\t\tout csv file: ', trim(filename)
-    write(unit=33,*) '\t\tout csv file: ', trim(filename)
+    !print*, '\t\tout csv file: ', trim(filename)
+    write(unit=33,*) 'out csv file: ', trim(filename)
     open(unit=70,file=trim(filename),form='formatted')
 !
 ! write header
@@ -436,27 +436,27 @@
     do irec=1,y_dim
       text=''
       do ivar=1,x_dim
-	fmt=fmt_tmp(ivar)
-	typ=typ_tmp(ivar)
+		fmt=fmt_tmp(ivar)
+		typ=typ_tmp(ivar)
 
-	if(trim(typ)=='integer') then
-	  i_val=data_wrt(ivar,irec)
-	  write(temp,fmt=fmt) i_val
-	  temp=adjustl(temp)
-	endif
+		if(trim(typ)=='integer') then
+		  i_val=data_wrt(ivar,irec)
+		  write(temp,fmt=fmt) i_val
+		  temp=adjustl(temp)
+		endif
 
-        if(trim(typ)=='real') then
-	  write(temp,fmt=fmt) data_wrt(ivar,irec)
-	  temp=adjustl(temp)
-	endif
+			if(trim(typ)=='real') then
+		  write(temp,fmt=fmt) data_wrt(ivar,irec)
+		  temp=adjustl(temp)
+		endif
 
-	if(trim(typ)=='char') then
-	  temp=trim(char_wrt(ivar,irec))
-	  temp=adjustl(temp)
-	endif
+		if(trim(typ)=='char') then
+		  temp=trim(char_wrt(ivar,irec))
+		  temp=adjustl(temp)
+		endif
 
-	text=trim(text)//trim(temp)
-	if(ivar<x_dim)text=trim(text)//','
+		text=trim(text)//trim(temp)
+		if(ivar<x_dim)text=trim(text)//','
       enddo
       write(unit=70,*) trim(text)
     enddo
