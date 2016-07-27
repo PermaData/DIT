@@ -5,10 +5,10 @@ import math
 import common.readwrite as io
 import common.definitions as d
 
-__all__ = ['round_vals']
+__all__ = ['rounding']
 
 
-def round_vals(infile, outfile, mode, precision=0):
+def rounding(infile, outfile, mode, precision=0):
     """Round values to the nearest integer.
 
     modes:
@@ -48,8 +48,8 @@ def _round(val, precision):
 
 def parse_args(args):
     def help():
-        print 'round.py -i <input file> -o <output file> -m <rounding mode> \
-        [-p <precision>]'
+        print 'rounding.py -i <input file> -o <output file> \
+        -m <rounding mode> [-p <precision>]'
 
 
     infile = None
@@ -87,4 +87,4 @@ def parse_args(args):
 if (__name__ == '__main__'):
     args = parse_args(sys.argv[1:])
 
-    round_vals(*args)
+    rounding(*args)
