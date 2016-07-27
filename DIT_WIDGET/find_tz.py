@@ -11,8 +11,17 @@ import pytz
 import common.readwrite as io
 
 def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
-    """Needs lat and lon in decimal format and needs date/time in GTN-P standard."""
-    #data = io.pull(infile, str)
+    """
+    Inputs:
+        infile: name of input csv file. 
+        outfile: name of output csv file.
+        dt_i: column index of date/time data. It must be in GTN-P 
+            standard format.
+        lat_i: column index of latitude data. It must be in the form 
+            of a signed decimal number, where North is positive.
+        lon_i: column index of longitude data. It must be in the form 
+            of a signed decimal number, where East is positive.
+    """
 
     with open(infile, 'r') as input:
         with open(outfile, 'w') as output:
@@ -28,24 +37,16 @@ def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
                 else:
                     coord = (float(line[lat_i]), float(line[lon_i]))
                     tzname = finder.tzNameAt(*coord)
-                    #out.append(tzname)
                     tm = time.strptime(line[dt_i].strip(), '%Y-%m-%d %H:%M')
-                    dt = datetime.datetime(tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min)
+                    dt = datetime.datetime(tm.tm_year, tm.tm_mon, tm.tm_mday, 
+                                           tm.tm_hour, tm.tm_min)
                     offset = name_to_offset(tzname, dt)
 
                     push.writerow(line + [offset])
 
-    #io.push(out, outfile)
-
-# def standardize(coordstring):
-    # """Creates a tuple from a standard decimal coordinate string."""
-    # out = coordstring.replace('°','').replace('W','*-1').replace('S','*-1')
-    # out = out.replace('N','',).replace('E','')
-    # return eval(out)
 
 def name_to_offset(name, dt):
-    # Perhaps use date/time data to process this into UTC times
-    # Actually use pytz.timezone(name).localize(datetime object).strftime(necessary values)
+    """Uses the pytz library to find the local offset from UTC."""
     tz = pytz.timezone(name)
     actual = tz.localize(dt)
     offset = actual.strftime('%z')

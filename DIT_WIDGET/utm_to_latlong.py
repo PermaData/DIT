@@ -7,14 +7,17 @@ import sys
 import getopt
 
 
-def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, hemisphere='', header=True):
+def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, zone_letter_i=None,
+                   hemisphere='', header=True):
     """Convert values in a csv file from UTM coordinates to latitude/longitude.
     Inputs:
         infile: Name of CSV file that holds the UTM data.
         outfile: Name of CSV file to write recalculated data to
         zone_i: column index in infile with the zone data
-        E_i:
-        N_i:
+        E_i: column index in infile with the easting data
+        N_i: column index in infile with the northing data
+        zone_letter_i: column index in infile with the zone letters 
+            (if applicable)
         hemisphere:
     Output:
         Writes
@@ -29,7 +32,10 @@ def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, hemisphere='', header=True
                     latlong = ('Lat', 'Lon')
                     header = False
                 else:
-                    if (row[zone_i][-1] in string.letters):
+                    if (zone_letter_i is not None):
+                        zoneletter = row[zone_letter_i]
+                        northern = None
+                    elif (row[zone_i][-1] in string.letters):
                         zoneletter = row[zone_i][-1]
                         zone = int(row[zone_i][:-1])
                         northern = None
@@ -55,20 +61,25 @@ def modify_row(row, latlong, zone_i, E_i, N_i):
 
 def parse_args(args):
     def help():
-        print 'utm_to_latlong.py -i <input CSV file> -o <output csv file> -z <zone column index> -e <easting column index> -n <northing column index> [-h <hemisphere>]\nCheck that your argument list is correct.'
+        print 'utm_to_latlong.py -i <input CSV file> -o <output csv file> -z \
+        <zone column index> -e <easting column index> \
+        -n <northing column index> [-L <zone letter column index>] \
+        [-h <hemisphere>]'
 
-
+    # Required arguments
     infile = None
     outfile = None
     zone_col = None
     east_col = None
     north_col = None
 
+    # Optional arguments
     hemisphere = 'north'
+    zone_letter_i = None
 
-    options = ('i:o:z:e:n:h:',
+    options = ('i:o:z:e:n:L:h:',
                 ['input', 'output', 'zone_index', 'easting_index',
-                'northing_index', 'hemisphere'])
+                'northing_index', 'zone_letter_index', 'hemisphere'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 
@@ -91,6 +102,8 @@ def parse_args(args):
         elif (option in readoptions[4]):
             north_col = int(value)
         elif (option in readoptions[5]):
+            zone_letter_i = value
+        elif (option in readoptions[6]):
             hemisphere = value
 
     if (any(val is None for val in
@@ -98,7 +111,7 @@ def parse_args(args):
         help()
         sys.exit(2)
 
-    return infile, outfile, zone_col, east_col, north_col, hemisphere
+    return infile, outfile, zone_col, east_col, north_col, zone_letter_i, hemisphere
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])

@@ -1,44 +1,51 @@
 import sys
 import getopt
+import math
 
 import common.readwrite as io
 import common.definitions as d
 
 
-def type_conversion(infile, outfile, mode):
-    data = io.pull(infile, str)
+def round_vals(infile, outfile, mode, precision=0):
+    """Round values to the nearest integer."""
+    data = io.pull(infile, float)
 
-    input_map = {'str': cast_str, 'string': cast_str,
-                 'int': cast_int, 'integer': cast_int,
-                 'float': cast_float, 'real': cast_float,
+    input_map = {'up': _ceil, 'ceil': _ceil, 'ceiling': _ceil,
+                 'down': _floor, 'floor': _floor,
+                 'trunc': _int, 'truncate': _int,
+                 'nearest': _round, 'round': _round,
                  }
     conv = input_map[mode.lower()]
 
-    out = [[conv(item) for item in row] for row in data]
+    out = [[conv(item, precision) for item in row] for row in data]
 
     io.push(out, outfile)
 
 
-def cast_int(value):
-    return int(float(value))
+def _ceil(val, precision):
+    return math.ceil(val)
 
-def cast_float(value):
-    return float(value)
+def _floor(val, precision):
+    return math.floor(val)
 
-def cast_str(value):
-    return str(value)
+def _int(val, precision):
+    return int(val)
+
+def _round(val, precision):
+    return round(val, precision)
 
 
 def parse_args(args):
     def help():
-        print 'type_conversion.py -i <input file> -o <output file> -m <mode>'
+        print 'round.py -i <input file> -o <output file> -m <rounding mode> \
+        [-p <precision>]'
 
 
     infile = None
     outfile = None
     mode = None
 
-    options = ('i:o:m:', ['input', 'output', 'mode'])
+    options = ('i:o:m:p:', ['input', 'output', 'mode', 'precision'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 
@@ -56,6 +63,8 @@ def parse_args(args):
             outfile = value
         elif (option in readoptions[2]):
             mode = value
+        elif (option in readoptions[3]):
+            precision = int(value)
 
     if (any(val is None for val in [infile, outfile, mode])):
         help()
@@ -66,4 +75,4 @@ def parse_args(args):
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
 args = parse_args(sys.argv[1:])
 
-type_conversion(*args)
+round_vals(*args)
