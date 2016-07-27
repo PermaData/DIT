@@ -4,6 +4,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['count_records']
+
 
 def count_records(infile, outfile):
     """Count how many valid records there are."""
@@ -50,6 +52,7 @@ def parse_args(args):
     return infile, outfile
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-count_records(*args)
+    count_records(*args)

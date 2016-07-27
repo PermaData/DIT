@@ -5,6 +5,8 @@ import getopt
 
 import printfamily.prints as p
 
+__all__ = ['print_notin_rangex']
+
 
 def print_notin_rangex(infile, outfile, num):
     """Prints all values outside of two thresholds."""
@@ -55,7 +57,7 @@ def parse_args(args):
     return infile, outfile, threshold
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-print_le(infile, outfile, threshold)
+    print_le(infile, outfile, threshold)

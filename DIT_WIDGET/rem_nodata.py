@@ -4,6 +4,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['remove_null']
+
 
 def remove_null(infile, outfile):
     """Remove records with no data from the dataset."""
@@ -56,6 +58,7 @@ def parse_args(args):
     return infile, outfile
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-remove_null(*args)
+    remove_null(*args)

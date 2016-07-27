@@ -907,15 +907,14 @@ case('repl_text')
 		open(unit=200, file=trim(file_in), form='formatted')
 		fmt = 'A16,F14.7,F14.7'
 		do iy = 1, y_dim
-			write(unit=200,fmt=fmt) temp2_d2(man(iman)%ind1,iy), temp2_d2(man(iman)%ind2,iy), temp1_d2(man(iman)%ind3,iy)
+			write(unit=200,fmt=fmt) temp1_char2(man(iman)%ind1,iy), temp1_d2(man(iman)%ind2,iy), temp1_d2(man(iman)%ind3,iy)
 		enddo
 		close(unit=200)
 
 		! Build the command, using all the arguments
-		cmd = trim(path(i_pat_python)%path1)//'utm_to_latlong.py'
+		cmd = trim(path(i_pat_python)%path1)//'find_tz.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
-		cmd = trim(cmd)//' -n '//'0'//' -n '//'1'//' -n '//'2'
-		cmd = trim(cmd)//' -f '//man(iman)%txt1
+		cmd = trim(cmd)//' -d '//'0'//' -t '//'1'//' -n '//'2'
 
 		call system(cmd)
 
@@ -1101,8 +1100,8 @@ case('repl_text')
 		call system(cmd)
 
 		open(unit=201, file=trim(file_out), form='formatted')
-		do indx1 = 1, y_dim
-
+		do iy = 1, y_dim
+			read(unit=201, fmt='f14.7,f14.7,a3') temp1_d2(man(iman)%ind4, iy), temp1_d2(man(iman)%ind5, iy), temp1_char2(man(iman)%ind6, iy)
 		enddo
 		close(unit=201)
 !

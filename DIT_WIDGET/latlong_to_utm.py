@@ -3,6 +3,8 @@ import utm
 import sys
 import getopt
 
+__all__ = ['latlong_to_utm']
+
 
 def latlong_to_utm(infile, outfile, lat_i, long_i, header=True):
     with open(infile, 'rb') as original:
@@ -29,7 +31,8 @@ def modify_row(row, ENZL, lat_i, long_i):
 
 def parse_args(args):
     def help():
-        print 'latlong_to_utm.py -i <input CSV file> -o <output csv file> -t <latitude column index> -n <longitude column index>'
+        print 'latlong_to_utm.py -i <input CSV file> -o <output csv file> \
+        -t <latitude column index> -n <longitude column index>'
 
 
     infile = None
@@ -68,7 +71,7 @@ def parse_args(args):
     return infile, outfile, lat_col, long_col
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-latlong_to_utm(*args)
+    latlong_to_utm(*args)

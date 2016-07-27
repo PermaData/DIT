@@ -7,6 +7,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['print_mean']
+
 
 def print_mean(infile, outfile):
     """Calculates and prints the mean and standard deviation.
@@ -92,6 +94,7 @@ def parse_args(args):
     return infile, outfile
 
 
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-print_mean(*args)
+    print_mean(*args)

@@ -5,6 +5,8 @@ import getopt
 
 import mathfamily.arithmetic as a
 
+__all__ = ['sub_const']
+
 
 def sub_const(infile, outfile, constant):
     # Subtracts constant from all values in infile and writes the result
@@ -50,6 +52,7 @@ def parse_args(args):
     return infile, outfile, constant
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-sub_const(*args)
+    sub_const(*args)

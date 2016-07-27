@@ -5,6 +5,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['remove_chars']
+
 
 def remove_chars(infile, outfile, chars):
     """Remove all from a set of characters from a column."""
@@ -53,7 +55,7 @@ def parse_args(args):
     return infile, outfile, chars
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-remove_chars(*args)
+    remove_chars(*args)

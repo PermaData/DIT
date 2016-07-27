@@ -4,6 +4,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['type_conversion']
+
 
 def type_conversion(infile, outfile, mode):
     data = io.pull(infile, str)
@@ -64,6 +66,7 @@ def parse_args(args):
     return infile, outfile, mode
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-type_conversion(*args)
+    type_conversion(*args)

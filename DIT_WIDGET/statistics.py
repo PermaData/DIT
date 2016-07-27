@@ -7,6 +7,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['statistics']
+
 
 def statistics(infile, outfile):
     """Calculate and print statistical values of the data."""
@@ -86,7 +88,7 @@ def median(data):
 
 def parse_args(args):
     def help():
-        print 'statistics.py -i <input CSV file> -o <output csv file>\nCheck that your argument list is correct.'
+        print 'statistics.py -i <input CSV file> -o <output csv file>'
 
 
     infile = None
@@ -118,7 +120,7 @@ def parse_args(args):
     return infile, outfile
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-infile, outfile = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    infile, outfile = parse_args(sys.argv[1:])
 
-
-statistics(infile, outfile)
+    statistics(infile, outfile)

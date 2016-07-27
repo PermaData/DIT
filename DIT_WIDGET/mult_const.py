@@ -5,6 +5,8 @@ import getopt
 
 import mathfamily.arithmetic as a
 
+__all__ = ['mult_const']
+
 
 def mult_const(infile, outfile, constant):
     # Multiplies all values in infile by constant and writes the result
@@ -49,7 +51,7 @@ def parse_args(args):
     return infile, outfile, constant
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-mult_const(*args)
+    mult_const(*args)

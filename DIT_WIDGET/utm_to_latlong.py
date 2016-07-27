@@ -6,6 +6,8 @@ import string
 import sys
 import getopt
 
+__all__ = ['utm_to_latlong']
+
 
 def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, zone_letter_i=None,
                    hemisphere='', header=True):
@@ -114,7 +116,7 @@ def parse_args(args):
     return infile, outfile, zone_col, east_col, north_col, zone_letter_i, hemisphere
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-utm_to_latlong(*args)
+    utm_to_latlong(*args)

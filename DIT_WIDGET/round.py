@@ -5,16 +5,27 @@ import math
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['round_vals']
+
 
 def round_vals(infile, outfile, mode, precision=0):
-    """Round values to the nearest integer."""
+    """Round values to the nearest integer.
+
+    modes:
+        up/ceil/ceiling: round to the next integer towards +inf.
+        down/floor: round to the next integer towards -inf.
+        trunc: truncate decimal part, rounding towards 0.
+        nearest: round to the nearest integer. If precision is given,
+            instead round to that many digits beyond the decimal point.
+    """
     data = io.pull(infile, float)
 
     input_map = {'up': _ceil, 'ceil': _ceil, 'ceiling': _ceil,
                  'down': _floor, 'floor': _floor,
-                 'trunc': _int, 'truncate': _int,
+                 'trunc': _trunc, 'truncate': _trunc,
                  'nearest': _round, 'round': _round,
                  }
+
     conv = input_map[mode.lower()]
 
     out = [[conv(item, precision) for item in row] for row in data]
@@ -28,7 +39,7 @@ def _ceil(val, precision):
 def _floor(val, precision):
     return math.floor(val)
 
-def _int(val, precision):
+def _trunc(val, precision):
     return int(val)
 
 def _round(val, precision):
@@ -73,6 +84,7 @@ def parse_args(args):
     return infile, outfile, mode
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-round_vals(*args)
+    round_vals(*args)

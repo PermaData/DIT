@@ -4,6 +4,8 @@ import sys
 
 import common.readwrite as io
 
+__all__ = ['mid_month']
+
 
 def mid_month(infile, outfile, format):
     dates = io.pull(infile, str)
@@ -73,7 +75,7 @@ def parse_args(args):
     return infile, outfile, format
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-mid_month(*args)
+    mid_month(*args)

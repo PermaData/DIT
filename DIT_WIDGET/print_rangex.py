@@ -5,6 +5,8 @@ import getopt
 
 import printfamily.prints as p
 
+__all__ = ['print_rangex']
+
 
 def print_rangex(infile, outfile, num):
     """Prints all values between two thresholds.
@@ -56,7 +58,7 @@ def parse_args(args):
     return infile, outfile, threshold
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-print_le(*args)
+    print_le(*args)

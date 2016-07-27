@@ -10,16 +10,19 @@ import pytz
 
 import common.readwrite as io
 
+__all__ = ['find_tz']
+
+
 def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
     """
     Inputs:
-        infile: name of input csv file. 
+        infile: name of input csv file.
         outfile: name of output csv file.
-        dt_i: column index of date/time data. It must be in GTN-P 
+        dt_i: column index of date/time data. It must be in GTN-P
             standard format.
-        lat_i: column index of latitude data. It must be in the form 
+        lat_i: column index of latitude data. It must be in the form
             of a signed decimal number, where North is positive.
-        lon_i: column index of longitude data. It must be in the form 
+        lon_i: column index of longitude data. It must be in the form
             of a signed decimal number, where East is positive.
     """
 
@@ -38,7 +41,7 @@ def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
                     coord = (float(line[lat_i]), float(line[lon_i]))
                     tzname = finder.tzNameAt(*coord)
                     tm = time.strptime(line[dt_i].strip(), '%Y-%m-%d %H:%M')
-                    dt = datetime.datetime(tm.tm_year, tm.tm_mon, tm.tm_mday, 
+                    dt = datetime.datetime(tm.tm_year, tm.tm_mon, tm.tm_mday,
                                            tm.tm_hour, tm.tm_min)
                     offset = name_to_offset(tzname, dt)
 
@@ -60,7 +63,6 @@ def parse_args(args):
 
     infile = None
     outfile = None
-    constant = None
     dt_i = None
     lat_i = None
     lon_i = None
@@ -96,7 +98,7 @@ def parse_args(args):
     return infile, outfile, dt_i, lat_i, lon_i
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-find_tz(*args)
+    find_tz(*args)

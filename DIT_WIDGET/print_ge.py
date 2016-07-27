@@ -5,6 +5,8 @@ import getopt
 
 import printfamily.prints as p
 
+__all__ = ['print_ge']
+
 
 def print_ge(infile, outfile, num):
     """Print all values greater than or equal to a threshold."""
@@ -48,7 +50,7 @@ def parse_args(args):
     return infile, outfile, threshold
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-print_ge(*args)
+    print_ge(*args)

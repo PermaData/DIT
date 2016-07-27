@@ -5,6 +5,8 @@ import getopt
 
 import printfamily.prints as p
 
+__all__ = ['print_lt']
+
 
 def print_lt(infile, outfile, threshold):
     """Print all values less than a threshold."""
@@ -48,7 +50,7 @@ def parse_args(args):
     return infile, outfile, threshold
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-print_lt(*args)
+    print_lt(*args)

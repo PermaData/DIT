@@ -5,6 +5,8 @@ import getopt
 
 import replacefamily.replacements as r
 
+__all__ = ['replace_ge']
+
 
 def replace_ge(infile, outfile, threshold, value):
     r.replace_conditional(infile, outfile, threshold, value,
@@ -53,6 +55,7 @@ def parse_args(args):
     return infile, outfile, threshold, value
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-replace_ge(*args)
+    replace_ge(*args)

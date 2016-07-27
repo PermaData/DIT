@@ -7,6 +7,8 @@ import common.readwrite as io
 import common.definitions as d
 import printfamily.prints as p
 
+__all__ = ['print_max']
+
 
 def print_max(infile, outfile):
     """Prints the maximum and minimum values along with their locations.
@@ -70,6 +72,7 @@ def parse_args(args):
     return infile, outfile
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-print_max(*args)
+    print_max(*args)

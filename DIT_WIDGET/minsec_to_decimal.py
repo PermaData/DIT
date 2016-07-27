@@ -7,6 +7,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['minsec_to_decimal']
+
 
 def minsec_to_decimal(infile, outfile):
     """Convert lat/long coordinates from minutes and seconds to decimal."""
@@ -78,6 +80,7 @@ def parse_args(args):
     return infile, outfile
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-minsec_to_decimal(*args)
+    minsec_to_decimal(*args)

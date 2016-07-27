@@ -5,6 +5,8 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
+__all__ = ['pdf']
+
 
 def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
     """Create a probability density function of the data in infile.
@@ -164,7 +166,7 @@ def parse_args(args):
     return infile, outfile, bins, minmax, lower, upper, outliers, norm
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-
-pdf(*args)
+    pdf(*args)

@@ -4,6 +4,8 @@ import getopt
 
 import mathfamily.arithmetic as a
 
+__all__ = ['add_const']
+
 
 def add_const(infile, outfile, constant):
     # Adds constant to all values in infile and writes the result to
@@ -48,6 +50,7 @@ def parse_args(args):
     return infile, outfile, constant
 
 #                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = parse_args(sys.argv[1:])
+if (__name__ == '__main__'):
+    args = parse_args(sys.argv[1:])
 
-add_const(*args)
+    add_const(*args)
