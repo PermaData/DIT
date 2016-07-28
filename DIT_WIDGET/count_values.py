@@ -55,7 +55,7 @@ def double(data):
     
 def parse_args(args):
     def help():
-        print 'count_values.py -i <input file> -o <output file> [-m <mode>]\nCheck that your argument list is correct.'
+        print 'count_values.py -i <input file> -o <output file> [-m <mode>]'
 
 
     infile = None

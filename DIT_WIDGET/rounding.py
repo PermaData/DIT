@@ -14,9 +14,10 @@ def rounding(infile, outfile, mode, precision=0):
     modes:
         up/ceil/ceiling: round to the next integer towards +inf.
         down/floor: round to the next integer towards -inf.
-        trunc: truncate decimal part, rounding towards 0.
-        nearest: round to the nearest integer. If precision is given,
-            instead round to that many digits beyond the decimal point.
+        trunc/truncate: truncate decimal part, rounding towards 0.
+        nearest/round: round to the nearest integer. If precision is 
+            given, instead round to that many digits beyond the decimal 
+            point.
     """
     data = io.pull(infile, float)
 
