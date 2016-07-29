@@ -4,27 +4,31 @@ import getopt
 import common.readwrite as io
 import common.definitions as d
 
-__all__ = ['remove_duplicate']
+__all__ = ['remove_null']
 
 
-def remove_duplicate(infile, outfile):
-    """Remove duplicate records from the data."""
-    data = io.pull(infile, str)
+def remove_null(infile, outfile):
+    """Remove records with no data from the dataset."""
+    with open(infile) as fi:
+        with open(outfile, 'w') as fo:
+            data = csv.reader(fi)
+            push = csv.writer(fo)
 
-    records = set()
-    for row in data:
-        # Rejoin the line into a string for set insertion
-        # A somewhat regrettable extra step
-        record = ''.join(row)
-        records.add(record)
-    out = sorted(records)
-
-    io.push(out, outfile)
-
+            out = []
+            keep = False
+            for row in data:
+                for item in row:
+                    if (item not in d.missing_values):
+                        keep = True
+                        break
+                if (keep):
+                    push.writerow(row)
+                    keep = False
+            
 
 def parse_args(args):
     def help():
-        print 'remove_duplicate.py -i <input file> -o <output file>'
+        print 'remove_null.py -i <input file> -o <output file>'
 
 
     infile = None
@@ -58,4 +62,4 @@ def parse_args(args):
 if (__name__ == '__main__'):
     args = parse_args(sys.argv[1:])
 
-    remove_duplicate(*args)
+    remove_null(*args)

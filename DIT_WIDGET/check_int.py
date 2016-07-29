@@ -12,7 +12,7 @@ def check_ints(infile, outfile):
 
     out = []
     for (i, val) in enumerate(data):
-        if (abs(val%1) > .000000001):
+        if (abs(val % 1) > .000000001):
             out.append('{0}: {1}'.format(i, val))
 
     io.push(out, outfile)
@@ -22,14 +22,12 @@ def parse_args(args):
     def help():
         print 'check_int.py -i <input CSV file> -o <output csv file>'
 
-
     infile = None
     outfile = None
 
-    options = ('i:o:',
-                ['input', 'output'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    options = ('i:o:', ['input', 'output'])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
@@ -44,8 +42,7 @@ def parse_args(args):
         elif (option in readoptions[1]):
             outfile = value
 
-    if (any(val is None for val in
-            [infile, outfile])):
+    if (any(val is None for val in [infile, outfile])):
         help()
         sys.exit(2)
 

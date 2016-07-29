@@ -1295,76 +1295,112 @@ case('repl_text')
 ! remove duplicate records
 !----------------------------------------------------------
 	  case('rem_dup')		! TODO: Write and complete and test rem_dup
-		write(unit=33,*) '\tRemove duplicate records'
-		if(man(iman)%num==2) then
-		  write(unit=33,*) 'Error: only do this to input array'
-		  stop
-		endif
-!
-! identify duplicate records
-	allocate(temp_int1(y_dim))
-	temp_int1=0
-	indx1=man(iman)%ind1
-	indx2=man(iman)%ind2
-	num=0
-	do irec=1,y_dim-1
-	  do iy=irec+1,y_dim
-	    if(temp1_d2(indx1,irec)==temp1_d2(indx1,iy).and.temp1_d2(indx2,irec)==temp1_d2(indx2,iy)) then
-	      num=num+1
-	      temp_int1(iy)=1
-	    endif
-	  enddo
-	enddo
-!
-! compress data file
-		write(unit=33,*) '\t\tNum duplicate records: ',num
-	if(num>0) then
-	  allocate(temp2_d2(x_dim,y_dim))
-	  temp2_d2=miss_val_real
-	  in%n_rec=in%n_rec-num
-	  out%n_rec=out%n_rec-num
-	  irec=0
-	  do iy=1,y_dim
-	    if(temp_int1(iy)==0) then
-	      irec=irec+1
-	      temp2_d2(:,irec)=temp1_d2(:,iy)
-	    else
-	      write(unit=33,*) '\t\tDelete duplicate record ',iy, temp1_d2(indx1,iy),temp1_d2(indx2,iy)
-	    endif
-	  enddo
-	  temp1_d2=temp2_d2
-	  deallocate(temp2_d2)
-	  deallocate(temp_int1)
-	endif
+		write(unit=33,*) 'Remove duplicate records'
+		make_csv_data_file(ifil, 'in_tmp')
+
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		cmd = trim(path(i_pat_python)%path1)//'rem_dup.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+
+		call(system(cmd))
+
+		open(unit=201, file=trim(file_out), form='formatted')
+		read(unit=201, fmt='(f14.7)') num
+		do iy = 1,num
+			read(unit=201, fmt='(A)') temp
+			write(unit=33, fmt='(A)') trim(temp)
+		enddo
+		close(unit=201)
+
+		! ! if(man(iman)%num==2) then
+		  ! ! write(unit=33,*) 'Error: only do this to input array'
+		  ! ! stop
+		! ! endif
+! ! !
+! ! ! identify duplicate records
+	! ! allocate(temp_int1(y_dim))
+	! ! temp_int1=0
+	! ! indx1=man(iman)%ind1
+	! ! indx2=man(iman)%ind2
+	! ! num=0
+	! ! do irec=1,y_dim-1
+	  ! ! do iy=irec+1,y_dim
+	    ! ! if(temp1_d2(indx1,irec)==temp1_d2(indx1,iy).and.temp1_d2(indx2,irec)==temp1_d2(indx2,iy)) then
+	      ! ! num=num+1
+	      ! ! temp_int1(iy)=1
+	    ! ! endif
+	  ! ! enddo
+	! ! enddo
+! ! !
+! ! ! compress data file
+		! ! write(unit=33,*) '\t\tNum duplicate records: ',num
+	! ! if(num>0) then
+	  ! ! allocate(temp2_d2(x_dim,y_dim))
+	  ! ! temp2_d2=miss_val_real
+	  ! ! in%n_rec=in%n_rec-num
+	  ! ! out%n_rec=out%n_rec-num
+	  ! ! irec=0
+	  ! ! do iy=1,y_dim
+	    ! ! if(temp_int1(iy)==0) then
+	      ! ! irec=irec+1
+	      ! ! temp2_d2(:,irec)=temp1_d2(:,iy)
+	    ! ! else
+	      ! ! write(unit=33,*) '\t\tDelete duplicate record ',iy, temp1_d2(indx1,iy),temp1_d2(indx2,iy)
+	    ! ! endif
+	  ! ! enddo
+	  ! ! temp1_d2=temp2_d2
+	  ! ! deallocate(temp2_d2)
+	  ! ! deallocate(temp_int1)
+	! ! endif
 !
 !----------------------------------------------------------
 ! remove layers with no data from variable mapping file
 !----------------------------------------------------------
 	  case('rem_nodata')		! TODO: Write and complete and test rem_nodata
-		write(unit=33,*) '\tRemove layers with no data'
-		if(man(iman)%num==2) then
-			write(unit=33,*) 'Error: only do this to input array'
-			stop
-		endif
-!
-! identify layers with no data and turn off copy flags
-! treat empty layers like other extraneous variables
-	num=0
-		do ivar=1,n_var
-			if(var(ivar)%flg2.and.var(ivar)%map=='copy') then
-				do ix=1, in%n_var
-					if(trim(var(ivar)%txt1)==trim(head_in(ix,1))) exit
-				enddo
-				if(maxval(temp1_d2(ix,:))==miss_val_real) then
-					if(var(ivar)%map=='copy') then
-						num=num+1
-						var(ivar)%flg2=.false.
-						var(ivar)%map='na'
-						write(unit=33,*) num,ivar,trim(var(ivar)%txt1)
-					endif
-				endif
-			endif
+	  write(unit=33,*) 'Remove duplicate records'
+		make_csv_data_file(ifil, 'in_tmp')
+
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
+
+		cmd = trim(path(i_pat_python)%path1)//'rem_nodata.py'
+		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
+
+		call(system(cmd))
+
+		open(unit=201, file=trim(file_out), form='formatted')
+		read(unit=201, fmt='(f14.7)') num
+		do iy = 1,num
+			read(unit=201, fmt='(A)') temp
+			write(unit=33, fmt='(A)') trim(temp)
 		enddo
+		close(unit=201)
+		! ! write(unit=33,*) '\tRemove layers with no data'
+		! ! if(man(iman)%num==2) then
+			! ! write(unit=33,*) 'Error: only do this to input array'
+			! ! stop
+		! ! endif
+! ! !
+! ! ! identify layers with no data and turn off copy flags
+! ! ! treat empty layers like other extraneous variables
+	! ! num=0
+		! ! do ivar=1,n_var
+			! ! if(var(ivar)%flg2.and.var(ivar)%map=='copy') then
+				! ! do ix=1, in%n_var
+					! ! if(trim(var(ivar)%txt1)==trim(head_in(ix,1))) exit
+				! ! enddo
+				! ! if(maxval(temp1_d2(ix,:))==miss_val_real) then
+					! ! if(var(ivar)%map=='copy') then
+						! ! num=num+1
+						! ! var(ivar)%flg2=.false.
+						! ! var(ivar)%map='na'
+						! ! write(unit=33,*) num,ivar,trim(var(ivar)%txt1)
+					! ! endif
+				! ! endif
+			! ! endif
+		! ! enddo
 !
 !----------------------------------------------------------
 ! count values per value
@@ -2269,7 +2305,7 @@ case('replace_range')
 		 ! TODO: Complete this expression
 		 cmd = trim(path(i_pat_python)%path1)//'create_gtnp_metadata_json.py'
 		 cmd = trim(cmd)//' -t '//trim(path(i_pat_python)%path1)//'gtnp_metadata_template.json'
-		 cmd = trim(cmd)//' -c '//
+		 !cmd = trim(cmd)//' -c '//
 
 		 call system( cmd )
 

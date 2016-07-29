@@ -8,14 +8,29 @@ import common.definitions as d
 __all__ = ['remove_chars']
 
 
-def remove_chars(infile, outfile, chars):
-    """Remove all from a set of characters from a column."""
+def remove_chars(infile, outfile, chars, substring=False, placeholder=''):
+    """Remove all from a set of characters from a column.
+    
+    Input:
+        chars:
+        substring: If False (the default), chars is interpreted as a set 
+            of individual characters. If True, chars is interpreted as a
+            defined substring, and this works like search and replace.
+        placeholder: If '' (the default), the characters are removed.
+            If another string, every character in chars is replaced by
+            placeholder.
+    """
     data = io.pull(infile, str)
 
-    pun = '[' + chars + ']'
+    if (substring):
+        # Treat chars as a strict substring
+        target = re.escape(chars)
+    else:
+        # Treat chars as individual characters
+        target = '[' + chars + ']'
     out = []
     for s in data:
-        out.append(re.sub(pun, '', s))
+        out.append(re.sub(target, placeholder, s))
     io.push(out, outfile)
 
 

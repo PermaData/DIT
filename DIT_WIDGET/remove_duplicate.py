@@ -1,5 +1,6 @@
 import sys
 import getopt
+import csv
 
 import common.readwrite as io
 import common.definitions as d
@@ -9,17 +10,19 @@ __all__ = ['remove_duplicate']
 
 def remove_duplicate(infile, outfile):
     """Remove duplicate records from the data."""
-    data = io.pull(infile, str)
+    with open(infile) as fi:
+        with open(outfile, 'w') as fo:
+            data = csv.reader(fi)
+            push = csv.writer(fo)
 
-    records = set()
-    for row in data:
-        # Rejoin the line into a string for set insertion
-        # A somewhat regrettable extra step
-        record = ','.join(row)
-        records.add(record)
-    out = sorted(records)
-
-    io.push(out, outfile)
+            out = []
+            duplicates = 0
+            for row in data:
+                if row in out:
+                    duplicates += 1
+                else:
+                    out.append(row)
+                    push.writerow(out)
 
 
 def parse_args(args):

@@ -11,7 +11,7 @@ import mathfamily.arithmetic as a
 def add_const(infile, outfile, constant):
     # Adds constant to all values in infile and writes the result to
     # outfile.
-    a.arithmetic(infile, outfile, constant, lambda x, y: x+y,
+    a.arithmetic(infile, outfile, constant, lambda x, y: x + y,
                  lambda x, y: False)
 
 
@@ -19,15 +19,13 @@ def parse_args(args):
     def help():
         print 'div_const.py -i <input file> -o <output file> -n <number>'
 
-
     infile = None
     outfile = None
     constant = None
 
-    options = ('i:o:n:',
-               ['input', 'output', 'constant'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    options = ('i:o:n:', ['input', 'output', 'constant'])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
