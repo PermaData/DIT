@@ -30,7 +30,7 @@ def remove_chars(infile, outfile, chars, substring=False, placeholder=''):
         target = '[' + chars + ']'
     out = []
     for s in data:
-        out.append(re.sub(target, placeholder, s))
+        out.append(re.sub(target, placeholder, s).strip())
     io.push(out, outfile)
 
 

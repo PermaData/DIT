@@ -15,14 +15,14 @@ def remove_duplicate(infile, outfile):
             data = csv.reader(fi)
             push = csv.writer(fo)
 
-            out = []
+            track = []
             duplicates = 0
             for row in data:
-                if row in out:
+                if row in track:
                     duplicates += 1
                 else:
-                    out.append(row)
-                    push.writerow(out)
+                    track.append(row)
+                    push.writerow(row)
 
 
 def parse_args(args):

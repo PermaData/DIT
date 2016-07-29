@@ -956,7 +956,7 @@ case('repl_text')
 
 		open(unit=201, file=trim(file_out), form='formatted')
 		do iy = 1, y_dim
-			read(unit=201, fmt='(a)') temp
+			read(unit=201, fmt='(a10)') temp
 			temp1_char2(indx1, iy) = trim(temp)
 		enddo
 		close(unit=201)
@@ -1294,25 +1294,20 @@ case('repl_text')
 !----------------------------------------------------------
 ! remove duplicate records
 !----------------------------------------------------------
-	  case('rem_dup')		! TODO: Write and complete and test rem_dup
+	  case('rem_dup')		! TODO: test rem_dup
 		write(unit=33,*) 'Remove duplicate records'
-		make_csv_data_file(ifil, 'in_tmp')
+		case = 'in_temp'
+		call make_csv_data_file(ifil, case)
 
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
-		cmd = trim(path(i_pat_python)%path1)//'rem_dup.py'
+		cmd = trim(path(i_pat_python)%path1)//'remove_duplicate.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 
-		call(system(cmd))
+		call system(cmd)
 
-		open(unit=201, file=trim(file_out), form='formatted')
-		read(unit=201, fmt='(f14.7)') num
-		do iy = 1,num
-			read(unit=201, fmt='(A)') temp
-			write(unit=33, fmt='(A)') trim(temp)
-		enddo
-		close(unit=201)
+		call read_csv_file(ifil, case)
 
 		! ! if(man(iman)%num==2) then
 		  ! ! write(unit=33,*) 'Error: only do this to input array'
@@ -1358,25 +1353,20 @@ case('repl_text')
 !----------------------------------------------------------
 ! remove layers with no data from variable mapping file
 !----------------------------------------------------------
-	  case('rem_nodata')		! TODO: Write and complete and test rem_nodata
-	  write(unit=33,*) 'Remove duplicate records'
-		make_csv_data_file(ifil, 'in_tmp')
+	  case('rem_nodata')		! TODO: test rem_nodata
+		write(unit=33,*) 'Remove null records'
+		case = 'in_temp'
+		call make_csv_data_file(ifil, case)
 
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
-		cmd = trim(path(i_pat_python)%path1)//'rem_nodata.py'
+		cmd = trim(path(i_pat_python)%path1)//'remove_null.py'
 		cmd = trim(cmd)//' -i '//trim(file_in)//' -o '//trim(file_out)
 
-		call(system(cmd))
+		call system(cmd)
 
-		open(unit=201, file=trim(file_out), form='formatted')
-		read(unit=201, fmt='(f14.7)') num
-		do iy = 1,num
-			read(unit=201, fmt='(A)') temp
-			write(unit=33, fmt='(A)') trim(temp)
-		enddo
-		close(unit=201)
+		call read_csv_file(ifil, case)
 		! ! write(unit=33,*) '\tRemove layers with no data'
 		! ! if(man(iman)%num==2) then
 			! ! write(unit=33,*) 'Error: only do this to input array'
