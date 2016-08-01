@@ -470,120 +470,6 @@
 		 enddo
 		 close(unit=201)
 
-!!$	indx1=man(iman)%ind1 ! x variable number
-!!$	indx2=man(iman)%ind2 ! y variable number
-!!$	nval=man(iman)%ind3  ! number of bins
-!!$	write(unit=33,*) '\tmake a pdf x= ',trim(var_tmp(indx1)%txt1),' y= ',trim(var_tmp(indx2)%txt1)
-!!$	allocate(temp2_d2(5,nval))
-!!$	temp2_d2=0.
-!!$!
-!!$! min and max bin values
-!!$        if(trim(man(iman)%txt1)=='auto') then
-!!$	  do irec=1,y_dim
-!!$	    cnt1=irec
-!!$	    if(temp1_d2(indx1,irec)/=miss_val_real) then
-!!$	      valmin=temp1_d2(indx1,irec)
-!!$	      valmax=temp1_d2(indx1,irec)
-!!$	      exit
-!!$	    endif
-!!$	  enddo
-!!$	  do irec=cnt1,y_dim
-!!$	      if(temp1_d2(indx1,irec)/=miss_val_real) then
-!!$	        valmin=min(valmin,temp1_d2(indx1,irec))
-!!$	        valmax=max(valmax,temp1_d2(indx1,irec))
-!!$	      endif
-!!$	  enddo
-!!$	elseif(trim(man(iman)%txt1)=='man') then
-!!$          valmin=man(iman)%val1
-!!$          valmax=man(iman)%val2
-!!$	else
-!!$	  print*, 'Error: incorrect min/max option: ',trim(man(iman)%txt1)
-!!$	  stop
-!!$	endif
-!!$        dval=(valmax-valmin)/real(nval)
-!!$	write(unit=33,*) 'valmin: ',valmin
-!!$	write(unit=33,*) 'valmax: ',valmax
-!!$	write(unit=33,*) 'dval: ',dval
-!!$!
-!!$! bin values
-!!$	do icnt=1,nval
-!!$	  temp2_d2(1,icnt)=valmin+(real(icnt)-0.5)*dval
-!!$	enddo
-!!$!
-!!$! bin data: count points and calc mean
-!!$	cnt1=0
-!!$	cnt2=0
-!!$	do irec=1,y_dim
-!!$	  if(temp1_d2(indx1,irec)/=miss_val_real) then
-!!$	    cnt2=cnt2+1
-!!$	    icnt=int((temp1_d2(indx1,irec)-valmin)/dval)+1 ! bin index
-!!$            if(trim(man(iman)%txt2)=='include') then ! include point outside of x-range
-!!$	      cnt1=cnt1+1
-!!$	      if(icnt>nval) icnt=nval
-!!$              if(icnt<1) icnt=1
-!!$              temp2_d2(2,icnt)=temp2_d2(2,icnt)+1.
-!!$              if(temp1_d2(indx2,irec)/=miss_val_real) then
-!!$	        temp2_d2(3,icnt)=temp2_d2(3,icnt)+1.
-!!$	        temp2_d2(4,icnt)=temp2_d2(4,icnt)+temp1_d2(indx2,irec)
-!!$	      endif
-!!$            else ! exclude points outside range
-!!$              if(icnt>=1.and.icnt<=nval) then
-!!$	        cnt1=cnt1+1
-!!$		temp2_d2(2,icnt)=temp2_d2(2,icnt)+1.
-!!$                if(temp1_d2(indx2,irec)/=miss_val_real) then
-!!$	          temp2_d2(3,icnt)=temp2_d2(3,icnt)+1.
-!!$	          temp2_d2(4,icnt)=temp2_d2(4,icnt)+temp1_d2(indx2,irec)
-!!$	        endif
-!!$	      endif
-!!$            endif
-!!$	  endif
-!!$	enddo
-!!$!
-!!$! cal mean
-!!$	do icnt=1,nval
-!!$	  if(temp2_d2(3,icnt)/=0.) temp2_d2(4,icnt)=temp2_d2(4,icnt)/temp2_d2(3,icnt)
-!!$	enddo
-!!$!
-!!$! bin data: calc standard deviation
-!!$	do irec=1,y_dim
-!!$	  if(temp1_d2(indx1,irec)/=miss_val_real) then
-!!$	    icnt=int((temp1_d2(indx1,irec)-valmin)/dval)+1 ! bin index
-!!$            if(trim(man(iman)%txt2)=='include') then ! include point outside of x-range
-!!$	      if(icnt>nval) icnt=nval
-!!$              if(icnt<1) icnt=1
-!!$              if(temp1_d2(indx2,irec)/=miss_val_real) then
-!!$	        val1=(temp2_d2(4,icnt)-temp1_d2(indx2,irec))
-!!$		temp2_d2(5,icnt)=temp2_d2(5,icnt)+val1*val1
-!!$	      endif
-!!$            else ! exclude points outside range
-!!$              if(icnt>=1.and.icnt<=nval) then
-!!$                if(temp1_d2(indx2,irec)/=miss_val_real) then
-!!$	          val1=(temp2_d2(4,icnt)-temp1_d2(indx2,irec))
-!!$		  temp2_d2(5,icnt)=temp2_d2(5,icnt)+val1*val1
-!!$	        endif
-!!$	      endif
-!!$            endif
-!!$	  endif
-!!$	enddo
-!!$!
-!!$! Normalize
-!!$	do icnt=1,nval
-!!$	  if(temp2_d2(3,icnt)/=0.) temp2_d2(5,icnt)=sqrt(temp2_d2(5,icnt)/temp2_d2(3,icnt))
-!!$	  if(temp2_d2(2,icnt)/=0.) temp2_d2(3,icnt)=temp2_d2(3,icnt)/temp2_d2(2,icnt)*100.
-!!$	  temp2_d2(2,icnt)=temp2_d2(2,icnt)/real(cnt1)*100.
-!!$	enddo
-!!$!
-!!$! write to processing file
-!!$        write(unit=33,*) 'Tot records: ', y_dim
-!!$        write(unit=33,*) 'Tot valid records: ', cnt2
-!!$        if(trim(man(iman)%txt1)/='include') write(unit=33,*) 'Tot records in range: ', cnt1
-!!$        fmt='(a5,1x,a15,1x,a6,1x,a15,,1x,a15,1x,a6)'
-!!$	write(unit=33, fmt=fmt) 'bin', trim(var_tmp(indx1)%txt1),'num(%)',trim(var_tmp(indx2)%txt1),'std','val(%)'
-!!$        fmt='(i5,1x,f15.7,1x,f6.2,1x,f15.7,1x,f15.7,1x,f6.2)'
-!!$	do icnt=1,nval
-!!$	  write(unit=33, fmt=fmt) icnt, temp2_d2(1,icnt),temp2_d2(2,icnt),temp2_d2(4,icnt),temp2_d2(5,icnt),temp2_d2(3,icnt)
-!!$	enddo
-!!$	deallocate(temp2_d2)
 !
 !----------------------------------------------------------
 ! look up values from map
@@ -640,8 +526,6 @@
 	  temp1_char2(indx1,iy)=trim(temp)
 		enddo
 		close(unit=22)
-
-
 !
 !----------------------------------------------------------
 ! Move specified text between columns
@@ -708,8 +592,6 @@ case('repl_text')
 		! temp1_char2(man(iman)%ind2, indx1) = temp
 	enddo
 	close(unit=201)
-
-
 !
 !
 !----------------------------------------------------------
@@ -860,40 +742,6 @@ case('repl_text')
 	  enddo
 	  close(unit=201)
 
-	! ! write(unit=33,*) '\tcreate character mid-month date'
-	! ! if(man(iman)%num==1) then
-	  ! ! write(unit=33,*) 'Error: only do this to output data'
-	  ! ! stop
-	! ! endif
-	! ! indx1=man(iman)%ind1 ! output variable number
-	! ! indx2=man(iman)%ind2 ! input year variable number
-	! ! indx3=man(iman)%ind3 ! input month variable number
-! ! !
-! ! ! locate inout variables
-		! ! do ivar=1, n_var
-	  ! ! if(trim(head_in(indx2,1))==trim(var(ivar)%txt1)) imap2=ivar
-	  ! ! if(trim(head_in(indx3,1))==trim(var(ivar)%txt1)) imap3=ivar
-	! ! enddo
-! ! !
-! ! ! calculate date
-		! ! do iy=1,y_dim
-! ! !
-! ! ! year
-	  ! ! fmt=trim(var(imap2)%fmt1)
-	  ! ! year=data_in(indx2,iy)
-	  ! ! write(temp,fmt=fmt) year
-	  ! ! text=trim(temp)//'-'
-! ! !
-! ! ! month
-	  ! ! fmt=trim(var(imap3)%fmt1)
-	  ! ! mon=data_in(indx3,iy)
-	  ! ! write(temp,fmt=fmt) mon
-	  ! ! text=trim(text)//trim(temp)
-! ! !
-! ! ! day-of-month
-		  ! ! text=trim(text)//trim(mid_month(mon))
-	  ! ! temp1_char2(indx1,iy)=trim(text)
-		! ! enddo
 !
 !----------------------------------------------------------
 ! calculate time zone
@@ -923,14 +771,6 @@ case('repl_text')
 			read(unit=201, fmt='f14.7,f14.7') temp1_d2(man(iman)%ind4, iy), temp1_d2(man(iman)%ind5, iy)
 		enddo
 		close(unit=201)
-		! ! print*, '\tcalculate time zone'
-	! ! write(unit=33,*) '\tcalculate time zone'
-	! ! if(man(iman)%num==1) then
-	  ! ! print*, 'Error: only do this to output array'
-	  ! ! write(unit=33,*) 'Error: only do this to output array'
-	  ! ! stop
-	! ! endif
-		! ! call calc_time_zone(iman)
 
 !----------------------------------------------------------
 ! remove a set of characters from character data
@@ -961,49 +801,7 @@ case('repl_text')
 		enddo
 		close(unit=201)
 
-
-
 		!
-! !----------------------------------------------------------
-! ! remove punctuation from character data
-! !----------------------------------------------------------
-! ! right now this is restricted to commas and periods
-	  ! ! case('rm_punct')
-	! ! write(unit=33,*) '\tremove punctuation'
-		! ! fmt='(a4,2x,a4,2x,a4,2x,a50,2x,a50)'
-	! ! write(unit=33,fmt=fmt) 'rec','id','qc_flg','old text', 'new text'
-		! ! fmt='(i4,2x,i4,2x,i4,2x,a50,2x,a50)'
-	! ! indx1=man(iman)%ind1 ! variable index
-	! ! idvar=man(iman)%ind2 ! id index
-	! ! indx3=man(iman)%ind3 ! qc flag index
-	! ! do irec=1,y_dim
-	  ! ! temp=trim(temp1_char2(indx1,irec))
-	  ! ! temp=adjustl(temp)
-	  ! ! num=len(temp)
-	  ! ! cnt1=0
-	  ! ! text=''
-	  ! ! flag=.false.
-	  ! ! do itxt=1,num
-	    ! ! if(temp(itxt:itxt)=='.') then
-	      ! ! flag=.true.
-	      ! ! temp1_d2(indx3,irec)=1
-	    ! ! elseif(temp(itxt:itxt)==',') then
-	      ! ! flag=.true.
-	      ! ! cnt1=cnt1+1
-	      ! ! text(cnt1:cnt1)=';'
-	      ! ! temp1_d2(indx3,irec)=1
-	    ! ! else
-	      ! ! cnt1=cnt1+1
-	      ! ! text(cnt1:cnt1)=temp(itxt:itxt)
-	    ! ! endif
-	  ! ! enddo
-	  ! ! if(flag) then
-	    ! ! itxt=temp1_d2(idvar,irec)
-	    ! ! ivar=temp1_d2(indx3,irec)
-	    ! ! write(unit=33,fmt=fmt) irec,itxt,ivar,trim(temp1_char2(indx1,irec)),trim(text)
-	  ! ! endif
-	  ! ! temp1_char2(indx1,irec)=trim(text)
-	! ! enddo
 !
 !----------------------------------------------------------
 ! convert utm coordinates to latitude and longitude
@@ -1034,48 +832,6 @@ case('repl_text')
 			read(unit=201, fmt='f14.7,f14.7') temp1_d2(man(iman)%ind4, iy), temp1_d2(man(iman)%ind5, iy)
 		enddo
 		close(unit=201)
-	! ! write(unit=33,*) '\tconvert utm to lat/lon'
-	! ! write(unit=33,*) '\t\tuse standard python script'
-	! ! indx1=man(iman)%ind1 ! zone index
-	! ! indx2=man(iman)%ind2 ! east coordinate index
-	! ! indx3=man(iman)%ind3 ! north coordinate index
-	! ! indx4=man(iman)%ind4 ! latitude index
-	! ! indx5=man(iman)%ind5 ! longitude index
-	! ! idvar=man(iman)%ind6 ! record id number
-! ! !
-! ! ! write utm coordinates to file
-		! ! do ipat = 1, n_path
-		  ! ! if(path(ipat)%typ=='outpath')exit
-		! ! enddo
-		! ! filename='temp.dat'
-		! ! open(unit=44,file=trim(filename),form='formatted')
-
-	! ! do irec=1,y_dim
-	  ! ! print*, indx1,irec,data_in(indx1,irec)
-! ! !
-! ! ! zone
-	  ! ! fmt='(f4.1)'
-	  ! ! write(temp,fmt=fmt) data_in(indx1,irec)
-	  ! ! temp=adjustl(temp)
-	  ! ! text=trim(temp)//','
-! ! !
-! ! ! east coordinate
-	  ! ! write(temp,*) data_in(indx2,irec)
-	  ! ! temp=adjustl(temp)
-	  ! ! text=trim(text)//trim(temp)//','
-! ! !
-! ! ! north coordinate
-	  ! ! write(temp,*) data_in(indx3,irec)
-	  ! ! temp=adjustl(temp)
-	  ! ! text=trim(text)//trim(temp)
-	  ! ! write(unit=44,*) trim(text)
-	! ! enddo
-! ! !
-! ! ! read
-	! ! close(unit=44)
-		! ! fmt='(a4,2x,a4,2x,a20,2x,a15,2x,a15)'
-	! ! write(unit=33,fmt=fmt) 'rec','zone','East','North', 'lat','lon'
-		! ! fmt='(i4,2x,i4,2x,i4,2x,a50,2x,a50)'
 
 !----------------------------------------------------------
 ! convert latitude/longitude coordinates to utm
@@ -1133,98 +889,8 @@ case('repl_text')
 			write(unit=33,*) trim(text)
 		enddo
 		close(unit=201)
-
-!!$        if(man(iman)%num==1) write(unit=33,*) '\t\tInput Variable Statistics'
-!!$        if(man(iman)%num==2) write(unit=33,*) '\t\tOutput Variable Statistics'
-!!$!
-!!$! allocate Stats variables
-!!$	n_stat=7
-!!$	allocate(temp2_d2(x_dim,n_stat))
-!!$	allocate(head_tmp(n_stat))
-!!$!
-!!$! set header
-!!$        head_tmp(1)='min'
-!!$        head_tmp(2)='max'
-!!$        head_tmp(3)='mean'
-!!$        head_tmp(4)='std'
-!!$        head_tmp(5)='totpts'
-!!$        head_tmp(6)='valid_pts'
-!!$        head_tmp(7)='pts_frac'
-!!$!
-!!$! print Header
-!!$	fmt='(8(a14,1x))'
-!!$        write(unit=33,fmt=fmt) 'Variable','min','max','mean','std','totpts','valid_pts','pts_frac'
-!!$!
-!!$! loop through variables
-!!$	do ix=1,x_dim
-!!$!
-!!$! min and max value
-!!$!
-!!$! find first valid point
-!!$	  do iy=1,y_dim
-!!$	    cnt1=iy
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) then
-!!$	      val1=temp1_d2(ix,iy)
-!!$	      val2=temp1_d2(ix,iy)
-!!$	      exit
-!!$	    endif
-!!$	  enddo
-!!$!
-!!$! go through rest of points
-!!$	  if(cnt1<=y_dim) then
-!!$	    do iy=cnt1,y_dim
-!!$	      if(temp1_d2(ix,iy)/=miss_val_real) then
-!!$	        val1=min(val1,temp1_d2(ix,iy))
-!!$	        val2=max(val2,temp1_d2(ix,iy))
-!!$	      endif
-!!$	    enddo
-!!$	  endif
-!!$	  temp2_d2(ix,1)=val1
-!!$	  temp2_d2(ix,2)=val2
 !
-! mean value, standard deviation, valid points, coverage frac
-!!$          val1=0.
-!!$          val2=0.
-!!$	  cnt1=0
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) then
-!!$	      val1=val1+temp1_d2(ix,iy)
-!!$	      cnt1=cnt1+1
-!!$	    endif
-!!$	  enddo
-!!$	  if(cnt1/=0) val1=val1/real(cnt1)
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) val2=val2+(val1-temp1_d2(ix,iy))**2.
-!!$	  enddo
-!!$	  if(cnt1/=0) then
-!!$	    val2=sqrt(val2/real(cnt1))
-!!$	  else
-!!$	    val1=miss_val_real
-!!$	    val2=miss_val_real
-!!$	  endif
-!!$	  temp2_d2(ix,3)=val1
-!!$	  temp2_d2(ix,4)=val2
-!!$	  temp2_d2(ix,5)=real(y_dim)
-!!$	  temp2_d2(ix,6)=real(cnt1)
-!!$	  temp2_d2(ix,7)=real(cnt1)/real(y_dim)
-!!$!
-!!$! write statistics
-!!$	  fmt='(a15)'
-!!$	  if(man(iman)%num==1) write(temp,fmt=fmt) trim(head_in(ix,1))
-!!$	  if(man(iman)%num==2) write(temp,fmt=fmt) trim(head_out(ix,1))
-!!$	  text=temp
-!!$	  fmt='(f14.3)'
-!!$	  do ivar=1,n_stat
-!!$	    write(temp,fmt=fmt) temp2_d2(ix,ivar)
-!!$	    text=trim(text)//' '//trim(temp)
-!!$	  enddo
-!!$          write(unit=33,*) trim(text)
-!!$	enddo
-!!$!
-!!$! deallocate Stats variables
-!!$	deallocate(head_tmp)
-!!$	deallocate(temp2_d2)
-!
+! mean value, standard deviation, valid points, coverage frac!
 !----------------------------------------------------------
 ! sort records in increasing order
 !----------------------------------------------------------
@@ -1308,47 +974,6 @@ case('repl_text')
 		call system(cmd)
 
 		call read_csv_file(ifil, case)
-
-		! ! if(man(iman)%num==2) then
-		  ! ! write(unit=33,*) 'Error: only do this to input array'
-		  ! ! stop
-		! ! endif
-! ! !
-! ! ! identify duplicate records
-	! ! allocate(temp_int1(y_dim))
-	! ! temp_int1=0
-	! ! indx1=man(iman)%ind1
-	! ! indx2=man(iman)%ind2
-	! ! num=0
-	! ! do irec=1,y_dim-1
-	  ! ! do iy=irec+1,y_dim
-	    ! ! if(temp1_d2(indx1,irec)==temp1_d2(indx1,iy).and.temp1_d2(indx2,irec)==temp1_d2(indx2,iy)) then
-	      ! ! num=num+1
-	      ! ! temp_int1(iy)=1
-	    ! ! endif
-	  ! ! enddo
-	! ! enddo
-! ! !
-! ! ! compress data file
-		! ! write(unit=33,*) '\t\tNum duplicate records: ',num
-	! ! if(num>0) then
-	  ! ! allocate(temp2_d2(x_dim,y_dim))
-	  ! ! temp2_d2=miss_val_real
-	  ! ! in%n_rec=in%n_rec-num
-	  ! ! out%n_rec=out%n_rec-num
-	  ! ! irec=0
-	  ! ! do iy=1,y_dim
-	    ! ! if(temp_int1(iy)==0) then
-	      ! ! irec=irec+1
-	      ! ! temp2_d2(:,irec)=temp1_d2(:,iy)
-	    ! ! else
-	      ! ! write(unit=33,*) '\t\tDelete duplicate record ',iy, temp1_d2(indx1,iy),temp1_d2(indx2,iy)
-	    ! ! endif
-	  ! ! enddo
-	  ! ! temp1_d2=temp2_d2
-	  ! ! deallocate(temp2_d2)
-	  ! ! deallocate(temp_int1)
-	! ! endif
 !
 !----------------------------------------------------------
 ! remove layers with no data from variable mapping file
@@ -1367,30 +992,6 @@ case('repl_text')
 		call system(cmd)
 
 		call read_csv_file(ifil, case)
-		! ! write(unit=33,*) '\tRemove layers with no data'
-		! ! if(man(iman)%num==2) then
-			! ! write(unit=33,*) 'Error: only do this to input array'
-			! ! stop
-		! ! endif
-! ! !
-! ! ! identify layers with no data and turn off copy flags
-! ! ! treat empty layers like other extraneous variables
-	! ! num=0
-		! ! do ivar=1,n_var
-			! ! if(var(ivar)%flg2.and.var(ivar)%map=='copy') then
-				! ! do ix=1, in%n_var
-					! ! if(trim(var(ivar)%txt1)==trim(head_in(ix,1))) exit
-				! ! enddo
-				! ! if(maxval(temp1_d2(ix,:))==miss_val_real) then
-					! ! if(var(ivar)%map=='copy') then
-						! ! num=num+1
-						! ! var(ivar)%flg2=.false.
-						! ! var(ivar)%map='na'
-						! ! write(unit=33,*) num,ivar,trim(var(ivar)%txt1)
-					! ! endif
-				! ! endif
-			! ! endif
-		! ! enddo
 !
 !----------------------------------------------------------
 ! count values per value
@@ -1424,65 +1025,7 @@ case('repl_text')
 		write(unit=33, fmt='(A)') trim(temp)
 	  enddo
 	  close(unit=201)
-	! ! indx1=man(iman)%ind1
-	! ! indx2=man(iman)%ind2
-	! ! write(unit=33,*) '\tcount ',trim(head_in(indx2,1)),' values per ',trim(head_in(indx1,1))
-	! ! if(man(iman)%txt1=='all') then
-	  ! ! write(unit=33,*) '\t\tsave everything in processing file'
-	  ! ! fmt='(5(a15,2x))'
-	  ! ! write(unit=33,fmt) 'Val1','val2','numval2','numrec','lastrec'
-	  ! ! fmt='(f15.7,2x,f15.7,2x,i15,2x,i15,2x,i15)'
-	! ! endif
-	! ! if(man(iman)%txt1=='sum') then
-	  ! ! write(unit=33,*) '\t\tsave only summary data in processing file'
-	  ! ! fmt='(5(a15,2x))'
-	  ! ! write(unit=33,fmt) trim(head_in(indx1,1)),'num '//trim(head_in(indx2,1)), 'totrec','firstrec','lastrec'
-	  ! ! fmt='(f15.7,2x,i15,2x,i15,2x,i15,2x,i15)'
-	! ! endif
-! ! !
-! ! ! set counting variables
-	! ! val1=temp1_d2(indx1,1)
-	! ! val2=temp1_d2(indx2,1)
-	! ! cnt1=1 ! number different values for val1
-	! ! cnt2=1 ! number different values for val2 for each val1
-	! ! cnt3=0 ! total number records for val2
-	! ! cnt4=0 ! total number records for val1
-! ! !
-! ! ! loop through all records
-	! ! do iy=1,y_dim
-! ! !
-! ! ! start counting with first record
-	  ! ! if(temp1_d2(indx1,iy)==val1.and.temp1_d2(indx2,iy)==val2) then
-	    ! ! cnt3=cnt3+1
-	    ! ! cnt4=cnt4+1
-! ! !
-! ! ! var2 changes, but not var1: cnt2 increases by 1, reset cnt3
-	  ! ! elseif(temp1_d2(indx1,iy)==val1.and.temp1_d2(indx2,iy)/=val2) then
-	    ! ! if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2,cnt3, iy-1
-	    ! ! cnt2=cnt2+1
-	    ! ! cnt3=1
-	    ! ! cnt4=cnt4+1
-	    ! ! val2=temp1_d2(indx2,iy)
-! ! !
-! ! ! var1 changes: cnt1 increases by 1, reset cnt2 and cnt3
-	  ! ! elseif(temp1_d2(indx1,iy)/=val1.and.temp1_d2(indx2,iy)/=val2) then
-	    ! ! if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
-	    ! ! if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
-	    ! ! cnt1=cnt1+1
-	    ! ! cnt2=1
-	    ! ! cnt3=1
-	    ! ! cnt4=1
-	    ! ! val1=temp1_d2(indx1,iy)
-	    ! ! val2=temp1_d2(indx2,iy)
-	  ! ! endif
-	! ! enddo
-! ! !
-! ! ! save last set of values
-	! ! if(man(iman)%txt1=='all') write(unit=33,fmt) val1, val2, cnt2, cnt3, iy-1
-	! ! if(man(iman)%txt1=='sum') write(unit=33,fmt) val1, cnt2, cnt4, iy-cnt4,iy-1
-! ! !
-! ! ! write totals
-	! ! write(unit=33,*) '\t\t',trim(head_in(indx1,1))//' has ',cnt1, ' different values'
+
 !
 !----------------------------------------------------------
 ! count values
@@ -1511,39 +1054,7 @@ case('repl_text')
 		read(unit=201, fmt='(A)') temp
 		write(unit=33, fmt=' (A)') trim(temp)
 	  close(unit=201)
-	! ! indx1=man(iman)%ind1
-	! ! write(unit=33,*) '\tcount values for ',trim(head_in(indx1,1))
-	! ! fmt='(3(a15,2x))'
-	! ! write(unit=33,fmt) 'Value','numrec','lastrec'
-	! ! fmt='(f15.7,2x,i15,2x,i15)'
 
-! ! !
-! ! ! count valid records
-	! ! val1=temp1_d2(indx1,1)
-	! ! cnt1=1 ! number different values
-	! ! cnt2=0 ! number valid records per value
-	! ! cnt3=0 ! total valid values
-	! ! do iy=1,y_dim
-	  ! ! if(temp1_d2(indx1,iy)==miss_val_real) print*, indx1,iy,temp1_d2(indx1,iy)
-	  ! ! if(temp1_d2(indx1,iy)/=miss_val_real.and.temp1_d2(indx1,iy)==val1) then
-	    ! ! cnt2=cnt2+1
-	    ! ! cnt3=cnt3+1
-	  ! ! else
-	    ! ! write(unit=33,fmt) val1, cnt2, iy-1
-	    ! ! cnt1=cnt1+1
-	    ! ! cnt2=1
-	    ! ! cnt3=cnt3+1
-	    ! ! val1=temp1_d2(indx1,iy)
-	  ! ! endif
-	! ! enddo
-! ! !
-! ! ! save last set of values
-	! ! write(unit=33,fmt) val1, cnt2, iy-1
-! ! !
-! ! ! write totals
-	! ! write(unit=33,*) '\t\t',trim(head_in(indx1,1))//' has ',cnt1, ' different values'
-	! ! write(unit=33,*) '\t\t','Total valid values: ',cnt3
-	! ! write(unit=33,*) '\t\t','total number records: ',y_dim
 !
 !----------------------------------------------------------
 ! count records
@@ -1569,19 +1080,7 @@ case('repl_text')
 		read(unit=201, fmt='(A)') temp
 		write(unit=33, fmt='(A)') trim(temp)
 	  close(unit=201)
-	! ! do ix=lim1,lim2
-	  ! ! write(unit=33,*) '\tcount records'
-! ! !
-! ! ! count valid records
-	  ! ! cnt1=0
-	  ! ! do iy=1,y_dim
-	    ! ! if(temp1_d2(ix,iy)/=miss_val_real) then
-	      ! ! cnt1=cnt1+1
-	    ! ! endif
-	  ! ! enddo
-	  ! ! write(unit=33,*) '\t\t',trim(head_in(ix,1))//': ',cnt1, ' valid values'
-	  ! ! write(unit=33,*) '\t\t','total number records: ',y_dim
-	! ! enddo
+
 !
 !----------------------------------------------------------
 ! check for non-integer values
@@ -1610,18 +1109,6 @@ case('repl_text')
 	  enddo
 	  close(unit=201)
 
-	! ! do ix=lim1,lim2
-	  ! ! write(unit=33,*) '\tCheck ',trim(head_in(ix,1)), ' for non-integer values'
-	  ! ! val1=man(iman)%val1
-	  ! ! cnt1=0
-	  ! ! do iy=1,y_dim
-	    ! ! val1=mod(temp1_d2(ix,iy),1.)
-	    ! ! if(val1/=0.) then
-	      ! ! cnt1=cnt1+1
-	      ! ! print*, cnt1,iy,temp1_d2(ix,iy)
-	    ! ! endif
-	  ! ! enddo
-	! ! enddo
 !
 !----------------------------------------------------------
 ! multiply by constant
@@ -1658,14 +1145,6 @@ case('repl_text')
 		 enddo
 		 close(unit=201)
 
-!!$	do ix=lim1,lim2
-!!$	  if(man(iman)%num==1) write(unit=33,*) '\tMultiply ',trim(head_in(ix,1)), ' by ',man(iman)%val1
-!!$	  if(man(iman)%num==2) write(unit=33,*) '\tMultiply ',trim(head_out(ix,1)), ' by ',man(iman)%val1
-!!$	  val1=man(iman)%val1
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) temp1_d2(ix,iy)=temp1_d2(ix,iy)*val1
-!!$	  enddo
-!!$	enddo
 !
 !----------------------------------------------------------
 ! divide by constant
@@ -1701,19 +1180,7 @@ case('repl_text')
 			temp1_d2(ix,iy) = val1
 		 enddo
 		 close(unit=201)
-!!$	do ix=lim1,lim2
-!!$	  if(man(iman)%num==1) write(unit=33,*) '\tDivide ',trim(head_in(ix,1)), ' by ',man(iman)%val1
-!!$	  if(man(iman)%num==2) write(unit=33,*) '\tDivide ',trim(head_out(ix,1)), ' by ',man(iman)%val1
-!!$	  val1=man(iman)%val1
-!!$	  if(val1==0.) then
-!!$	    print*, 'Error: cannot divide by zero'
-!!$	    print*, 'manipulation: ', iman, ' value: ',val1
-!!$	    stop
-!!$	  endif
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) temp1_d2(ix,iy)=temp1_d2(ix,iy)*val1
-!!$	  enddo
-!!$	enddo
+
 !
 !----------------------------------------------------------
 ! add constant
@@ -1749,14 +1216,6 @@ case('repl_text')
 			temp1_d2(ix,iy) = val1
 		 enddo
 		 close(unit=201)
-!!$	do ix=lim1,lim2
-!!$	  if(man(iman)%num==1) write(unit=33,*) '\tAdd ',man(iman)%val1, ' to ',trim(head_in(ix,1))
-!!$	  if(man(iman)%num==2) write(unit=33,*) '\tAdd ',man(iman)%val1, ' to ',trim(head_out(ix,1))
-!!$	  val1=man(iman)%val1
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) temp1_d2(ix,iy)=temp1_d2(ix,iy)+val1
-!!$	  enddo
-!!$	enddo
 !
 !----------------------------------------------------------
 ! subtract constant
@@ -1792,13 +1251,7 @@ case('repl_text')
 			temp1_d2(ix,iy) = val1
 		 enddo
 		 close(unit=201)
-!!$	do ix=lim1,lim2
 
-!!$	  val1=man(iman)%val1
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) temp1_d2(ix,iy)=temp1_d2(ix,iy)-val1
-!!$	  enddo
-!!$	enddo
 !
 !----------------------------------------------------------
 ! replace values equal
@@ -1839,24 +1292,6 @@ case('repl_text')
 			endif
 		 enddo
 		 close(unit=201)
-!!$	do ix=lim1,lim2
-!!$	  if(man(iman)%num==1) write(unit=33,*) '\treplace values for ',trim(head_in(ix,1))
-!!$	  if(man(iman)%num==2) write(unit=33,*) '\treplace values for ',trim(head_out(ix,1))
-!!$	  val1=man(iman)%val1
-!!$	  val2=man(iman)%val2
-!!$	  write(unit=33,*) '\t\treplace ',val1, ' with ', val2
-!!$!
-!!$! replace values
-!!$	  cnt1=0 ! number of values replaced
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)==val1) then
-!!$	      cnt1=cnt1+1
-!!$	      temp1_d2(ix,iy)=val2
-!!$	    endif
-!!$	  enddo
-!!$	  write(unit=33,*) '\t\t',cnt1, ' values replaced'
-!!$	  write(unit=33,*) '\t\t','total number records: ',y_dim
-!!$	enddo
 !
 !----------------------------------------------------------
 ! replace values greater than
@@ -2114,16 +1549,6 @@ case('replace_range')
 			write(unit=33,*) trim(text)
 		 enddo
 		 close(unit=201)
-!!$	  write(unit=33,*) '\tPrint values > ', man(iman)%val1
-!!$	  val1=man(iman)%val1
-!!$	  indx1=man(iman)%ind1
-!!$!
-!!$! find first valid point
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(indx1,iy)/=miss_val_real.and.temp1_d2(indx1,iy)>val1) then
-!!$	      print*, iy,temp1_d2(indx1,iy)
-!!$	    endif
-!!$	  enddo
 !
 !----------------------------------------------------------
 ! print values less than
@@ -2157,16 +1582,6 @@ case('replace_range')
 			write(unit=33,*) trim(text)
 		 enddo
 		 close(unit=201)
-!!$	  write(unit=33,*) '\tPrint values < ', man(iman)%val1
-!!$	  val1=man(iman)%val1
-!!$	  indx1=man(iman)%ind1
-!!$!
-!!$! find first valid point
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(indx1,iy)/=miss_val_real.and.temp1_d2(indx1,iy)<val1) then
-!!$	      print*, iy,temp1_d2(indx1,iy)
-!!$	    endif
-!!$	  enddo
 !
 !----------------------------------------------------------
 ! print max and min values
@@ -2197,29 +1612,7 @@ case('replace_range')
 			write(unit=33,*) trim(text)
 		 enddo
 		 close(unit=201)
-!!$	do ix=lim1,lim2
-!!$	  write(unit=33,*) '\tPrint Min and Max'
-!!$!
-!!$! find first valid point
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) then
-!!$	      val1=temp1_d2(ix,iy)
-!!$	      val2=temp1_d2(ix,iy)
-!!$	      exit
-!!$	    endif
-!!$	  enddo
-!!$!
-!!$! go through rest of points
-!!$	  if(iy<=y_dim) then
-!!$	    do iy=1,y_dim
-!!$	      val1=max(val1,temp1_d2(ix,iy))
-!!$	      val2=min(val2,temp1_d2(ix,iy))
-!!$	    enddo
-!!$	    write(unit=33,*) '\t\t',trim(head_in(ix,1))//' max: ',val1, ' min: ',val2
-!!$	  else
-!!$	    write(unit=33,*) '\t\t',trim(head_in(ix,1))//' min/max: no valid points'
-!!$	  endif
-!!$	enddo
+
 !
 !----------------------------------------------------------
 ! print mean and standard deviation
@@ -2252,28 +1645,6 @@ case('replace_range')
 		 enddo
 		 close(unit=201)
 
-!!$	write(unit=33,*) '\tPrint mean and standard deviation'
-!!$	do ix=lim1,lim2
-!!$          val1=0.
-!!$          val2=0.
-!!$	  cnt1=0.
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) then
-!!$	      val1=val1+temp1_d2(ix,iy)
-!!$	      cnt1=cnt1+1
-!!$	    endif
-!!$	  enddo
-!!$	  if(cnt1/=0.) val1=val1/cnt1
-!!$	  do iy=1,y_dim
-!!$	    if(temp1_d2(ix,iy)/=miss_val_real) val2=val2+(val1-temp1_d2(ix,iy))**2.
-!!$	  enddo
-!!$	  if(cnt1/=0.) then
-!!$	    val2=sqrt(val2/cnt1)
-!!$	    write(unit=33,*) '\t\t',trim(head_in(ix,1))//' mean:',val1, ' std: ',val2,' pts:',cnt1
-!!$	  else
-!!$	    write(unit=33,*) '\t\t',trim(head_in(ix,1))//' mean/std: no valid points'
-!!$	  endif
-!!$	enddo
 !
 !----------------------------------------------------------
 ! create JSON metadata file
@@ -2322,8 +1693,6 @@ case('replace_range')
 			! enddo
 		 ! enddo
 		 ! close(unit=200)
-
-		 ! ! Build the command
 		 ! cmd = '/usr/bin/python/ /sharehome/hwilcox/DIT/move_text.py'
 		 ! cmd = trim(cmd)//' -i '//file_in
 		 ! cmd = trim(cmd)//' -o '//file_out
