@@ -746,10 +746,9 @@ case('repl_text')
 !----------------------------------------------------------
 ! calculate time zone
 !----------------------------------------------------------
-! right now this is restricted to commas and periods
 	  case('timezone')		! TODO: complete timezone
-	  write(unit=33,*) '\tcalculate time zone'
-	   file_in = trim(path(i_pat_tmp)%path1)//'temp1'
+		write(unit=33,*) '\tcalculate time zone'
+		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
 
 		open(unit=200, file=trim(file_in), form='formatted')
@@ -800,8 +799,6 @@ case('repl_text')
 			temp1_char2(indx1, iy) = trim(temp)
 		enddo
 		close(unit=201)
-
-		!
 !
 !----------------------------------------------------------
 ! convert utm coordinates to latitude and longitude
@@ -1676,37 +1673,6 @@ case('replace_range')
 			write(unit=33,*) trim(text)
 		 enddo
 		 close(unit=201)
-
-!
-!----------------------------------------------------------
-! move text from one column to another
-!----------------------------------------------------------
-		 ! case('move_text')
-		 ! file_in = trim(path(i_pat_tmp)%path1)//'temp1'
-		 ! file_out = trim(path(i_pat_tmp)%path1)//'temp2'
-
-		 ! open(unit=200, file=trim(file_in), form='formatted')
-		 ! fmt = '(F14.7)'
-		 ! do ix=lim1,lim2
-			! do iy = 1, y_dim
-			   ! write(unit=200,fmt=fmt) temp1_d2(ix,iy)
-			! enddo
-		 ! enddo
-		 ! close(unit=200)
-		 ! cmd = '/usr/bin/python/ /sharehome/hwilcox/DIT/move_text.py'
-		 ! cmd = trim(cmd)//' -i '//file_in
-		 ! cmd = trim(cmd)//' -o '//file_out
-		 ! cmd = trim(cmd)//' -f '//man(iman)%txt1
-		 ! cmd = trim(cmd)//' -t '//man(iman)%txt2
-
-		 ! call system( cmd )
-
-		 ! open(unit=201, file=trim(file_out), form='formatted')
-		 ! do indx1=1,4
-			! read(unit=201,*) text
-			! write(unit=33,*) trim(text)
-		 ! enddo
-		 ! close(unit=201)
 
 !
 ! end manipulations

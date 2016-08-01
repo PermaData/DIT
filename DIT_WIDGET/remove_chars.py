@@ -36,7 +36,8 @@ def remove_chars(infile, outfile, chars, substring=False, placeholder=''):
 
 def parse_args(args):
     def help():
-        print 'remove_chars.py -i <input file> -o <output file> -c <characters to remove>'
+        print 'remove_chars.py -i <input file> -o <output file> '\
+            '-c <characters to remove>'
 
 
     infile = None

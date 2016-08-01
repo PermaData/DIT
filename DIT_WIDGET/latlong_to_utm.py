@@ -31,8 +31,8 @@ def modify_row(row, ENZL, lat_i, long_i):
 
 def parse_args(args):
     def help():
-        print 'latlong_to_utm.py -i <input CSV file> -o <output csv file> \
-        -t <latitude column index> -n <longitude column index>'
+        print 'latlong_to_utm.py -i <input CSV file> -o <output csv file>'\
+            '-t <latitude column index> -n <longitude column index>'
 
 
     infile = None

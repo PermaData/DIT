@@ -35,10 +35,10 @@ def rounding(infile, outfile, mode, precision=0):
 
 
 def _ceil(val, precision):
-    return math.ceil(val)
+    return float(math.ceil(val * precision)) / precision
 
 def _floor(val, precision):
-    return math.floor(val)
+    return float(math.floor(val * precision)) / precision
 
 def _trunc(val, precision):
     return int(val)
@@ -49,8 +49,8 @@ def _round(val, precision):
 
 def parse_args(args):
     def help():
-        print 'rounding.py -i <input file> -o <output file> \
-        -m <rounding mode> [-p <precision>]'
+        print 'rounding.py -i <input file> -o <output file> '\
+            '-m <rounding mode> [-p <precision>]'
 
 
     infile = None
