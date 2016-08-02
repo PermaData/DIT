@@ -25,7 +25,7 @@ def single(data):
     Outputs:
         out: The number of unique values collected
     """
-    values = set()  # Maps value: number of occurrences
+    values = set()
     for item in data:
         values.add(item)
     out = [len(values)]

@@ -1,6 +1,7 @@
 import sys
 import getopt
 import csv
+import collections
 
 import common.readwrite as io
 import common.definitions as d
@@ -15,14 +16,25 @@ def remove_duplicate(infile, outfile):
             data = csv.reader(fi)
             push = csv.writer(fo)
 
-            track = []
+            track = set()
             duplicates = 0
             for row in data:
-                if row in track:
+                test = tuple(row)
+                if (test in track):
                     duplicates += 1
                 else:
-                    track.append(row)
-                    push.writerow(row)
+                    track.add(test)
+                    push.writerow(quote(row))
+
+
+def quote(line):
+    out = []
+    for item in line:
+        try:
+            out.append(float(item))
+        except ValueError:
+            out.append("'" + item + "'")
+    return out
 
 
 def parse_args(args):
