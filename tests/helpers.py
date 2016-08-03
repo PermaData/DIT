@@ -4,23 +4,24 @@ from context import *
 
 MISSING = -999.
 
+PATH = os.path.abspath('.') + '\\'
 
-def with_file(filename):
+
+def with_setup(setupfunc):
     """This decorator takes care of passing the infile and outfile
     arguments to any function.
     """
 
     def decorator(func):
         def decorated(*args):
+            filename = setupfunc()
             infile = filename
             outfile = filename.split('.', 1)[0] + '_' + func.__name__ + '.out'
-            
-            print 'calling', func.__name__, infile, outfile
 
             rv = func(infile, outfile, *args)
 
-            # os.remove('.\\' + infile)
-            # os.remove('.\\' + outfile)
+            os.remove(infile)
+            os.remove(outfile)
 
             return rv
 
@@ -40,6 +41,3 @@ def call_real_function(testfunction, *args):
 
 def almost_equal(float1, float2):
     return abs(float1 - float2) < 0.0000001
-
-
-print globals()
