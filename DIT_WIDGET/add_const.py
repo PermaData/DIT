@@ -5,7 +5,7 @@ __all__ = ['add_const']
 import sys
 import getopt
 
-import mathfamily.arithmetic as a
+from .mathfamily import arithmetic as a
 
 
 def add_const(infile, outfile, constant):

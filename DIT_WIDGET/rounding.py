@@ -35,10 +35,10 @@ def rounding(infile, outfile, mode, precision=0):
 
 
 def _ceil(val, precision):
-    return float(math.ceil(val * precision)) / precision
+    return float(math.ceil(val * 10**precision)) / precision
 
 def _floor(val, precision):
-    return float(math.floor(val * precision)) / precision
+    return float(math.floor(val * 10**precision)) / precision
 
 def _trunc(val, precision):
     return int(val)
@@ -56,6 +56,8 @@ def parse_args(args):
     infile = None
     outfile = None
     mode = None
+    
+    precision = 0
 
     options = ('i:o:m:p:', ['input', 'output', 'mode', 'precision'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],

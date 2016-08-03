@@ -530,7 +530,7 @@
 !----------------------------------------------------------
 ! Move specified text between columns
 !----------------------------------------------------------
-case('move_text')		! TODO: Test move_text
+case('move_text')
 	write(unit=33,*) 'Move text from one column to another'
 	file_in = path(i_pat_tmp)%path1//'temp1'
 	file_out = path(i_pat_tmp)%path1//'temp2'
@@ -716,7 +716,7 @@ case('repl_text')
 ! create character mid-month date
 !----------------------------------------------------------
 ! calculates a mid-month character date given year and month
-	  case('mid_mon')		! TODO: Test mid_mon
+	  case('mid_mon')
 		indx1=man(iman)%ind1 ! output variable number
 		indx2=man(iman)%ind2 ! input year variable number
 		indx3=man(iman)%ind3 ! input month variable number
@@ -746,7 +746,7 @@ case('repl_text')
 !----------------------------------------------------------
 ! calculate time zone
 !----------------------------------------------------------
-	  case('timezone')		! TODO: complete timezone
+	  case('timezone')		! TODO: test timezone
 		write(unit=33,*) '\tcalculate time zone'
 		file_in = trim(path(i_pat_tmp)%path1)//'temp1'
 		file_out = trim(path(i_pat_tmp)%path1)//'temp2'
@@ -957,7 +957,7 @@ case('repl_text')
 !----------------------------------------------------------
 ! remove duplicate records
 !----------------------------------------------------------
-	  case('rem_dup')		! TODO: test rem_dup
+	  case('rem_dup')
 		write(unit=33,*) 'Remove duplicate records'
 		case = 'in_temp'
 		call make_csv_data_file(ifil, case)

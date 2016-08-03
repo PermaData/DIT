@@ -3,8 +3,8 @@
 import sys
 import getopt
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
+from .common import definitions as d
 import printfamily.prints as p
 
 __all__ = ['print_max']

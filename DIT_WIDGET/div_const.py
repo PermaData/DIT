@@ -2,7 +2,7 @@
 import sys
 import getopt
 
-import mathfamily.arithmetic as a
+from .mathfamily import arithmetic as a
 
 __all__ = ['div_const']
 

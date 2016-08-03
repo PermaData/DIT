@@ -1,7 +1,6 @@
 import sys
 import getopt
 import csv
-import collections
 
 import common.readwrite as io
 import common.definitions as d
@@ -13,8 +12,9 @@ def remove_duplicate(infile, outfile):
     """Remove duplicate records from the data."""
     with open(infile) as fi:
         with open(outfile, 'w') as fo:
-            data = csv.reader(fi)
-            push = csv.writer(fo)
+            data = csv.reader(fi, quoting=csv.QUOTE_NONNUMERIC)
+            push = csv.writer(fo, quoting=csv.QUOTE_NONNUMERIC, 
+                              lineterminator='\n', quotechar="'")
 
             track = set()
             duplicates = 0
@@ -24,7 +24,8 @@ def remove_duplicate(infile, outfile):
                     duplicates += 1
                 else:
                     track.add(test)
-                    push.writerow(quote(row))
+                    push.writerow(row)
+            #print 'Found {0} duplicates'.format(duplicates)
 
 
 def quote(line):

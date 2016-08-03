@@ -1,5 +1,6 @@
 import sys
 import getopt
+import csv
 
 import common.readwrite as io
 import common.definitions as d
@@ -11,14 +12,19 @@ def remove_null(infile, outfile):
     """Remove records with no data from the dataset."""
     with open(infile) as fi:
         with open(outfile, 'w') as fo:
-            data = csv.reader(fi)
-            push = csv.writer(fo)
+            data = csv.reader(fi, quoting=csv.QUOTE_NONNUMERIC)
+            push = csv.writer(fo, quoting=csv.QUOTE_NONNUMERIC, 
+                              lineterminator='\n', quotechar="'")
 
             out = []
             keep = False
             for row in data:
                 for item in row:
-                    if (item not in d.missing_values):
+                    try:
+                        test = float(item)
+                    except ValueError:
+                        test = item
+                    if (test not in d.missing_values):
                         keep = True
                         break
                 if (keep):

@@ -4,8 +4,8 @@ import sys
 import math
 import getopt
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
+from .common import definitions as d
 
 __all__ = ['print_mean']
 
