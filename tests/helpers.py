@@ -31,12 +31,12 @@ def with_setup(setupfunc):
     return decorator
 
 
-def call_real_function(testfunction, *args):
+def call_real_function(testfunction, *args, **kwargs):
     # Relies on test function name being test_<real function>
     name = testfunction.__name__.split('_', 1)[1]
     # Relies on function name being same as module name
     realfunc = getattr(globals()[name], name)
-    return realfunc(*args)
+    return realfunc(*args, **kwargs)
 
 
 def almost_equal(float1, float2):
