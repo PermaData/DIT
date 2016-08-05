@@ -1,3 +1,8 @@
+import common
+import mathfamily
+import printfamily
+import replacefamily
+
 __all__ = ['add_const',
            # TODO: add break_columns
            'check_int',
@@ -20,7 +25,6 @@ __all__ = ['add_const',
            'print_le',
            'print_lt',
            'print_max',
-           'print_mean',
            'print_notin_rangex',
            'print_rangex',
            'reformat_dates_to_gtnp',
@@ -42,9 +46,3 @@ __all__ = ['add_const',
            'translate_codes',
            'utm_to_latlong',
            ]
-
-           
-import common
-import mathfamily
-import printfamily
-import replacefamily

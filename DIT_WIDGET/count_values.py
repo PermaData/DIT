@@ -38,7 +38,7 @@ def double(data):
         data: A list of 2-element lists that represent rows. The first
             one is assumed to be the primary.
     Outputs:
-        out: A list of strings showing primary value: number of 
+        out: A list of strings showing primary value: number of
             secondary values
     """
     values = {}  # Maps value: set of occurrences
@@ -52,19 +52,17 @@ def double(data):
         out.append('{0}: {1}'.format(key, len(values[key])))
     return out
 
-    
+
 def parse_args(args):
     def help():
         print 'count_values.py -i <input file> -o <output file> [-m <mode>]'
 
-
     infile = None
     outfile = None
-    
+
     mode = 'single'
 
-    options = ('i:o:m:',
-                ['input', 'output', 'mode'])
+    options = ('i:o:m:', ['input', 'output', 'mode'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 

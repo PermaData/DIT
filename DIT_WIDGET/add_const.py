@@ -1,11 +1,10 @@
 #!/usr/bin/python
-
-__all__ = ['add_const']
-
 import sys
 import getopt
 
 from .mathfamily import arithmetic as a
+
+__all__ = ['add_const']
 
 
 def add_const(infile, outfile, constant):

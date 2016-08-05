@@ -33,6 +33,7 @@ def print_max(infile, outfile):
                 out.append((place, val))
 
     rv = p.interpret_out(out)
+    # Number of records is useful for Fortran but not pure Python
     rv.insert(0, len(out))
 
     io.push(rv, outfile)

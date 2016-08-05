@@ -23,7 +23,6 @@ def parse_args(args):
     def help():
         print 'minsec_to_decimal.py -i <input file> -o <output file>'
 
-
     infile = None
     outfile = None
 

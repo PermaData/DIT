@@ -12,8 +12,8 @@ def shard(datafile, header=True, name_override=None):
             by looking at the column headers or their position within
             the file. If a sequence, items that are strings will replace
             the names of corresponding columns (the first item will be
-            the name of the first column, etc...) and items that are 
-            None or nonexistent will allow the auto-selection methods 
+            the name of the first column, etc...) and items that are
+            None or nonexistent will allow the auto-selection methods
             to run.
     Outputs:
         Writes each column of the data to a different file. The names of
@@ -23,7 +23,7 @@ def shard(datafile, header=True, name_override=None):
         For FILE=
         Station,Date,Temperature
         XXX123,1999-03-21,-4.30265
-        
+
         For FILE2=
         XYZ987,1492-12-12,3.5
 
@@ -66,9 +66,9 @@ def shard(datafile, header=True, name_override=None):
 
         # Write columns to files
         try:
-        for line in data:
-            for (i, item) in enumerate(line):
-                files[i].write(str(item))
+            for line in data:
+                for (i, item) in enumerate(line):
+                    files[i].write(str(item))
         except ValueError:
             close_all(files)
 
@@ -100,13 +100,11 @@ def close_all(files):
         opened.close()
 
 
-
-
 def reunite(outfile, *args):
     """Unites all column files into a single csv.
     Inputs:
         outfile: The name of the csv file to write into.
-        *args: Any number of filenames which hold individual columns. 
+        *args: Any number of filenames which hold individual columns.
             The columns will be put into the output file in the order
             they appear in this function call.
     Outputs:
@@ -117,7 +115,7 @@ def reunite(outfile, *args):
         try:
             for (i, name) in enumerate(args):
                 files[i] = open(args[i])
-                
+
             for line in itertools.izip(*files):
                 final.writerow(line)
         finally:

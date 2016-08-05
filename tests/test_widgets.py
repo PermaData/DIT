@@ -10,6 +10,8 @@ ARITHMETIC OPERATIONS
 ---------------------
 
 """
+
+
 @with_setup(setup_numeric)
 def test_add_const(infile, outfile):
     constant = 2
@@ -143,7 +145,8 @@ def test_replace_lt(infile, outfile):
 def test_replace_notin_rangex(infile, outfile):
     threshold = (0, 5)
     value = MISSING
-    call_real_function(test_replace_notin_rangex, infile, outfile, threshold, value)
+    call_real_function(test_replace_notin_rangex, infile, outfile,
+                       threshold, value)
 
     with open(infile) as IN, open(outfile) as OUT:
         OUT.next()
@@ -183,7 +186,7 @@ def test_print_ge(infile, outfile):
     call_real_function(test_print_ge, infile, outfile, threshold)
 
     with open(infile) as IN, open(outfile) as OUT:
-        OUT.next() # Discard number written
+        OUT.next()  # Discard number written
         lineout = OUT.next()
         for linein in IN:
             if (almost_equal(float(linein), threshold) or
@@ -203,7 +206,7 @@ def test_print_gt(infile, outfile):
     call_real_function(test_print_gt, infile, outfile, threshold)
 
     with open(infile) as IN, open(outfile) as OUT:
-        OUT.next() # Discard number written
+        OUT.next()  # Discard number written
         lineout = OUT.next()
         for linein in IN:
             if (float(linein) > threshold):
@@ -221,7 +224,7 @@ def test_print_le(infile, outfile):
     call_real_function(test_print_le, infile, outfile, threshold)
 
     with open(infile) as IN, open(outfile) as OUT:
-        OUT.next() # Discard number written
+        OUT.next()  # Discard number written
         lineout = OUT.next()
         for linein in IN:
             if (almost_equal(float(linein), threshold) or
@@ -240,7 +243,7 @@ def test_print_lt(infile, outfile):
     call_real_function(test_print_lt, infile, outfile, threshold)
 
     with open(infile) as IN, open(outfile) as OUT:
-        OUT.next() # Discard number written
+        OUT.next()  # Discard number written
         lineout = OUT.next()
         for linein in IN:
             if (float(linein) < threshold):
@@ -347,7 +350,7 @@ def test_pdf(infile, outfile):
             for (i, line) in enumerate(OUT):
                 print line
                 name, valuestr, barevalue = \
-                    re.match('(M...mum): ([\-0-9.]+)|([0-9.]+)', line).groups()
+                    re.match('(M..imum): ([\-0-9.]+)|([0-9.]+)', line).groups()
                 if (name is not None):
                     # Checks min and max
                     assert almost_equal(correct[name], float(valuestr))
@@ -356,4 +359,17 @@ def test_pdf(infile, outfile):
                     assert almost_equal(correct[i], float(barevalue))
 
 
-
+@with_setup(setup_statistics)
+def test_print_max(infile, outfile):
+    call_real_function(test_print_max, infile, outfile)
+    with open(infile) as IN, open(outfile) as OUT:
+        OUT.next()  # Discard number written
+        lineout = OUT.next()
+        print lineout
+        for linein in IN:
+            print linein
+            try:
+                lineout = OUT.next()
+            except StopIteration:
+                break
+        raise RuntimeError

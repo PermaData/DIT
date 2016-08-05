@@ -3,6 +3,14 @@ import os
 PATH = os.path.abspath('.') + '\\'
 
 
+"""
+
+NUMERIC PROCESSING
+------------------
+
+"""
+
+
 def setup_numeric():
     """Sets up the proper context for the numeric widgets
     NOTE THAT IT WRITES THE FILE THEN RETURNS THE FILE NAME
@@ -31,8 +39,12 @@ def setup_statistics():
     return PATH + 'Easy_stats.in'
 
 
+"""
 
+COORDINATE FORMAT CONVERSION
+----------------------------
 
+"""
 
 
 def setup_latlong():
@@ -45,11 +57,12 @@ def setup_latlong():
     return PATH + 'Latlong_formats.in'
 
 
+"""
 
+COORDINATE CONVERSION
+---------------------
 
-
-
-
+"""
 
 
 def setup_utm_conversion():
