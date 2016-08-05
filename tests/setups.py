@@ -32,6 +32,9 @@ def setup_statistics():
 
 
 
+
+
+
 def setup_latlong():
     contents = '''32\xb0 18' 23.1" N, 122\xb0 36' 52.5" W
 32\xb0 18.385' N, 122\xb0 36.875' W

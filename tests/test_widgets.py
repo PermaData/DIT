@@ -4,7 +4,12 @@ import itertools
 from setups import *
 from helpers import *
 
+"""
 
+ARITHMETIC OPERATIONS
+---------------------
+
+"""
 @with_setup(setup_numeric)
 def test_add_const(infile, outfile):
     constant = 2
@@ -47,6 +52,14 @@ def test_sub_const(infile, outfile):
         for (linein, lineout) in zip(IN, OUT):
             assert (almost_equal(float(lineout), float(linein) - constant) or
                     almost_equal(float(lineout), MISSING))
+
+
+"""
+
+REPLACEMENT OPERATIONS
+----------------------
+
+"""
 
 
 @with_setup(setup_numeric)
@@ -156,6 +169,14 @@ def test_replace_rangex(infile, outfile):
                 assert almost_equal(float(linein), float(lineout))
 
 
+"""
+
+PRINT OPERATIONS
+----------------
+
+"""
+
+
 @with_setup(setup_numeric)
 def test_print_ge(infile, outfile):
     threshold = 5.233
@@ -231,13 +252,12 @@ def test_print_lt(infile, outfile):
                     break
 
 
-# @with_setup(setup_utm_conversion)
-# def test_utm_to_latlong(infile, outfile):
-# call_real_function(test_utm_to_latlong, infile, outfile, 3, 1, 2, hemisphere='n')
+"""
 
-# with open(infile) as IN, open(outfile) as OUT:
-# for (linein, lineout) in zip(IN, OUT):
-# print lineout
+STATISTICAL OPERATIONS
+----------------------
+
+"""
 
 
 @with_setup(setup_statistics)
@@ -334,3 +354,6 @@ def test_pdf(infile, outfile):
                 else:
                     # Checks pdf values
                     assert almost_equal(correct[i], float(barevalue))
+
+
+
