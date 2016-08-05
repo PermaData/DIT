@@ -28,7 +28,9 @@ def print_conditional(infile, outfile, threshold, comparison):
             # Add to output vector iff this value satisfies the comparison
             out.append((i+1, val))
     rv = interpret_out(out)
+    # Necessary for Fortran compatibility but not Python
     rv.insert(0,len(out))
+    
     # Write the output vector to the output file after formatting
     io.push(rv, outfile)
 

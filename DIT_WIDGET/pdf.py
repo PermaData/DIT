@@ -112,15 +112,18 @@ def probability(data):
 
 def parse_args(args):
     def help():
-        print 'pdf.py -i <input file> -o <output file> -b <number of bins> -m <min/max behavior> -l <input minimum> -u <input maximum> -t <outlier behavior> -n <output behavior>'
+        print 'pdf.py -i <input file> -o <output file> -b <number of bins> '\
+        '-m <min/max behavior> -l <input minimum> -u <input maximum> '\
+        '-t <outlier behavior> -n <output behavior>'
 
 
     infile = None
     outfile = None
     bins = None
-    minmax = None
-    outliers = None
-    norm = None
+    
+    minmax = ''
+    outliers = ''
+    norm = ''
 
     lower = 0
     upper = 0
@@ -158,8 +161,7 @@ def parse_args(args):
         elif (option in readoptions[7]):
             norm = value
 
-    if (any(val is None for val in
-            [infile, outfile, bins, minmax, outliers, norm])):
+    if (any(val is None for val in [infile, outfile, bins])):
         help()
         sys.exit(2)
 

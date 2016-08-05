@@ -15,7 +15,6 @@ def setup_numeric():
 -999.000000
 777.2'''
     with open(PATH + 'Numerics.in', 'w') as f:
-        print 'writing', PATH + 'Numerics.in'
         f.write(contents)
     return PATH + 'Numerics.in'
 
@@ -23,6 +22,7 @@ def setup_numeric():
 def setup_statistics():
     contents = '''2
 2
+3
 4
 4
 -999'''

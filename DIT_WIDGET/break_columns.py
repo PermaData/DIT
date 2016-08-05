@@ -114,11 +114,11 @@ def reunite(outfile, *args):
     """
     with open(outfile, 'wb') as f:
         final = csv.writer(f)
-        files = args[:]
-        for (i, name) in enumerate(args):
-            files[i] = open(args[i])
-            
-        for line in itertools.izip(*files):
-            final.writerow(line)
-            
-        close_all(files)
+        try:
+            for (i, name) in enumerate(args):
+                files[i] = open(args[i])
+                
+            for line in itertools.izip(*files):
+                final.writerow(line)
+        finally:
+            close_all(files)

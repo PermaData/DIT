@@ -34,7 +34,7 @@ def replace_conditional(infile, outfile, threshold, value, comparison):
             # Or just pass through the value unchanged
             out[i] = num
     # Number of replacements made is useful for FORTRAN but not pure python
-    # out.insert(0, count)
+    out.insert(0, count)
     
     # Write the replaced values to the output file
     io.push(out, outfile)
