@@ -1,3 +1,5 @@
+"""Converts latitude/longitude coordinates into UTM. The input coordinates must
+be in decimal format."""
 import csv
 import utm
 import sys
@@ -33,7 +35,6 @@ def parse_args(args):
     def help():
         print 'latlong_to_utm.py -i <input CSV file> -o <output csv file>'\
             '-t <latitude column index> -n <longitude column index>'
-
 
     infile = None
     outfile = None

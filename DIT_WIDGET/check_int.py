@@ -1,3 +1,5 @@
+"""Checks whether all the values in a column file are integers."""
+
 import sys
 import getopt
 

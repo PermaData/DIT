@@ -24,7 +24,7 @@ def statistics(infile, outfile):
     names = ['Min', 'Max', 'Mean', 'Standard Deviation', 'Total points',
              'Valid points', 'Valid fraction']
     formatstr = '{0}: {1:0.{p}f}'
-    for name, value in zip(names, minmax+distribution+point_stats):
+    for name, value in zip(names, minmax + distribution + point_stats):
         out.append(formatstr.format(name, value, p=7))
 
     io.push(out, outfile)

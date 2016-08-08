@@ -15,8 +15,8 @@ def rounding(infile, outfile, mode, precision=0):
         up/ceil/ceiling: round to the next integer towards +inf.
         down/floor: round to the next integer towards -inf.
         trunc/truncate: truncate decimal part, rounding towards 0.
-        nearest/round: round to the nearest integer. If precision is 
-            given, instead round to that many digits beyond the decimal 
+        nearest/round: round to the nearest integer. If precision is
+            given, instead round to that many digits beyond the decimal
             point.
     """
     data = io.pull(infile, float)
@@ -37,11 +37,14 @@ def rounding(infile, outfile, mode, precision=0):
 def _ceil(val, precision):
     return float(math.ceil(val * 10**precision)) / precision
 
+
 def _floor(val, precision):
     return float(math.floor(val * 10**precision)) / precision
 
+
 def _trunc(val, precision):
     return int(val)
+
 
 def _round(val, precision):
     return round(val, precision)
@@ -52,16 +55,15 @@ def parse_args(args):
         print 'rounding.py -i <input file> -o <output file> '\
             '-m <rounding mode> [-p <precision>]'
 
-
     infile = None
     outfile = None
     mode = None
-    
+
     precision = 0
 
     options = ('i:o:m:p:', ['input', 'output', 'mode', 'precision'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)

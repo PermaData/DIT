@@ -8,10 +8,9 @@ import printfamily.prints as p
 __all__ = ['print_rangex']
 
 
-def print_rangex(infile, outfile, num):
-    """Prints all values between two thresholds.
-    """
-    p.print_conditional(infile, outfile, num,
+def print_rangex(infile, outfile, threshold):
+    """Prints all values between two thresholds."""
+    p.print_conditional(infile, outfile, threshold,
                         lambda x, y: x > y[0] and x < y[1])
 
 

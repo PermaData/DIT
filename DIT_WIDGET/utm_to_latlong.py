@@ -18,7 +18,7 @@ def utm_to_latlong(infile, outfile, zone_i, E_i, N_i, zone_letter_i=None,
         zone_i: column index in infile with the zone data
         E_i: column index in infile with the easting data
         N_i: column index in infile with the northing data
-        zone_letter_i: column index in infile with the zone letters 
+        zone_letter_i: column index in infile with the zone letters
             (if applicable)
         hemisphere:
     Output:
@@ -80,10 +80,10 @@ def parse_args(args):
     zone_letter_i = None
 
     options = ('i:o:z:e:n:L:h:',
-                ['input', 'output', 'zone_index', 'easting_index',
+               ['input', 'output', 'zone_index', 'easting_index',
                 'northing_index', 'zone_letter_index', 'hemisphere'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)

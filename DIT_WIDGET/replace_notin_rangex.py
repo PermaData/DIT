@@ -9,6 +9,7 @@ __all__ = ['replace_notin_rangex']
 
 
 def replace_notin_rangex(infile, outfile, threshold, value):
+    """Replace values not within the range defined by threshold with value within a column file."""
     r.replace_conditional(infile, outfile, threshold, value,
                           lambda x, y: x < y[0] or x > y[1])
 

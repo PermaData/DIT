@@ -1,5 +1,5 @@
 #! /usr/bin/python
-
+"""Multiplies all numeric values in a column file by a constant."""
 import sys
 import getopt
 

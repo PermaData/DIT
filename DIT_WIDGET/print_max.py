@@ -44,12 +44,10 @@ def parse_args(args):
         print 'print_max.py -i <input file> -o <output file>'
         print 'Prints max and mean'
 
-
     infile = None
     outfile = None
 
-    options = ('i:o:',
-                ['input', 'output'])
+    options = ('i:o:', ['input', 'output'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 

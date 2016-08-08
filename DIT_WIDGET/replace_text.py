@@ -3,6 +3,7 @@ import csv
 import getopt
 import sys
 
+
 def replace_text(ggd361_csv, out_file, to_replace, with_replace):
     """
     Replace text within field with new text.
@@ -26,6 +27,7 @@ def replace_text(ggd361_csv, out_file, to_replace, with_replace):
             writer.writerow(row)
     ofile.close()
 
+
 def parse_arguments(argv):
     """ Parse the command line arguments and return them. """
     ggd361_csv = None
@@ -34,7 +36,7 @@ def parse_arguments(argv):
     with_replace = None
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:t:w:",["ggd361_csv=","out_file=","to_replace=","with_replace="])
+        opts, args = getopt.getopt(argv, "hi:o:t:w:", ["ggd361_csv=", "out_file=", "to_replace=", "with_replace="])
     except getopt.GetoptError:
         print 'replace_text.py -i <GGD361 CSV file> -o <CSV output file> -t <text in field to replace> -w <replacement text>'
         sys.exit(2)
@@ -69,8 +71,8 @@ def parse_arguments(argv):
         print "Text within field to replace '-t' argument required."
         sys.exit(2)
     if not found_with_replace:
-        #print "Replacement text '-w' argument required."
-        #sys.exit(2)
+        # print "Replacement text '-w' argument required."
+        # sys.exit(2)
         with_replace = ''
     return (ggd361_csv, out_file, to_replace, with_replace)
 

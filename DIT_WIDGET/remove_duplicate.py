@@ -13,7 +13,7 @@ def remove_duplicate(infile, outfile):
     with open(infile) as fi:
         with open(outfile, 'w') as fo:
             data = csv.reader(fi, quoting=csv.QUOTE_NONNUMERIC)
-            push = csv.writer(fo, quoting=csv.QUOTE_NONNUMERIC, 
+            push = csv.writer(fo, quoting=csv.QUOTE_NONNUMERIC,
                               lineterminator='\n', quotechar="'")
 
             track = set()
@@ -25,7 +25,7 @@ def remove_duplicate(infile, outfile):
                 else:
                     track.add(test)
                     push.writerow(row)
-            #print 'Found {0} duplicates'.format(duplicates)
+            # print 'Found {0} duplicates'.format(duplicates)
 
 
 def quote(line):
@@ -41,7 +41,6 @@ def quote(line):
 def parse_args(args):
     def help():
         print 'remove_duplicate.py -i <input file> -o <output file>'
-
 
     infile = None
     outfile = None

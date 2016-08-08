@@ -1,5 +1,5 @@
 #! /usr/bin/python
-
+"""Subtracts a constant from all numeric values in a column file."""
 import sys
 import getopt
 
@@ -19,13 +19,12 @@ def parse_args(args):
     def help():
         print 'sub_const.py -i <input file> -o <output file> -n <number>'
 
-
     infile = None
     outfile = None
     constant = None
 
     options = ('i:o:n:',
-                ['input', 'output', 'constant'])
+               ['input', 'output', 'constant'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 

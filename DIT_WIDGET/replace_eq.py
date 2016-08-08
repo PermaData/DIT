@@ -9,6 +9,7 @@ __all__ = ['replace_eq']
 
 
 def replace_eq(infile, outfile, threshold, value):
+    """Replace values equal to threshold with value within a column file."""
     r.replace_conditional(infile, outfile, threshold, value,
                           lambda x, y: x == y)
 
@@ -18,16 +19,15 @@ def parse_args(args):
         print 'replace_eq.py -i <input file> -o <output file> -t <target value> -v <replacement value>'
         print 'Replaces values equal to target with replacement'
 
-
     infile = None
     outfile = None
     threshold = None
     value = None
 
     options = ('i:o:t:v:',
-                ['input', 'output', 'threshold', 'value'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+               ['input', 'output', 'threshold', 'value'])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)

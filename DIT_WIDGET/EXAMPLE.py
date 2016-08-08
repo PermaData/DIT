@@ -1,7 +1,11 @@
+"""LOOKING AHEAD: This module is an example of what may be the final structure
+of the project."""
+
 import rill
 import utm
 
 import log
+
 
 @rill.component
 @rill.inport('Latitude')
@@ -30,7 +34,7 @@ def latlong_to_utm(Latitude, Longitude, Easting, Northing, Zone, Letter, LOGIN, 
             N.write(str(n))
             Z.write(str(z))
             L.write(str(l))
-        
+
         Easting.send(ename)
         Northing.send(nname)
         Zone.send(zname)

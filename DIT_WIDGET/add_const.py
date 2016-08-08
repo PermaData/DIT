@@ -1,4 +1,7 @@
 #!/usr/bin/python
+
+"""Adds a constant to all numeric values in a column file."""
+
 import sys
 import getopt
 
@@ -16,7 +19,7 @@ def add_const(infile, outfile, constant):
 
 def parse_args(args):
     def help():
-        print 'div_const.py -i <input file> -o <output file> -n <number>'
+        print 'add_const.py -i <input file> -o <output file> -n <number>'
 
     infile = None
     outfile = None

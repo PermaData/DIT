@@ -52,6 +52,7 @@ def setup_latlong():
 32\xb0 18.385' N, 122\xb0 36.875' W
 32.30642\xb0 N, 122.61458\xb0 W
 +32.30642, -122.61458'''
+    # These examples from https://www.maptools.com/tutorials/lat_lon/formats
     with open(PATH + 'Latlong_formats.in', 'w') as f:
         f.write(contents)
     return PATH + 'Latlong_formats.in'

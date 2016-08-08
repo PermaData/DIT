@@ -10,10 +10,10 @@ __all__ = ['remove_chars']
 
 def remove_chars(infile, outfile, chars, substring=False, placeholder=''):
     """Remove all from a set of characters from a column.
-    
+
     Input:
         chars:
-        substring: If False (the default), chars is interpreted as a set 
+        substring: If False (the default), chars is interpreted as a set
             of individual characters. If True, chars is interpreted as a
             defined substring, and this works like search and replace.
         placeholder: If '' (the default), the characters are removed.
@@ -39,15 +39,14 @@ def parse_args(args):
         print 'remove_chars.py -i <input file> -o <output file> '\
             '-c <characters to remove>'
 
-
     infile = None
     outfile = None
     chars = None
 
     options = ('i:o:c:',
                ['input', 'output', 'chars'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)

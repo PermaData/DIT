@@ -1,3 +1,7 @@
+"""Counts the number of unique values that occur in a column file OR
+Given two columns, counts the number of unique values in column 2 that
+    correspond to values in column 1."""
+
 import sys
 import getopt
 

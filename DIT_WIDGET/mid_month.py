@@ -1,3 +1,4 @@
+"""Calculates the date and time at the center of the month."""
 import time
 import getopt
 import sys
@@ -29,10 +30,11 @@ def mid_month(infile, outfile, format):
 
     io.push(out, outfile)
 
+
 def leap_year(year):
-    if (year%4 == 0):
-        if (year%100 == 0):
-            if (year%400 == 0):
+    if (year % 4 == 0):
+        if (year % 100 == 0):
+            if (year % 400 == 0):
                 return True
             return False
         return True
@@ -42,14 +44,15 @@ def leap_year(year):
 def parse_args(args):
     def help():
         print 'replace_ge.py -i <input file> -o <output file> -f <format>'
-        print 'Makes a string of the center day of the month. See time.strftime for format specification'
+        print 'Makes a string of the center day of the month. See '\
+            'time.strftime for format specification'
 
     infile = None
     outfile = None
     format = None
 
     options = ('i:o:t:v:',
-                ['input', 'output', 'format'])
+               ['input', 'output', 'format'])
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])
 

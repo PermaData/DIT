@@ -12,7 +12,7 @@ __all__ = ['decimal_to_minsec']
 def decimal_to_minsec(infile, outfile):
     data = io.pull(infile, str)
 
-    out=[['', ''] for all in range(len(data))]
+    out = [['', ''] for all in range(len(data))]
     formatstr = '{deg}° {min}" {sec:2.7f}\' {hemi}'
     negatives = ['S', 'W']
     positives = ['N', 'E']
@@ -33,9 +33,10 @@ def decimal_to_minsec(infile, outfile):
 
 def standardize(coordstring):
     """Creates a tuple from a standard decimal coordinate string."""
-    out = coordstring.replace('°','').replace('W','*-1').replace('S','*-1')
-    out = out.replace('N','',).replace('E','')
+    out = coordstring.replace('°', '').replace('W', '*-1').replace('S', '*-1')
+    out = out.replace('N', '').replace('E', '')
     return eval(out)
+
 
 def interpret_out(data):
     out = []
@@ -47,7 +48,6 @@ def interpret_out(data):
 def parse_args(args):
     def help():
         print 'minsec_to_decimal.py -i <input file> -o <output file>'
-
 
     infile = None
     outfile = None

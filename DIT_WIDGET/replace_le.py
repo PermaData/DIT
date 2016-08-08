@@ -9,6 +9,7 @@ __all__ = ['replace_le']
 
 
 def replace_le(infile, outfile, threshold, value):
+    """Replace values less than or equal to threshold with value within a column file."""
     r.replace_conditional(infile, outfile, threshold, value,
                           lambda x, y: x <= y)
 

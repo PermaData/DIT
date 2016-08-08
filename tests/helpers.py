@@ -39,5 +39,5 @@ def call_real_function(testfunction, *args, **kwargs):
     return realfunc(*args, **kwargs)
 
 
-def almost_equal(float1, float2):
-    return abs(float1 - float2) < 0.0000001
+def almost_equal(float1, float2, precision=7):
+    return abs(float1 - float2) < 10**(-precision)

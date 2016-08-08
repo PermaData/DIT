@@ -1,4 +1,5 @@
 #! /usr/bin/python
+"""Calculates a probability density function of the numeric data in a column file."""
 import sys
 import getopt
 
@@ -113,14 +114,13 @@ def probability(data):
 def parse_args(args):
     def help():
         print 'pdf.py -i <input file> -o <output file> -b <number of bins> '\
-        '-m <min/max behavior> -l <input minimum> -u <input maximum> '\
-        '-t <outlier behavior> -n <output behavior>'
-
+            '-m <min/max behavior> -l <input minimum> -u <input maximum> '\
+            '-t <outlier behavior> -n <output behavior>'
 
     infile = None
     outfile = None
     bins = None
-    
+
     minmax = ''
     outliers = ''
     norm = ''
@@ -131,7 +131,7 @@ def parse_args(args):
     options = ('i:o:b:m:l:u:t:n:',
                ['input', 'output', 'bins', 'minmax', 'lower', 'upper',
                 'outliers', 'norm'])
-    # readoptions is a list of -short_option --long_option pairs in 
+    # readoptions is a list of -short_option --long_option pairs in
     # the order shown above.
     readoptions = zip(['-'+c for c in options[0] if c != ':'],
                       ['--'+o for o in options[1]])

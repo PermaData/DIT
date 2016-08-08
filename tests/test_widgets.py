@@ -362,14 +362,37 @@ def test_pdf(infile, outfile):
 @with_setup(setup_statistics)
 def test_print_max(infile, outfile):
     call_real_function(test_print_max, infile, outfile)
+    correct = (())
     with open(infile) as IN, open(outfile) as OUT:
         OUT.next()  # Discard number written
         lineout = OUT.next()
-        print lineout
-        for linein in IN:
-            print linein
-            try:
-                lineout = OUT.next()
-            except StopIteration:
-                break
-        raise RuntimeError
+        isMin = True
+        for lineout in OUT:
+            location, value = lineout.split(',')
+            if (location == 'Location'):
+                if (value.strip() == 'Maximum'):
+                    isMin = False
+                continue
+            if (isMin):
+                assert int(location) in (0, 1)
+                assert float(value) == 2
+            else:
+                assert int(location) in (3, 4)
+                assert float(value) == 4
+
+
+"""
+
+COORDINATE FORMAT CONVERSION
+
+"""
+
+
+@with_setup(setup_latlong)
+def test_minsec_to_decimal(infile, outfile):
+    call_real_function(test_minsec_to_decimal, infile, outfile)
+    with open(outfile) as OUT:
+        for line in OUT:
+            values = line.split(',')
+            assert almost_equal(float(values[0]), 32.30642, precision=5)
+            assert almost_equal(float(values[1]), -122.61458, precision=5)

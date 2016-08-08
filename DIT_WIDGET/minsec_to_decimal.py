@@ -27,18 +27,20 @@ def minsec_to_decimal(infile, outfile):
         names = ['degrees', 'minutes', 'seconds']
         values = dict([(name, 0) for name in names])
         pair = [0, 0]
-        for (which, section) in enumerate([subs[:len(subs)/2], subs[len(subs)/2:]]):
+        for (which, section) in enumerate([subs[:len(subs) / 2],
+                                           subs[len(subs) / 2:]]):
             sign = 1
             for (i, elem) in enumerate(section):
                 if (elem in 'NESW'):
                     sign = -1 if elem in 'SW' else 1
                 else:
                     values[names[i]] = float(elem)
-            pair[which] = (values['degrees'] + values['minutes']/60
-                           + values['seconds']/3600) * sign
+            pair[which] = (values['degrees'] + values['minutes'] / 60
+                           + values['seconds'] / 3600) * sign
         out.append(pair)
 
     io.push(interpret_out(out), outfile)
+
 
 def interpret_out(data):
     out = []
@@ -50,7 +52,6 @@ def interpret_out(data):
 def parse_args(args):
     def help():
         print 'minsec_to_decimal.py -i <input file> -o <output file>'
-
 
     infile = None
     outfile = None

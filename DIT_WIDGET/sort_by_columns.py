@@ -11,6 +11,7 @@ gtnp_date_time_format2 = '%Y-%m-%d %H:%M:%S'
 gtnp_date_time_format = gtnp_date_time_format1
 date_time_index = None
 
+
 def cast_to_datetime(dt_str):
     """
     Convert string to a datetime object.
@@ -31,6 +32,7 @@ def cast_to_datetime(dt_str):
             print 'Column cannot be converted to date/time. Sorting will be by string.'
     return date_time
 
+
 def cast_to_integer(int_str):
     """
     Convert string to an integer.
@@ -42,6 +44,7 @@ def cast_to_integer(int_str):
     except ValueError:
         return int_str
 
+
 def cast_to_real(real_str):
     """
     Convert string to a real.
@@ -52,6 +55,7 @@ def cast_to_real(real_str):
         return float(real_str)
     except ValueError:
         return real_str
+
 
 def cast_data_value(col_str):
     """
@@ -69,6 +73,7 @@ def cast_data_value(col_str):
     except ValueError:
         pass
     return col_str
+
 
 def create_typed_row(row, column_list):
     """
@@ -88,6 +93,7 @@ def create_typed_row(row, column_list):
         elif type == 'real':
             row_list[index] = cast_to_real(row_list[index])
     return tuple(row_list)
+
 
 def sort_by_columns(in_file, out_file, column_list):
     """
@@ -123,13 +129,14 @@ def sort_by_columns(in_file, out_file, column_list):
             sorted_row = tuple(row_list)
         sorted_writer.writerow(sorted_row)
 
+
 def parse_arguments(argv):
     """ Parse the command line arguments and return them. """
     in_file = None
     out_file = None
     column_list = None
     try:
-        opts, args = getopt.getopt(argv,"hi:o:l:",["in_file=","out_file=","column_list="])
+        opts, args = getopt.getopt(argv, "hi:o:l:", ["in_file=", "out_file=", "column_list="])
     except getopt.GetoptError:
         print 'sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>'
         sys.exit(2)

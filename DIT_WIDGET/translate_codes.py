@@ -41,15 +41,19 @@ def get_header_indices(condition_cols, replacement_cols, csv_header, are_moving)
             sys.exit(2)
     return col_indices
 
+
 def column(matrix, i):
     return [row[i] for row in matrix]
 
+
 def clean_value(value):
-    new_val = value.strip().replace('\'','')
+    new_val = value.strip().replace('\'', '')
     return new_val
+
 
 def clean_list(list_to_clean):
     return [clean_value(value) for value in list_to_clean]
+
 
 def split_list(list_to_split, split_at):
     cleaned_list = clean_list(list_to_split)
@@ -58,6 +62,7 @@ def split_list(list_to_split, split_at):
     after = cleaned_list[split_ind + 1:]
     return before, after
 
+
 def get_conditions_replacements(codes):
     with open(codes) as code_values:
         code_reader = csv.reader(code_values, delimiter=',', quoting=csv.QUOTE_NONE)
@@ -65,6 +70,7 @@ def get_conditions_replacements(codes):
         condition_cols, replacement_cols = split_list(header, '=')
         condition_replacements = [split_list(row, '=') for row in code_reader]
     return condition_cols, replacement_cols, condition_replacements
+
 
 def subset_csv_data(csv_reader, col_ind, are_moving):
     """ Grab subset columns of CSV data to hand to replacement scripts. """
@@ -79,6 +85,7 @@ def subset_csv_data(csv_reader, col_ind, are_moving):
         full_data.append(row)
     return csv_data, full_data
 
+
 def subset_code_data(the_id, mapping):
     """ Grab subset of condition/replacement rows matching 'ID' (first column
         of CSV and condition file).
@@ -92,6 +99,7 @@ def subset_code_data(the_id, mapping):
 
     return code_subset
 
+
 def translate_codes(ggd361_csv, out_file, move_codes, replace_codes):
     """
     :param ggd361_csv: input CSV file
@@ -99,7 +107,7 @@ def translate_codes(ggd361_csv, out_file, move_codes, replace_codes):
     :param codes: codes CSV file
     """
 
-    are_moving = move_codes != None
+    are_moving = move_codes is not None
     codes = move_codes
     if not are_moving:
         codes = replace_codes
@@ -151,6 +159,7 @@ def translate_codes(ggd361_csv, out_file, move_codes, replace_codes):
         writer = csv.writer(ofile, delimiter=',', quoting=csv.QUOTE_NONE, lineterminator='\n')
         writer.writerows(write_csv)
 
+
 def parse_arguments(argv):
     """ Parse the command line arguments and return them. """
     ggd361_csv = None
@@ -159,7 +168,7 @@ def parse_arguments(argv):
     replace_codes = None
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:m:r:",["ggd361_csv=","out_file=","move_codes=","replace_codes="])
+        opts, args = getopt.getopt(argv, "hi:o:m:r:", ["ggd361_csv=", "out_file=", "move_codes=", "replace_codes="])
     except getopt.GetoptError:
         print 'replace_text.py -i <GGD361 CSV file> -o <CSV output file> -m <move codes CSV file> -r <replace codes CSV file>'
         sys.exit(2)

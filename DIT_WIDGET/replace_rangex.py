@@ -9,6 +9,7 @@ __all__ = ['replace_rangex']
 
 
 def replace_rangex(infile, outfile, threshold, value):
+    """Replace values within the range defined by threshold with value within a column file."""
     r.replace_conditional(infile, outfile, threshold, value,
                           lambda x, y: x > y[0] and x < y[1])
 

@@ -1,4 +1,5 @@
 #! /usr/bin/python
+"""Divides all numeric values in a column file by a constant."""
 import sys
 import getopt
 
@@ -17,7 +18,6 @@ def div_const(infile, outfile, constant):
 def parse_args(args):
     def help():
         print 'div_const.py -i <input file> -o <output file> -n <number>'
-
 
     infile = None
     outfile = None

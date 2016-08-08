@@ -1,3 +1,5 @@
+"""Reads a netCDF file defining a grid mapping location to some useful
+information."""
 import sys
 
 import netCDF4 as nc
@@ -27,7 +29,7 @@ def map_read(infile, outfile, lat_i, long_i, grid, grid_config, grid_meaning):
             push = csv.writer(fo)
 
             data = nc.Dataset(grid)
-            array = data.variables['grid'] # varname in master
+            array = data.variables['grid']  # varname in master
 
             (min_lon, min_lat, width_lon, width_lat, offset_lon, offset_lat,
              num_lon, num_lat) = get_config(grid_config, infile)

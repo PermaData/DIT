@@ -1,3 +1,6 @@
+"""LOOKING AHEAD: This module splits an input csv file into individual
+columns for easier manipulation by widgets."""
+
 import csv
 import itertools
 

@@ -18,15 +18,14 @@ def parse_args(args):
         print 'print_le.py -i <input file> -o <output file> -t <threshold>'
         print 'Prints values less than or equal to threshold'
 
-
     infile = None
     outfile = None
     threshold = None
 
     options = ('i:o:t:',
                ['input', 'output', 'threshold'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)

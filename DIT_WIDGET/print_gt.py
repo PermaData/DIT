@@ -8,9 +8,9 @@ import printfamily.prints as p
 __all__ = ['print_gt']
 
 
-def print_gt(infile, outfile, num):
+def print_gt(infile, outfile, threshold):
     """Print all values greater than a threshold."""
-    p.print_conditional(infile, outfile, num, lambda x, y: x > y)
+    p.print_conditional(infile, outfile, threshold, lambda x, y: x > y)
 
 
 def parse_args(args):

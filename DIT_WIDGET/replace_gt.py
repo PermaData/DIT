@@ -9,6 +9,7 @@ __all__ = ['replace_gt']
 
 
 def replace_gt(infile, outfile, threshold, value):
+    """Replace values greater than threshold with value within a column file."""
     r.replace_conditional(infile, outfile, threshold, value,
                           lambda x, y: x > y)
 

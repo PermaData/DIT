@@ -1,3 +1,5 @@
+"""Counts the number of valid (non-empty) records in a column file."""
+
 import sys
 import getopt
 

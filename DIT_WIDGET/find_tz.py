@@ -1,3 +1,5 @@
+"""Finds the time zone given latitude and longitude coordinates. If local date
+and time are given, account for DST as well."""
 # -*- coding: utf-8 -*-
 import sys
 import datetime
@@ -32,7 +34,6 @@ def find_tz(infile, outfile, dt_i, lat_i, lon_i, header=True):
             push = csv.writer(output)
 
             finder = tzwhere.tzwhere()
-            #out = []
             for line in data:
                 if (header):
                     push.writerow(line+['UTC Offset'])
@@ -59,7 +60,6 @@ def name_to_offset(name, dt):
 def parse_args(args):
     def help():
         print 'find_tz.py -i <input file> -o <output file> -d <date column index> -t <latitude column index> -n <longitude column index>'
-
 
     infile = None
     outfile = None
