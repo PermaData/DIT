@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 import sys
 import getopt
 
@@ -10,20 +9,21 @@ __all__ = ['decimal_to_minsec']
 
 
 def decimal_to_minsec(infile, outfile):
-    data = io.pull(infile, str)
+    f = open(infile)
+    data = f.readlines()
 
     out = [['', ''] for all in range(len(data))]
-    formatstr = '{deg}° {min}" {sec:2.7f}\' {hemi}'
+    formatstr = '{deg:03.0f}\xb0 {min:02.0f}\' {sec:02.0f}" {hemi}'
     negatives = ['S', 'W']
     positives = ['N', 'E']
     for row, pair in enumerate(data):
-        coordinates = standardize(pair)
+        coordinates = standardize(pair.strip())
         for col, coord in enumerate(coordinates):
             degree = int(coord)
-            rm = coord % 1
-            minute = int(rm*60)
-            rm = (rm*60) % 1
-            second = rm*60
+            rm = abs(coord) % 1
+            minute = int(rm * 60)
+            rm = (rm * 60) % 1
+            second = rm * 60
             out[row][col] = formatstr.format(deg=abs(degree), min=minute,
                     sec=second, hemi=negatives[col] if degree < 0 else
                     positives[col])
@@ -33,7 +33,7 @@ def decimal_to_minsec(infile, outfile):
 
 def standardize(coordstring):
     """Creates a tuple from a standard decimal coordinate string."""
-    out = coordstring.replace('°', '').replace('W', '*-1').replace('S', '*-1')
+    out = coordstring.replace('\xb0', '').replace('W', '*-1').replace('S', '*-1')
     out = out.replace('N', '').replace('E', '')
     return eval(out)
 

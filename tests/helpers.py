@@ -40,4 +40,5 @@ def call_real_function(testfunction, *args, **kwargs):
 
 
 def almost_equal(float1, float2, precision=7):
+    """Determines whether the two floating point numbers are equal to some precision."""
     return abs(float1 - float2) < 10**(-precision)

@@ -3,7 +3,6 @@ import itertools
 
 from setups import *
 from helpers import *
-
 """
 
 ARITHMETIC OPERATIONS
@@ -145,8 +144,8 @@ def test_replace_lt(infile, outfile):
 def test_replace_notin_rangex(infile, outfile):
     threshold = (0, 5)
     value = MISSING
-    call_real_function(test_replace_notin_rangex, infile, outfile,
-                       threshold, value)
+    call_real_function(test_replace_notin_rangex, infile, outfile, threshold,
+                       value)
 
     with open(infile) as IN, open(outfile) as OUT:
         OUT.next()
@@ -384,11 +383,12 @@ def test_print_max(infile, outfile):
 """
 
 COORDINATE FORMAT CONVERSION
+----------------------------
 
 """
 
 
-@with_setup(setup_latlong)
+@with_setup(setup_minsec)
 def test_minsec_to_decimal(infile, outfile):
     call_real_function(test_minsec_to_decimal, infile, outfile)
     with open(outfile) as OUT:
@@ -396,3 +396,62 @@ def test_minsec_to_decimal(infile, outfile):
             values = line.split(',')
             assert almost_equal(float(values[0]), 32.30642, precision=5)
             assert almost_equal(float(values[1]), -122.61458, precision=5)
+
+
+@with_setup(setup_decimal)
+def test_decimal_to_minsec(infile, outfile):
+    call_real_function(test_decimal_to_minsec, infile, outfile)
+    with open(outfile) as OUT:
+        correct = ('040\xb0 00\' 54" N, 105\xb0 16\' 14" W',
+                   '048\xb0 51\' 24" N, 002\xb0 21\' 08" E',
+                   '006\xb0 09\' 47" S, 035\xb0 45\' 06" E',
+                   '022\xb0 54\' 24" S, 043\xb0 10\' 22" W')
+        # Calculated using https://www.fcc.gov/media/radio/dms-decimal
+        for (line, verify) in zip(OUT, correct):
+            assert line.strip() == verify.strip()
+
+
+"""
+
+COORDINATE CONVERSION
+---------------------
+
+"""
+
+
+@with_setup(setup_utm_conversion)
+def test_utm_to_latlong(infile, outfile):
+    zone_i = 3
+    E_i = 1
+    N_i = 2
+    call_real_function(
+        test_utm_to_latlong, infile, outfile, zone_i, E_i, N_i, hemisphere='n')
+    with open(outfile) as OUT:
+        import csv
+        data = csv.reader(OUT)
+        correct = ((54.92851, -67.096264), (54.935474, -67.097309),
+                   (54.937324, -67.102935), (54.938144, -67.101398))
+        # Calculated using http://www.engineeringtoolbox.com/utm-latitude-longitude-d_1370.html
+        next(data)  # Discard header
+        for (line, verify) in zip(data, correct):
+            print line, verify
+            assert almost_equal(float(line[-2]), verify[-2], precision=6)
+            assert almost_equal(float(line[-1]), verify[-1], precision=6)
+
+
+@with_setup(setup_latlong_conversion)
+def test_latlong_to_utm(infile, outfile):
+    lat_i = 5
+    long_i = 6
+    call_real_function(test_latlong_to_utm, infile, outfile, lat_i, long_i)
+    with open(outfile) as OUT:
+        import csv
+        data = csv.reader(OUT)
+        correct = ((621988, 6088495, '19U'), (621900, 6089268, '19U'),
+                   (621534, 6089464, '19U'), (621630, 6089558, '19U'))
+        next(data)  # Discard header
+        for (line, verify) in zip(data, correct):
+            print line[-3:], verify
+            assert almost_equal(float(line[-3]), verify[-3], precision=0)
+            assert almost_equal(float(line[-2]), verify[-2], precision=0)
+            assert line[-1] == verify[-1]

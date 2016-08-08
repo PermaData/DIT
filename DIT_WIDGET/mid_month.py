@@ -21,7 +21,7 @@ def mid_month(infile, outfile, format):
         year = t.tm_year
         leap = leap_year(year)
         month = t.tm_mon
-        mid_day = month_days[leap][month-1] / 2.
+        mid_day = month_days[leap][month - 1] / 2.
         hour = mid_day % 1 * 24
 
         outputdate = (year, month, int(mid_day), int(hour), 0, 0, 0, 0, -1)
@@ -53,8 +53,8 @@ def parse_args(args):
 
     options = ('i:o:t:v:',
                ['input', 'output', 'format'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]])
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
