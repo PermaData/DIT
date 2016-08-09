@@ -2,10 +2,12 @@
 
 import math
 import sys
+import getopt
 
 import common.readwrite as io
 import common.definitions as d
-import common.parseargs as pa
+
+__all__ = ['statistics']
 
 
 def statistics(infile, outfile):
@@ -18,12 +20,13 @@ def statistics(infile, outfile):
     distribution = mean_std(filtered)
     minmax = min_max(filtered)
 
-    formatstr = ''
-    for i in range(7):
-        formatstr += '{' + str(i) + ':0.{p}f},'
-    formatstr = formatstr[:-1]  # Remove trailing ,
-    out = ['min,max,mean,std,totpts,valid_pts,pts_frac',
-           formatstr.format(*(minmax + distribution + point_stats), p=7)]
+    out = []
+    names = ['Min', 'Max', 'Mean', 'Standard Deviation', 'Total points',
+             'Valid points', 'Valid fraction']
+    formatstr = '{0}: {1:0.{p}f}'
+    for name, value in zip(names, minmax + distribution + point_stats):
+        out.append(formatstr.format(name, value, p=7))
+
     io.push(out, outfile)
 
 
@@ -65,7 +68,7 @@ def mean_std(data):
 
 
 def min_max(data):
-    return(min(data), max(data))
+    return (min(data), max(data))
 
 
 def median(data):
@@ -78,9 +81,41 @@ def median(data):
         return (data[len(data) // 2] + data[len(data) // 2 + 1]) / 2
 
 
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-args = pa.parse_args(sys.argv[1:])
-infile = args[0]
-outfile = args[1]
+def parse_args(args):
+    def help():
+        print 'statistics.py -i <input CSV file> -o <output csv file>'
 
-statistics(infile, outfile)
+
+    infile = None
+    outfile = None
+
+    options = ('i:o:',
+                ['input', 'output'])
+    readoptions = zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]])
+
+    try:
+        (vals, extras) = getopt.getopt(args, *options)
+    except getopt.GetoptError as e:
+        print str(e)
+        help()
+        sys.exit(2)
+
+    for (option, value) in vals:
+        if (option in readoptions[0]):
+            infile = value
+        elif (option in readoptions[1]):
+            outfile = value
+
+    if (any(val is None for val in
+            [infile, outfile])):
+        help()
+        sys.exit(2)
+
+    return infile, outfile
+
+#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
+if (__name__ == '__main__'):
+    infile, outfile = parse_args(sys.argv[1:])
+
+    statistics(infile, outfile)

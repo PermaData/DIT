@@ -6,6 +6,7 @@ import json
 import getopt
 import sys
 
+
 def read_metadata_csv(csv_overrides):
     """
     Read in the CSV file with dynamic metadata content in each row.
@@ -27,6 +28,7 @@ def read_metadata_csv(csv_overrides):
 
     return field_names, csv_data
 
+
 def read_json_template(json_template):
     """
     Read in JSON template to use for a site/borehole entry.
@@ -37,6 +39,7 @@ def read_json_template(json_template):
     with open(json_template) as data_file:
         data = json.load(data_file)
     return data
+
 
 def traverse(obj, path=None, callback=None):
     """
@@ -51,7 +54,7 @@ def traverse(obj, path=None, callback=None):
 
     if isinstance(obj, dict):
         value = dict((k, traverse(v, path + [k], callback))
-                    for k, v in obj.items())
+                     for k, v in obj.items())
     elif isinstance(obj, list):
         value = obj
         if obj:
@@ -67,6 +70,7 @@ def traverse(obj, path=None, callback=None):
     else:
         return callback(path, value)
 
+
 def process_column_name(entry):
     """
     Strip extra whitespace from column names and cast integers to numbers.
@@ -80,6 +84,7 @@ def process_column_name(entry):
         pass
     return column_name
 
+
 def replace_metadata_values(json_data, replace_fields, csv_data):
     """
     Coordinates production of final borehole JSON list.
@@ -92,6 +97,7 @@ def replace_metadata_values(json_data, replace_fields, csv_data):
     for row in csv_data:
         borehole = {}
         split_fields = [map(process_column_name, field.split(':')) for field in replace_fields]
+
         def transformer(path, value):
             if path in split_fields:
                 try:
@@ -106,7 +112,8 @@ def replace_metadata_values(json_data, replace_fields, csv_data):
                 return value
         borehole = traverse(json_data, callback=transformer)
         borehole_list.append(borehole)
-    return {'Boreholes':borehole_list}
+    return {'Boreholes': borehole_list}
+
 
 def create_gtnp_metadata_json(json_template, csv_overrides, out_file):
     """
@@ -124,13 +131,14 @@ def create_gtnp_metadata_json(json_template, csv_overrides, out_file):
     except ValueError as valError:
         print valError
 
+
 def parse_arguments(argv):
     """ Parse the command line arguments and return them. """
     json_template = None
     csv_overrides = None
     out_file = None
     try:
-        opts, args = getopt.getopt(argv,"ht:c:o:",["json_template=","csv_overrides=","out_file="])
+        opts, args = getopt.getopt(argv, "ht:c:o:", ["json_template=", "csv_overrides=", "out_file="])
     except getopt.GetoptError:
         print 'create_gtnp_metadata_json.py -t <JSON template file> -c <CSV file with metadata values> -o <CSV output file>'
         sys.exit(2)

@@ -7,3 +7,13 @@ find_tz
 utm_to_latlong
 	utm ( https://pypi.python.org/pypi/utm )
 
+plot_locations
+	mpl_toolkits
+	matplotlib
+	numpy
+	pandas
+	
+map_read
+	netCDF4 ( https://pypi.python.org/pypi/netCDF4 )
+		HDF5 1.10+ C libraries ( https://www.hdfgroup.org/HDF5/release/obtainsrc5110.html )
+		netCDF-4 C libraries ( ftp://ftp.unidata.ucar.edu/pub/netcdf )

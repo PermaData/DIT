@@ -17,7 +17,7 @@
       integer ipat      ! path index
       integer idat      ! data file index
       integer ivar      ! variable index
-      Character*45 Junk ! garbage variable for reading input descriptors
+      Character*45 junk ! garbage variable for reading input descriptors
       character*20 typ   ! path type
       logical find ! flag if path is found
       real test

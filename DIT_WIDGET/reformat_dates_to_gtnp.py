@@ -7,6 +7,7 @@ import sys
 
 gtnp_date_time_format = '%Y-%m-%d %H:%M'
 
+
 def reformat_dates_to_gtnp(column_file, out_file, in_format):
     """
     Reformat the date/times.
@@ -26,13 +27,14 @@ def reformat_dates_to_gtnp(column_file, out_file, in_format):
                 print error
                 date_time_writer.writerow(row)
 
+
 def parse_arguments(argv):
     """ Parse the command line arguments and return them. """
     date_time_column_file = None
     out_column_file = None
     date_time_format = None
     try:
-        opts, args = getopt.getopt(argv,"hi:o:f:",["date_time_column_file=","out_column_file=","date_time_format="])
+        opts, args = getopt.getopt(argv, "hi:o:f:", ["date_time_column_file=", "out_column_file=", "date_time_format="])
     except getopt.GetoptError:
         print 'reformat_dates_to_gtnp.py -i <Date time column file> -o <CSV output file> -f <date/time format>'
         sys.exit(2)

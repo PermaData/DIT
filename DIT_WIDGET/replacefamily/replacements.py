@@ -1,5 +1,5 @@
-import common.readwrite as io
-import common.definitions as d
+from ..common import readwrite as io
+from ..common import definitions as d
 
 
 def replace_conditional(infile, outfile, threshold, value, comparison):
@@ -33,6 +33,8 @@ def replace_conditional(infile, outfile, threshold, value, comparison):
         else:
             # Or just pass through the value unchanged
             out[i] = num
+    # Number of replacements made is useful for FORTRAN but not pure python
     out.insert(0, count)
+    
     # Write the replaced values to the output file
     io.push(out, outfile)

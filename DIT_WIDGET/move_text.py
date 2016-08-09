@@ -10,6 +10,7 @@ import getopt
 import re
 import sys
 
+
 def move_text(ggd361_csv, output_csv, move_from_regex, move_to_regex):
     """
     move text within field with new text.
@@ -31,9 +32,11 @@ def move_text(ggd361_csv, output_csv, move_from_regex, move_to_regex):
                 writer.writerow(row)
     ofile.close()
 
+
 def clean_value(value):
     new_value = value.strip().replace('\'', '')
     return new_value
+
 
 def move_pattern(move_from_regex, move_to_regex, row):
     new_row = []
@@ -49,9 +52,11 @@ def move_pattern(move_from_regex, move_to_regex, row):
         new_row.append('\'' + new_value + '\'')
     return new_row
 
+
 def is_a_match(move_from_regex, row):
     matches = re.match(move_from_regex, clean_value(row[0]))
-    return matches != None
+    return matches is not None
+
 
 def parse_arguments(argv):
     """ Parse the command line arguments and return them. """
@@ -61,7 +66,7 @@ def parse_arguments(argv):
     move_to_regex = None
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:f:t:",["ggd361_csv=","out_file=","move_from_regex=",'move_to_regex='])
+        opts, args = getopt.getopt(argv, "hi:o:f:t:", ["ggd361_csv=", "out_file=", "move_from_regex=", 'move_to_regex='])
     except getopt.GetoptError:
         print 'move_text.py -i <GGD361 CSV file> -o <CSV output file> -f <move from column regular expression> -t <move to column position expression>'
         sys.exit(2)

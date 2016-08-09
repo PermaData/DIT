@@ -1,6 +1,3 @@
-import common.definitions as d
-
-
 def pull(infile, mode):
     """Read data from infile into a list of numbers.
 
@@ -15,8 +12,14 @@ def pull(infile, mode):
 
     with open(infile) as f:
         for line in f:
-            data = mode(line)
-            out.append(data)
+            sub = line.split(',')
+            for i, field in enumerate(sub):
+                sub[i] = mode(field)
+            if (len(sub) == 1):
+                # Single value, you don't want it wrapped in a list
+                out.append(sub[0])
+            else:
+                out.append(sub)
     return out
 
 
@@ -34,11 +37,14 @@ def push(data, outfile):
 
     with open(outfile, mode='w') as f:
         for line in data:
-            if(isinstance(line, str)):
+            if (isinstance(line, basestring)):
                 # Write strings directly on their own line
                 f.write(line + '\n')
+            elif (isinstance(line, int)):
+                # Ints are plain to write
+                f.write('{n}\n'.format(n=line))
             else:
-                # Write numbers with 7 decimal points precision
+                # Write decimals with 7 decimal points precision
                 f.write('{n:0.{p}f}\n'.format(n=line, p=7))
 
 
