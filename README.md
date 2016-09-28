@@ -11,8 +11,8 @@ All users face the exact same problem: how to process data into a structure and 
 
 The Data Integration Tool (DIT) consists of:
 
-*   dit_cmd is available as a command line tool has 2 main parts:
-   +  dit_flow - a fork of the Flow-Based Programming (FBP) python tool rill we are using as a workflow manager
+*   dit_flow is available as a command line tool has 2 main parts:
+   + rill - a fork of the Flow-Based Programming (FBP) python tool rill we are using as a workflow manager
    + dit_widget - an extendable collection of single operation widgets (rill components) designed to be chained together to create a data manipulation workflow.
 * dit_gui - a graphical user interface that creates dit flows which interact with dit_flow.
 * dit_core - the original Fortran based tool.
