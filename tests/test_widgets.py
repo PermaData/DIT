@@ -191,7 +191,7 @@ def test_print_ge(infile, outfile):
             if (almost_equal(float(linein), threshold) or
                     float(linein) > threshold):
                 value = re.match('[0-9]+,([\-0-9.]+)', lineout).groups()[0]
-                print linein.strip(), value
+                print(linein.strip(), value)
                 assert almost_equal(float(value), float(linein))
                 try:
                     lineout = OUT.next()
@@ -347,7 +347,7 @@ def test_pdf(infile, outfile):
         call_real_function(test_pdf, infile, outfile, *args)
         with open(outfile) as OUT:
             for (i, line) in enumerate(OUT):
-                print line
+                print(line)
                 name, valuestr, barevalue = \
                     re.match('(M..imum): ([\-0-9.]+)|([0-9.]+)', line).groups()
                 if (name is not None):
@@ -434,7 +434,7 @@ def test_utm_to_latlong(infile, outfile):
         # Calculated using http://www.engineeringtoolbox.com/utm-latitude-longitude-d_1370.html
         next(data)  # Discard header
         for (line, verify) in zip(data, correct):
-            print line, verify
+            print(line, verify)
             assert almost_equal(float(line[-2]), verify[-2], precision=6)
             assert almost_equal(float(line[-1]), verify[-1], precision=6)
 
@@ -451,7 +451,7 @@ def test_latlong_to_utm(infile, outfile):
                    (621534, 6089464, '19U'), (621630, 6089558, '19U'))
         next(data)  # Discard header
         for (line, verify) in zip(data, correct):
-            print line[-3:], verify
+            print(line[-3:], verify)
             assert almost_equal(float(line[-3]), verify[-3], precision=0)
             assert almost_equal(float(line[-2]), verify[-2], precision=0)
             assert line[-1] == verify[-1]

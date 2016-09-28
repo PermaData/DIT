@@ -19,7 +19,7 @@ def add_const(infile, outfile, constant):
 
 def parse_args(args):
     def help():
-        print 'add_const.py -i <input file> -o <output file> -n <number>'
+        print('add_const.py -i <input file> -o <output file> -n <number>')
 
     infile = None
     outfile = None
@@ -32,7 +32,7 @@ def parse_args(args):
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

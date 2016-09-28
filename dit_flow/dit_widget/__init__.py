@@ -1,7 +1,7 @@
-import common
-import mathfamily
-import printfamily
-import replacefamily
+import dit_widget.common
+import dit_widget.mathfamily
+import dit_widget.printfamily
+import dit_widget.replacefamily
 
 __all__ = ['add_const',
            # TODO: add break_columns
