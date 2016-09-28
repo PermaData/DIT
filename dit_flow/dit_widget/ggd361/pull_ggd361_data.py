@@ -74,14 +74,14 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:",["ggd361_raw_file=","ggd361_data_file="])
     except getopt.GetoptError:
-        print 'pull_ggd361_data.py -i <GGD361 raw data file> -o <CSV output file>'
+        print('pull_ggd361_data.py -i <GGD361 raw data file> -o <CSV output file>')
         sys.exit(2)
 
     found_in_file = False
     found_out_file = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'pull_ggd361_data.py -i  <GGD361 raw data file> -o <CSV output file>'
+            print('pull_ggd361_data.py -i  <GGD361 raw data file> -o <CSV output file>')
             sys.exit()
         elif opt in ("-i", "--ggd361_raw_file"):
             found_in_file = True
@@ -90,10 +90,10 @@ def parse_arguments(argv):
             found_out_file = True
             data_file = arg
     if not found_in_file:
-        print "Input file '-i' argument required."
+        print("Input file '-i' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "Output file '-o' argument required."
+        print("Output file '-o' argument required.")
         sys.exit(2)
     return (raw_file, data_file)
 

@@ -4,8 +4,8 @@ import sys
 
 import netCDF4 as nc
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
+from .common import definitions as d
 
 __all__ = ['map_read']
 
@@ -39,7 +39,7 @@ def map_read(infile, outfile, lat_i, long_i, grid, grid_config, grid_meaning):
                 lon = line[long_i]
                 lat = line[lat_i]
                 ind_lat = (lat - min_lat) // width_lat
-                ind_lon = (long - min_lon) // width_lon
+                ind_lon = (int - min_lon) // width_lon
                 if (ind_lat < 0 or ind_lat >= num_lat or ind_lon < 0 or
                         ind_lon >= num_lon):
                     raise IndexError('Coordinate not in grid')
@@ -96,7 +96,7 @@ class ConfigData:
 
     def locate_grid(self, grid, lat, long):
         ind_lat = (lat - self.min_lat) // self.width_lat
-        ind_lon = (long - self.min_lon) // self.width_lon
+        ind_lon = (int - self.min_lon) // self.width_lon
         if (ind_lat < 0 or ind_lat >= self.num_lat or ind_lon < 0 or
                 ind_lon >= self.num_lon):
             raise IndexError('Coordinate not in grid')

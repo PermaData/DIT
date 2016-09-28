@@ -2,8 +2,7 @@ import re
 import sys
 import getopt
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
 
 __all__ = ['remove_chars']
 
@@ -36,8 +35,8 @@ def remove_chars(infile, outfile, chars, substring=False, placeholder=''):
 
 def parse_args(args):
     def help():
-        print 'remove_chars.py -i <input file> -o <output file> '\
-            '-c <characters to remove>'
+        print('remove_chars.py -i <input file> -o <output file> '\
+            '-c <characters to remove>')
 
     infile = None
     outfile = None
@@ -45,13 +44,13 @@ def parse_args(args):
 
     options = ('i:o:c:',
                ['input', 'output', 'chars'])
-    readoptions = zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]])
+    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

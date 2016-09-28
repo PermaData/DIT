@@ -54,7 +54,7 @@ def traverse(obj, path=None, callback=None):
 
     if isinstance(obj, dict):
         value = dict((k, traverse(v, path + [k], callback))
-                     for k, v in obj.items())
+                     for k, v in list(obj.items()))
     elif isinstance(obj, list):
         value = obj
         if obj:
@@ -96,7 +96,7 @@ def replace_metadata_values(json_data, replace_fields, csv_data):
     borehole_list = []
     for row in csv_data:
         borehole = {}
-        split_fields = [map(process_column_name, field.split(':')) for field in replace_fields]
+        split_fields = [list(map(process_column_name, field.split(':'))) for field in replace_fields]
 
         def transformer(path, value):
             if path in split_fields:
@@ -129,7 +129,7 @@ def create_gtnp_metadata_json(json_template, csv_overrides, out_file):
         with open(out_file, 'w') as json_file:
             json.dump(borehole_dict, json_file, indent=3)
     except ValueError as valError:
-        print valError
+        print(valError)
 
 
 def parse_arguments(argv):
@@ -140,7 +140,7 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv, "ht:c:o:", ["json_template=", "csv_overrides=", "out_file="])
     except getopt.GetoptError:
-        print 'create_gtnp_metadata_json.py -t <JSON template file> -c <CSV file with metadata values> -o <CSV output file>'
+        print('create_gtnp_metadata_json.py -t <JSON template file> -c <CSV file with metadata values> -o <CSV output file>')
         sys.exit(2)
 
     found_json_template = False
@@ -148,7 +148,7 @@ def parse_arguments(argv):
     found_csv_overrides = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'create_gtnp_metadata_json.py -t <JSON template file> -c <CSV file with metadata values> -o <CSV output file>'
+            print('create_gtnp_metadata_json.py -t <JSON template file> -c <CSV file with metadata values> -o <CSV output file>')
             sys.exit()
         elif opt in ("-t", "--json_template"):
             found_json_template = True
@@ -160,13 +160,13 @@ def parse_arguments(argv):
             found_out_file = True
             out_file = arg
     if not found_json_template:
-        print "JSON template with common dataset values '-t' argument required."
+        print("JSON template with common dataset values '-t' argument required.")
         sys.exit(2)
     if not found_csv_overrides:
-        print "CSV file with entry specific values '-c' argument required."
+        print("CSV file with entry specific values '-c' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "JSON output file '-o' argument required."
+        print("JSON output file '-o' argument required.")
         sys.exit(2)
     return json_template, csv_overrides, out_file
 

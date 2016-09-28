@@ -3,7 +3,7 @@ import time
 import getopt
 import sys
 
-import common.readwrite as io
+from .common import readwrite as io
 
 __all__ = ['mid_month']
 
@@ -43,9 +43,9 @@ def leap_year(year):
 
 def parse_args(args):
     def help():
-        print 'replace_ge.py -i <input file> -o <output file> -f <format>'
-        print 'Makes a string of the center day of the month. See '\
-            'time.strftime for format specification'
+        print('replace_ge.py -i <input file> -o <output file> -f <format>')
+        print('Makes a string of the center day of the month. See '\
+            'time.strftime for format specification')
 
     infile = None
     outfile = None
@@ -53,13 +53,13 @@ def parse_args(args):
 
     options = ('i:o:t:v:',
                ['input', 'output', 'format'])
-    readoptions = zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]])
+    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

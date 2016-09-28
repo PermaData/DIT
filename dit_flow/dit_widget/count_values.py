@@ -5,8 +5,8 @@ Given two columns, counts the number of unique values in column 2 that
 import sys
 import getopt
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
+from .common import definitions as d
 
 __all__ = ['count_values']
 
@@ -59,7 +59,7 @@ def double(data):
 
 def parse_args(args):
     def help():
-        print 'count_values.py -i <input file> -o <output file> [-m <mode>]'
+        print('count_values.py -i <input file> -o <output file> [-m <mode>]')
 
     infile = None
     outfile = None
@@ -67,13 +67,13 @@ def parse_args(args):
     mode = 'single'
 
     options = ('i:o:m:', ['input', 'output', 'mode'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

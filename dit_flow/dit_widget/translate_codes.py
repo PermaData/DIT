@@ -9,8 +9,8 @@ import copy
 import csv
 import getopt
 import sys
-import replace_text
-import move_text
+from . import replace_text
+from . import move_text
 
 
 def get_header_indices(condition_cols, replacement_cols, csv_header, are_moving):
@@ -23,13 +23,13 @@ def get_header_indices(condition_cols, replacement_cols, csv_header, are_moving)
     zipped_cols.extend(replacement_cols)
     if len(zipped_cols) != 3:
         if are_moving:
-            print "3 columns are required: ID, moving from, moving to"
+            print("3 columns are required: ID, moving from, moving to")
             sys.exit(2)
         else:
-            print "3 columns are required: ID, to replace, replace with"
+            print("3 columns are required: ID, to replace, replace with")
             sys.exit(2)
     if not are_moving and zipped_cols[1] != zipped_cols[2]:
-        print "Replacing requires value to be replaced and a value to replace with for the same column."
+        print("Replacing requires value to be replaced and a value to replace with for the same column.")
         sys.exit(2)
     if not are_moving:
         del zipped_cols[-1]
@@ -37,7 +37,7 @@ def get_header_indices(condition_cols, replacement_cols, csv_header, are_moving)
         try:
             col_indices.append(col_names.index(code))
         except ValueError:
-            print "Cannot find column {0} in CSV file.".format(code)
+            print("Cannot find column {0} in CSV file.".format(code))
             sys.exit(2)
     return col_indices
 
@@ -66,7 +66,7 @@ def split_list(list_to_split, split_at):
 def get_conditions_replacements(codes):
     with open(codes) as code_values:
         code_reader = csv.reader(code_values, delimiter=',', quoting=csv.QUOTE_NONE)
-        header = code_reader.next()
+        header = next(code_reader)
         condition_cols, replacement_cols = split_list(header, '=')
         condition_replacements = [split_list(row, '=') for row in code_reader]
     return condition_cols, replacement_cols, condition_replacements
@@ -119,7 +119,7 @@ def translate_codes(ggd361_csv, out_file, move_codes, replace_codes):
     csv_header = None
     with open(ggd361_csv) as csv_values:
         reader = csv.reader(csv_values, delimiter=',', quoting=csv.QUOTE_NONE)
-        csv_header = reader.next()
+        csv_header = next(reader)
         col_ind = get_header_indices(condition_cols, replacement_cols, csv_header, are_moving)
         csv_subset, csv_full = subset_csv_data(reader, col_ind, are_moving)
 
@@ -170,7 +170,7 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:m:r:", ["ggd361_csv=", "out_file=", "move_codes=", "replace_codes="])
     except getopt.GetoptError:
-        print 'replace_text.py -i <GGD361 CSV file> -o <CSV output file> -m <move codes CSV file> -r <replace codes CSV file>'
+        print('replace_text.py -i <GGD361 CSV file> -o <CSV output file> -m <move codes CSV file> -r <replace codes CSV file>')
         sys.exit(2)
 
     found_in_file = False
@@ -179,7 +179,7 @@ def parse_arguments(argv):
     found_replace_codes = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'replace_text.py -i <GGD361 CSV file> -o <CSV output file> -d <depth code CSV file>'
+            print('replace_text.py -i <GGD361 CSV file> -o <CSV output file> -d <depth code CSV file>')
             sys.exit()
         elif opt in ("-i", "--ggd361_csv"):
             found_in_file = True
@@ -194,16 +194,16 @@ def parse_arguments(argv):
             found_replace_codes = True
             replace_codes = arg
     if not found_in_file:
-        print "Input file '-i' argument required."
+        print("Input file '-i' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "Output file '-o' argument required."
+        print("Output file '-o' argument required.")
         sys.exit(2)
     if not found_move_codes and not found_replace_codes:
-        print "Either move or replace code translation file '-m' or '-r' argument required."
+        print("Either move or replace code translation file '-m' or '-r' argument required.")
         sys.exit(2)
     if found_move_codes and found_replace_codes:
-        print "Either move or replace code translation file '-m' or '-r' argument required."
+        print("Either move or replace code translation file '-m' or '-r' argument required.")
         sys.exit(2)
     return (ggd361_csv, out_file, move_codes, replace_codes)
 

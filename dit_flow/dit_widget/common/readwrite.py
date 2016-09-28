@@ -37,7 +37,7 @@ def push(data, outfile):
 
     with open(outfile, mode='w') as f:
         for line in data:
-            if (isinstance(line, basestring)):
+            if (isinstance(line, str)):
                 # Write strings directly on their own line
                 f.write(line + '\n')
             elif (isinstance(line, int)):
@@ -75,4 +75,4 @@ def disp(data):
     """
 
     for line in data:
-        print line
+        print(line)

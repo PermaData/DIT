@@ -3,7 +3,7 @@
 import sys
 import getopt
 
-import replacefamily.replacements as r
+from .replacefamily import replacements as r
 
 __all__ = ['replace_rangex']
 
@@ -16,8 +16,8 @@ def replace_rangex(infile, outfile, threshold, value):
 
 def parse_args(args):
     def help():
-        print 'replace_rangex.py -i <input file> -o <output file> -l <lower bound> -u <upper bound> -v <replacement value>'
-        print 'Replaces values within a range with replacement value'
+        print('replace_rangex.py -i <input file> -o <output file> -l <lower bound> -u <upper bound> -v <replacement value>')
+        print('Replaces values within a range with replacement value')
 
 
     infile = None
@@ -28,13 +28,13 @@ def parse_args(args):
 
     options = ('i:o:l:u:v:',
                ['input', 'output', 'lower', 'upper', 'value'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

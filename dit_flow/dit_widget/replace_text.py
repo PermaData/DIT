@@ -38,7 +38,7 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:t:w:", ["ggd361_csv=", "out_file=", "to_replace=", "with_replace="])
     except getopt.GetoptError:
-        print 'replace_text.py -i <GGD361 CSV file> -o <CSV output file> -t <text in field to replace> -w <replacement text>'
+        print('replace_text.py -i <GGD361 CSV file> -o <CSV output file> -t <text in field to replace> -w <replacement text>')
         sys.exit(2)
 
     found_in_file = False
@@ -47,7 +47,7 @@ def parse_arguments(argv):
     found_with_replace = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'replace_text.py -i <GGD361 CSV file> -o <CSV output file> -t <text in field to replace> -w <replacement text>'
+            print('replace_text.py -i <GGD361 CSV file> -o <CSV output file> -t <text in field to replace> -w <replacement text>')
             sys.exit()
         elif opt in ("-i", "--ggd361_csv"):
             found_in_file = True
@@ -62,13 +62,13 @@ def parse_arguments(argv):
             found_with_replace = True
             with_replace = arg
     if not found_in_file:
-        print "Input file '-i' argument required."
+        print("Input file '-i' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "Output file '-o' argument required."
+        print("Output file '-o' argument required.")
         sys.exit(2)
     if not found_to_replace:
-        print "Text within field to replace '-t' argument required."
+        print("Text within field to replace '-t' argument required.")
         sys.exit(2)
     if not found_with_replace:
         # print "Replacement text '-w' argument required."

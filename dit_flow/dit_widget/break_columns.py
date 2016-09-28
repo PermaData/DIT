@@ -89,8 +89,8 @@ def column_check(data):
     error = False
     for (i, item) in enumerate(count):
         if (item != mean):
-            print 'Line {0} has a different number of columns than the rest '\
-                'of the file.'.format(i+1)
+            print('Line {0} has a different number of columns than the rest '\
+                'of the file.'.format(i+1))
             error = True
     if (error):
         raise IndexError('One or more of the lines was flawed.')
@@ -119,7 +119,7 @@ def reunite(outfile, *args):
             for (i, name) in enumerate(args):
                 files[i] = open(args[i])
 
-            for line in itertools.izip(*files):
+            for line in zip(*files):
                 final.writerow(line)
         finally:
             close_all(files)

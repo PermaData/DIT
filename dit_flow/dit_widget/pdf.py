@@ -3,8 +3,8 @@
 import sys
 import getopt
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
+from .common import definitions as d
 
 __all__ = ['pdf']
 
@@ -54,7 +54,7 @@ def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
         val_range = upper - lower
     else:
         # Error with the minmax option
-        print "Use a valid form for the minmax argument"
+        print("Use a valid form for the minmax argument")
         return None
 
     out = [[] for each in range(bins)]
@@ -80,7 +80,7 @@ def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
                 out[-1].append(val)
         else:
             # Error with the outlier option
-            print "Use a valid form for the outlier argument"
+            print("Use a valid form for the outlier argument")
             return None
 
     norms = {'raw': raw,
@@ -88,7 +88,7 @@ def pdf(infile, outfile, bins, minmax, lower, upper, outliers, norm):
              }
     if(norm not in norms):
         # Error with the norm option
-        print "Use a valid form for the norm argument"
+        print("Use a valid form for the norm argument")
         return None
 
     out = norms[norm](out)
@@ -113,9 +113,9 @@ def probability(data):
 
 def parse_args(args):
     def help():
-        print 'pdf.py -i <input file> -o <output file> -b <number of bins> '\
+        print('pdf.py -i <input file> -o <output file> -b <number of bins> '\
             '-m <min/max behavior> -l <input minimum> -u <input maximum> '\
-            '-t <outlier behavior> -n <output behavior>'
+            '-t <outlier behavior> -n <output behavior>')
 
     infile = None
     outfile = None
@@ -133,13 +133,13 @@ def parse_args(args):
                 'outliers', 'norm'])
     # readoptions is a list of -short_option --long_option pairs in
     # the order shown above.
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

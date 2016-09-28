@@ -24,7 +24,7 @@ def reformat_dates_to_gtnp(column_file, out_file, in_format):
                 quoted_dt = "{0}".format(date_time.strftime(gtnp_date_time_format))
                 date_time_writer.writerow([quoted_dt])
             except ValueError as error:
-                print error
+                print(error)
                 date_time_writer.writerow(row)
 
 
@@ -36,7 +36,7 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:f:", ["date_time_column_file=", "out_column_file=", "date_time_format="])
     except getopt.GetoptError:
-        print 'reformat_dates_to_gtnp.py -i <Date time column file> -o <CSV output file> -f <date/time format>'
+        print('reformat_dates_to_gtnp.py -i <Date time column file> -o <CSV output file> -f <date/time format>')
         sys.exit(2)
 
     found_in_file = False
@@ -44,7 +44,7 @@ def parse_arguments(argv):
     found_date_time = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'reformat_dates_to_gtnp.py -i <Date time column file> -o <CSV output file> -f <date/time format>'
+            print('reformat_dates_to_gtnp.py -i <Date time column file> -o <CSV output file> -f <date/time format>')
             sys.exit()
         elif opt in ("-i", "--date_time_column_file"):
             found_in_file = True
@@ -56,13 +56,13 @@ def parse_arguments(argv):
             found_date_time = True
             date_time_format = arg
     if not found_in_file:
-        print "Input file '-i' argument required."
+        print("Input file '-i' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "Output file '-o' argument required."
+        print("Output file '-o' argument required.")
         sys.exit(2)
     if not found_date_time:
-        print "Input date/time format '-f' argument required."
+        print("Input date/time format '-f' argument required.")
         sys.exit(2)
     return (date_time_column_file, out_column_file, date_time_format)
 

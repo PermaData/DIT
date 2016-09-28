@@ -68,7 +68,7 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:f:t:", ["ggd361_csv=", "out_file=", "move_from_regex=", 'move_to_regex='])
     except getopt.GetoptError:
-        print 'move_text.py -i <GGD361 CSV file> -o <CSV output file> -f <move from column regular expression> -t <move to column position expression>'
+        print('move_text.py -i <GGD361 CSV file> -o <CSV output file> -f <move from column regular expression> -t <move to column position expression>')
         sys.exit(2)
 
     found_in_file = False
@@ -77,7 +77,7 @@ def parse_arguments(argv):
     found_move_to_regex = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'move_text.py -i <GGD361 CSV file> -o <CSV output file> -t  <list of condition values> -w <list of movement values if conditions match>'
+            print('move_text.py -i <GGD361 CSV file> -o <CSV output file> -t  <list of condition values> -w <list of movement values if conditions match>')
             sys.exit()
         elif opt in ("-i", "--ggd361_csv"):
             found_in_file = True
@@ -92,16 +92,16 @@ def parse_arguments(argv):
             found_move_to_regex = True
             move_to_regex = clean_value(arg)
     if not found_in_file:
-        print "Input file '-i' argument required."
+        print("Input file '-i' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "Output file '-o' argument required."
+        print("Output file '-o' argument required.")
         sys.exit(2)
     if not found_move_from_regex:
-        print "Regular expression of pattern to move from column '-e' argument required."
+        print("Regular expression of pattern to move from column '-e' argument required.")
         sys.exit(2)
     if not found_move_to_regex:
-        print "Placement pattern of pattern to move in to column '-t' argument required."
+        print("Placement pattern of pattern to move in to column '-t' argument required.")
         sys.exit(2)
     return (ggd361_csv, out_file, move_from_regex, move_to_regex)
 

@@ -10,7 +10,7 @@ import getopt
 from tzwhere import tzwhere
 import pytz
 
-import common.readwrite as io
+from .common import readwrite as io
 
 __all__ = ['find_tz']
 
@@ -59,7 +59,7 @@ def name_to_offset(name, dt):
 
 def parse_args(args):
     def help():
-        print 'find_tz.py -i <input file> -o <output file> -d <date column index> -t <latitude column index> -n <longitude column index>'
+        print('find_tz.py -i <input file> -o <output file> -d <date column index> -t <latitude column index> -n <longitude column index>')
 
     infile = None
     outfile = None
@@ -69,13 +69,13 @@ def parse_args(args):
 
     options = ('i:o:d:t:n:',
                ['input', 'output', 'date_column_index', 'latitude_column_index', 'longitude_column_index'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

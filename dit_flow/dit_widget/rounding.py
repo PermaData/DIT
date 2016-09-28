@@ -2,8 +2,7 @@ import sys
 import getopt
 import math
 
-import common.readwrite as io
-import common.definitions as d
+from .common import readwrite as io
 
 __all__ = ['rounding']
 
@@ -52,8 +51,8 @@ def _round(val, precision):
 
 def parse_args(args):
     def help():
-        print 'rounding.py -i <input file> -o <output file> '\
-            '-m <rounding mode> [-p <precision>]'
+        print('rounding.py -i <input file> -o <output file> '\
+            '-m <rounding mode> [-p <precision>]')
 
     infile = None
     outfile = None
@@ -62,13 +61,13 @@ def parse_args(args):
     precision = 0
 
     options = ('i:o:m:p:', ['input', 'output', 'mode', 'precision'])
-    readoptions = zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]])
+    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

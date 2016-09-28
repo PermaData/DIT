@@ -3,7 +3,7 @@
 import sys
 import getopt
 
-import printfamily.prints as p
+from .printfamily import prints as p
 
 __all__ = ['print_le']
 
@@ -15,8 +15,8 @@ def print_le(infile, outfile, threshold):
 
 def parse_args(args):
     def help():
-        print 'print_le.py -i <input file> -o <output file> -t <threshold>'
-        print 'Prints values less than or equal to threshold'
+        print('print_le.py -i <input file> -o <output file> -t <threshold>')
+        print('Prints values less than or equal to threshold')
 
     infile = None
     outfile = None
@@ -24,13 +24,13 @@ def parse_args(args):
 
     options = ('i:o:t:',
                ['input', 'output', 'threshold'])
-    readoptions = zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]])
+    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

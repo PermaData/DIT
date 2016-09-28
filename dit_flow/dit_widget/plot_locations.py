@@ -23,7 +23,7 @@ def plot_coords(lats, lons, lcx, lcy, ucx, ucy, dx, dy):
     map.drawparallels(parallels, labels=[1, 0, 0, 0], fontsize=12)
     meridians = np.arange(lcx, ucx, dx)
     map.drawmeridians(meridians, labels=[0, 0, 0, 1], fontsize=12)
-    x, y = map(lons, lats)
+    x, y = list(map(lons, lats))
     map.plot(x, y, 'ro', markersize=6)  # o-circle, s-square
     return None
 
@@ -35,20 +35,20 @@ def degree2latlon(deg, min, sec, dir):
         int(deg) + int(min) / 60.0 + int(sec) / 3600.0) * direction[new_dir]
 
 
-filename = 'C:\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\Russian_soil_temp_original_data\Russia_soil_temp.csv'
+filename = 'C:\\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\Russian_soil_temp_original_data\Russia_soil_temp.csv'
 df = pd.read_csv(filename)
 lons = Series(df.ix[:, 10]).values
 lats = Series(df.ix[:, 11]).values
-print len(lats)
+print(len(lats))
 plot_coords(lats, lons, 30, 40, 180, 75, 20, 10)
 
-filename = 'C:\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\preprocessed_metadata\ggd605\ggd605_scheff_location_data.csv'
+filename = 'C:\\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\preprocessed_metadata\ggd605\ggd605_scheff_location_data.csv'
 df = pd.read_csv(filename)
 # https://pypi.python.org/pypi/utm
 utm_E = Series(df.ix[:, 4]).values
 utm_N = Series(df.ix[:, 5]).values
 n = len(utm_E)
-print n
+print(n)
 lons = [0 for x in range(n)]
 lats = [0 for x in range(n)]
 for i in range(n):
@@ -62,17 +62,17 @@ plt.show()
 plot_coords(lats[1], lons[1], -130, 35, -50, 65, 20, 10)
 plt.title('Schefferville Permafrost Temperature Database', fontsize=16)
 plt.savefig(
-    'C:\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\PD_manuscript\Figures\Schefferville_loc.png',
+    'C:\\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\PD_manuscript\Figures\Schefferville_loc.png',
     transparent=True,
     bbox_inches='tight')
 
-filename = 'C:\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\preprocessed_data\ggd402\yabrhl.csv'
+filename = 'C:\\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\preprocessed_data\ggd402\yabrhl.csv'
 df = pd.read_csv(filename)
 # https://pypi.python.org/pypi/utm
 deg_N = Series(df.ix[:, 3]).values
 deg_E = Series(df.ix[:, 2]).values
 n = len(deg_N)
-print deg_N[1]
+print(deg_N[1])
 lons = [0 for x in range(n)]
 lats = [0 for x in range(n)]
 
@@ -128,7 +128,7 @@ def string2degree(str_d):
     return [int(sdd), int(smm), int(sss)]
 
 
-filename = 'C:\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\preprocessed_metadata\ggd503\site_descriptions.csv'
+filename = 'C:\\Users\elchin\Documents\Projects\PermData\FGDC_to_GTNP\preprocessed_metadata\ggd503\site_descriptions.csv'
 df = pd.read_csv(filename)
 # https://pypi.python.org/pypi/utm
 deg_N = Series(df.ix[:, 4]).values

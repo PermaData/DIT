@@ -63,10 +63,10 @@ def modify_row(row, latlong, zone_i, E_i, N_i):
 
 def parse_args(args):
     def help():
-        print 'utm_to_latlong.py -i <input CSV file> -o <output csv file> -z \
+        print('utm_to_latlong.py -i <input CSV file> -o <output csv file> -z \
         <zone column index> -e <easting column index> \
         -n <northing column index> [-L <zone letter column index>] \
-        [-h <hemisphere>]'
+        [-h <hemisphere>]')
 
     # Required arguments
     infile = None
@@ -82,13 +82,13 @@ def parse_args(args):
     options = ('i:o:z:e:n:L:h:',
                ['input', 'output', 'zone_index', 'easting_index',
                 'northing_index', 'zone_letter_index', 'hemisphere'])
-    readoptions = zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]])
+    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
+                      ['--' + o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

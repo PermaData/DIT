@@ -20,7 +20,7 @@ def latlong_to_utm(infile, outfile, lat_i, long_i, header=True):
                 else:
                     lat = float(row[lat_i])
                     long = float(row[long_i])
-                    ENZL = utm.from_latlon(lat, long)
+                    ENZL = utm.from_latlon(lat, int)
                 push.writerow(modify_row(row, ENZL, lat_i, long_i))
 
 
@@ -33,8 +33,8 @@ def modify_row(row, ENZL, lat_i, long_i):
 
 def parse_args(args):
     def help():
-        print 'latlong_to_utm.py -i <input CSV file> -o <output csv file>'\
-            '-t <latitude column index> -n <longitude column index>'
+        print('latlong_to_utm.py -i <input CSV file> -o <output csv file>'\
+            '-t <latitude column index> -n <longitude column index>')
 
     infile = None
     outfile = None
@@ -45,13 +45,13 @@ def parse_args(args):
 
     options = ('i:o:t:n:',
                ['input', 'output', 'latitude_index', 'longitude_index'])
-    readoptions = zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]])
+    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
+                      ['--'+o for o in options[1]]))
 
     try:
         (vals, extras) = getopt.getopt(args, *options)
     except getopt.GetoptError as e:
-        print str(e)
+        print(str(e))
         help()
         sys.exit(2)
 

@@ -28,8 +28,8 @@ def cast_to_datetime(dt_str):
             gtnp_date_time_format = gtnp_date_time_format2
             date_time = dt.datetime.strptime(dt_str, gtnp_date_time_format)
         except ValueError as error:
-            print '"', error, '"'
-            print 'Column cannot be converted to date/time. Sorting will be by string.'
+            print('"', error, '"')
+            print('Column cannot be converted to date/time. Sorting will be by string.')
     return date_time
 
 
@@ -138,7 +138,7 @@ def parse_arguments(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:l:", ["in_file=", "out_file=", "column_list="])
     except getopt.GetoptError:
-        print 'sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>'
+        print('sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>')
         sys.exit(2)
 
     found_in_file = False
@@ -146,7 +146,7 @@ def parse_arguments(argv):
     found_column_list = False
     for opt, arg in opts:
         if opt == '-h':
-            print 'sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>'
+            print('sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>')
             sys.exit()
         elif opt in ("-i", "--in_file"):
             found_in_file = True
@@ -158,13 +158,13 @@ def parse_arguments(argv):
             found_column_list = True
             column_list = ast.literal_eval(arg)
     if not found_in_file:
-        print "Input file '-i' argument required."
+        print("Input file '-i' argument required.")
         sys.exit(2)
     if not found_out_file:
-        print "Output file '-o' argument required."
+        print("Output file '-o' argument required.")
         sys.exit(2)
     if not found_column_list:
-        print "Ordered list of columns to sort by '-l' argument required."
+        print("Ordered list of columns to sort by '-l' argument required.")
         sys.exit(2)
     return in_file, out_file, column_list
 
