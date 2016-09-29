@@ -1,13 +1,12 @@
 def begin(file, function):
     with open(file, 'w') as log:
-        return 
+        pass
 
 def value(file, strings):
-    for 
+    pass
 
-def finish(file, function)
-    
-    
+def finish(file, function):
+    pass
     
 def decorator(function):
     def decorated(*args, **kwargs):

@@ -2,9 +2,9 @@ import os
 from distutils.core import run_setup
 from setuptools import setup, find_packages
 
-#os.chdir('./rill')
-#run_setup('setup.py', ['install'])
-#os.chdir('..')
+os.chdir('./rill')
+run_setup('setup.py', ['install'])
+os.chdir('..')
 
 setup(name='dit_widget',
       version='0.0.0.dev1',

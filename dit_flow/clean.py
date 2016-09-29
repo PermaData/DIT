@@ -9,9 +9,9 @@ def clean():
     rm_dir('build')
     rm_dir('dist')
     rm_dir('dit_widget.egg-info')
-#    rm_dir('rill/rill.egg-info')
-#    rm_dir('rill/build')
-#    rm_dir('rill/dist')
+    rm_dir('rill/rill.egg-info')
+    rm_dir('rill/build')
+    rm_dir('rill/dist')
 
 if __name__ == '__main__':
     clean()
