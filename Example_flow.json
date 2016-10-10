@@ -1,0 +1,459 @@
+{
+  "connections": [
+    {
+      "src": {
+        "data": [
+          "Depth",
+          "Temperature"
+        ]
+      },
+      "tgt": {
+        "port": "COLUMNS",
+        "process": "extracter-1"
+      }
+    },
+    {
+      "src": {
+        "data": {
+          "Depth": 0,
+          "Temperature": 1
+        }
+      },
+      "tgt": {
+        "port": "TEMPMAP",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "data": "_CM"
+      },
+      "tgt": {
+        "port": "CHARACTERS",
+        "process": "remove_characters"
+      }
+    },
+    {
+      "src": {
+        "data": [
+          "Depth"
+        ]
+      },
+      "tgt": {
+        "port": "COLUMNS",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
+        "data": {
+          "Depth": 0
+        }
+      },
+      "tgt": {
+        "port": "TEMPMAP",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "data": 100
+      },
+      "tgt": {
+        "port": "CONSTANT",
+        "process": "divide_constant"
+      }
+    },
+    {
+      "src": {
+        "data": [
+          "/data/raw_files/AKUL232",
+          "/data/raw_files/AUPA299"
+        ]
+      },
+      "tgt": {
+        "port": "FILENAMES",
+        "process": "filemanager"
+      }
+    },
+    {
+      "src": {
+        "data": "variable_map.dat"
+      },
+      "tgt": {
+        "port": "MAPFILE",
+        "process": "variablemap"
+      }
+    },
+    {
+      "src": {
+        "port": "TEMPIN",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "INFILE",
+        "process": "remove_characters-1"
+      }
+    },
+    {
+      "src": {
+        "port": "TEMPOUT",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "OUTFILE_IN",
+        "process": "remove_characters-1"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAFILE_OUT",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAMAP_OUT",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "SID_OUT",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "SID",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "OUTFILE_OUT",
+        "process": "remove_characters-1"
+      },
+      "tgt": {
+        "port": "TEMPFILE",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "TEMPIN",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "INFILE",
+        "process": "divide_constant-2"
+      }
+    },
+    {
+      "src": {
+        "port": "TEMPOUT",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "OUTFILE_IN",
+        "process": "divide_constant-2"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAFILE_OUT",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAMAP_OUT",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "SID_OUT",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "SID",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "OUTFILE_OUT",
+        "process": "divide_constant-2"
+      },
+      "tgt": {
+        "port": "TEMPFILE",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "CURRENT",
+        "process": "filemanager"
+      },
+      "tgt": {
+        "port": "FILENAME",
+        "process": "readfile"
+      }
+    },
+    {
+      "src": {
+        "port": "FID",
+        "process": "filemanager"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "readfile"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTFILE",
+        "process": "readfile"
+      },
+      "tgt": {
+        "port": "FILENAME",
+        "process": "variablemap"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "readfile"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "extracter-1"
+      }
+    },
+    {
+      "src": {
+        "port": "STEP",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "SID",
+        "process": "extracter-1"
+      }
+    },
+    {
+      "src": {
+        "port": "IN",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "extracter-1"
+      }
+    },
+    {
+      "src": {
+        "port": "INMAP",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "extracter-1"
+      }
+    },
+    {
+      "src": {
+        "port": "OUT",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DESTFILE",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "OUTMAP",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DESTMAP",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
+        "port": "IN",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
+        "port": "INMAP",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
+        "port": "OUT",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DESTFILE",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "OUTMAP",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "DESTMAP",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAFILE_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAMAP_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTFILE_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "DESTFILE",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTMAP_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "DESTMAP",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
+        "port": "SID_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "SID",
+        "process": "extracter-2"
+      }
+    }
+  ],
+  "inports": {},
+  "outports": {},
+  "processes": {
+    "divide_constant-2": {
+      "component": "dit_flow/dit_widget/divide_constant/divide_constant",
+      "metadata": {}
+    },
+    "extracter-1": {
+      "component": "dit_flow/dit_widget/column_extract/column_extract",
+      "metadata": {}
+    },
+    "extracter-2": {
+      "component": "dit_flow/dit_widget/column_extract/column_extract",
+      "metadata": {}
+    },
+    "filemanager": {
+      "component": "dit_flow/dit_widget/file_manager/file_manager",
+      "metadata": {}
+    },
+    "readfile": {
+      "component": "dit_flow/dit_widget/read_file/read_file",
+      "metadata": {}
+    },
+    "remove_characters-1": {
+      "component": "dit_flow/dit_widget/remove_characters/remove_characters",
+      "metadata": {}
+    },
+    "replacer-1": {
+      "component": "dit_flow/dit_widget/column_replace/column_replace",
+      "metadata": {}
+    },
+    "replacer-2": {
+      "component": "dit_flow/dit_widget/column_replace/column_replace",
+      "metadata": {}
+    },
+    "variablemap": {
+      "component": "dit_flow/dit_widget/variable_map/variable_map",
+      "metadata": {}
+    }
+  }
+}

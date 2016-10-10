@@ -2,3 +2,4 @@
 *.o
 *.f90~
 *.out
+*egg-info

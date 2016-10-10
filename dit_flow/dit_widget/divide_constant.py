@@ -3,9 +3,9 @@
 import csv
 import shutil
 
-import rill
+from ..rill import rill
 
-import common.definitions as d
+from .common import definitions as d
 
 
 @rill.component
@@ -13,7 +13,7 @@ import common.definitions as d
 @rill.inport('OUTFILE_IN')
 @rill.outport('OUTFILE_OUT')
 @rill.inport('CONSTANT')
-def add_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
+def divide_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
     # Adds constant to all values in infile and writes the result to
     # outfile.
     for infile, outfile, constant in zip(INFILE.iter_contents(),
@@ -21,13 +21,17 @@ def add_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
                                          CONSTANT.iter_contents()):
         with open(infile, newline='') as _in, \
              open(outfile, 'w', newline='') as _out:
-            data = csv.reader(_in, )
+            data = csv.reader(_in)
             output = csv.writer(_out)
-            if (constant != 0):
+            if (constant == 0):
+                # Can't divide by zero, just copy the whole thing unchanged
                 shutil.copy2(infile, outfile)
-            for line in _in:
-                for item in line:
-                    if (float(item) not in d.missing_values):
-                        value = float(item) / constant
+            else:
+                for line in data:
+                    modified = line
+                    for i, item in enumerate(line):
+                        if (float(item) not in d.missing_values):
+                            modified[i] = float(item) / constant
+                    output.writerow(modified)
 
         OUTFILE_OUT.send(outfile)
