@@ -18,10 +18,10 @@ Step Definitions:
   #   Another widget definition
   -
     widget: "remove_characters"
-    input columns: ["Depth", "Temperature"]
+    input columns: ["Depth"]
     inputs:
-      - characters: "_CM"
-    output columns: ["Depth", "Temperature"]
+      - characters: ["_CMAB"]
+    output columns: ["Depth"]
   -
     widget: "divide_constant"
     input columns: ["Depth"]
@@ -38,12 +38,12 @@ Files:
   # Format:
   # -
   #   filename: path to data file
-  - "/data/raw_files/AKUL232"
-  - "/data/raw_files/AUPA299"
+  - "./Example data/AKUL232"
+  - "./Example data/AUPA299"
 
 
 Variable map file:
-  "variable_map.dat"
+  - "./Example data/variable_map.dat"
 
 # Variable map:
 #   # -

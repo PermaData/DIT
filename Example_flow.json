@@ -3,8 +3,12 @@
     {
       "src": {
         "data": [
-          "Depth",
-          "Temperature"
+          [
+            "Depth"
+          ],
+          [
+            "Depth"
+          ]
         ]
       },
       "tgt": {
@@ -14,10 +18,14 @@
     },
     {
       "src": {
-        "data": {
-          "Depth": 0,
-          "Temperature": 1
-        }
+        "data": [
+          {
+            "Depth": 0
+          },
+          {
+            "Depth": 0
+          }
+        ]
       },
       "tgt": {
         "port": "TEMPMAP",
@@ -26,17 +34,29 @@
     },
     {
       "src": {
-        "data": "_CM"
+        "data": [
+          [
+            "_CMAB"
+          ],
+          [
+            "_CMAB"
+          ]
+        ]
       },
       "tgt": {
         "port": "CHARACTERS",
-        "process": "remove_characters"
+        "process": "remove_characters-1"
       }
     },
     {
       "src": {
         "data": [
-          "Depth"
+          [
+            "Depth"
+          ],
+          [
+            "Depth"
+          ]
         ]
       },
       "tgt": {
@@ -46,9 +66,14 @@
     },
     {
       "src": {
-        "data": {
-          "Depth": 0
-        }
+        "data": [
+          {
+            "Depth": 0
+          },
+          {
+            "Depth": 0
+          }
+        ]
       },
       "tgt": {
         "port": "TEMPMAP",
@@ -57,18 +82,21 @@
     },
     {
       "src": {
-        "data": 100
+        "data": [
+          100,
+          100
+        ]
       },
       "tgt": {
         "port": "CONSTANT",
-        "process": "divide_constant"
+        "process": "divide_constant-2"
       }
     },
     {
       "src": {
         "data": [
-          "/data/raw_files/AKUL232",
-          "/data/raw_files/AUPA299"
+          "./Example data/AKUL232",
+          "./Example data/AUPA299"
         ]
       },
       "tgt": {
@@ -78,7 +106,9 @@
     },
     {
       "src": {
-        "data": "variable_map.dat"
+        "data": [
+          "./Example data/variable_map.dat"
+        ]
       },
       "tgt": {
         "port": "MAPFILE",

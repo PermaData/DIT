@@ -32,6 +32,7 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
         in_details = {}
         out_map = {}
         out_details = {}
+        name_converter = {}
         with open(Mname) as f:
             firstline = True
             for line in f:
@@ -47,6 +48,7 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
                     in_header, operation, out_header, in_index, out_index, \
                         units, description = entries_breakout(entries)
                     # TODO: description and units should be passed around as metadata
+                    name_converter[in_header] = out_header
                     if (in_header and in_index):
                         in_map.update({in_header: in_index-1})
                         in_details.update({in_header: [operation, description]})
@@ -68,25 +70,21 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
             # print(headline)
             # assert False
             output.writerow(headline)
-            # copies = {}
-            # for in_name, in_index, out_name, out_index in zip(in_map.keys(),
-            #                                                   in_map.values(),
-            #                                                   out_map.keys(),
-            #                                                   out_map.values()):
-            #     # Figure out which items need to be copied
-            #     # print(in_details[in_name][0])
-            #     if (in_details[in_name][0] == 'copy'):
-            #         copies.update({in_index: out_index})
-            # firstline = True
-            # for line in data:
-            #     # Copy selected columns
-            #     if (firstline):
-            #         firstline = False
-            #         continue
-            #     outputline = [''] * len(line)
-            #     for _from, _to in copies.items():
-            #         outputline[_to] = line[_from]
-            #     output.writerow(outputline)
+            copies = {}
+            for in_name in in_map.keys():
+                # Figure out which items need to be copied
+                if name_converter[in_name] in out_map:
+                    copies[in_map[in_name]] = out_map[name_converter[in_name]]
+            firstline = True
+            for line in data:
+                # Copy selected columns
+                if (firstline):
+                    firstline = False
+                    continue
+                outputline = [''] * len(out_map)
+                for _from, _to in copies.items():
+                    outputline[_to] = line[_from]
+                output.writerow(outputline)
 
         IN.send(Dname)
         OUT.send(convert_to_out(Dname))

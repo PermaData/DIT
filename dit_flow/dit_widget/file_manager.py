@@ -20,15 +20,12 @@ def file_manager(FILENAMES, CURRENT, FID):
         except FileNotFoundError:
             drop severity to a warning and don't pass the file on
     """
-    for fileset in FILENAMES.iter_contents():
-        for name in fileset:
-            identifier = 1
-            try:
-                f = open(name)
-                f.close()
-                CURRENT.send(name)
-                FID.send(identifier)
-                identifier += 1
-            except FileNotFoundError:
-                # TODO: Make this send to some log instead of the console
-                print('The file {f} was not found.'.format(f=name))
+    for identifier, name in enumerate(FILENAMES.iter_contents()):
+        try:
+            f = open(name)
+            f.close()
+            CURRENT.send(name)
+            FID.send(identifier+1)
+        except FileNotFoundError:
+            # TODO: Make this send to some log instead of the console
+            print('The file {f} was not found.'.format(f=name))

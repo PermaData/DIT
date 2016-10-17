@@ -11,9 +11,9 @@ from .common import definitions as d
 @rill.component
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
-@rill.outport('OUTFILE_OUT')
 @rill.inport('CONSTANT')
-def divide_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
+@rill.outport('OUTFILE_OUT')
+def divide_constant(INFILE, OUTFILE_IN, CONSTANT, OUTFILE_OUT):
     # Adds constant to all values in infile and writes the result to
     # outfile.
     for infile, outfile, constant in zip(INFILE.iter_contents(),
@@ -30,6 +30,7 @@ def divide_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
                 for line in data:
                     modified = line
                     for i, item in enumerate(line):
+                        item = item.strip("'")
                         if (float(item) not in d.missing_values):
                             modified[i] = float(item) / constant
                     output.writerow(modified)

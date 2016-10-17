@@ -13,10 +13,10 @@ from ..rill import rill
 def read_file(FILENAME, FID, DESTFILE, FID_OUT):
     # TODO: Create a log file where all meta information is sent, like statistics and errors
     for name, ID in zip(FILENAME.iter_contents(), FID.iter_contents()):
-        main_name = '{ID}_In_{base}.csv'.format(ID=ID, base=name)
+        path, base = name.rsplit('/', 1)
+        main_name = '{pth}/{ID}_In_{base}.csv'.format(pth=path, ID=ID, base=base)
         with open(name, newline='') as _from, open(main_name, 'w', newline='') as _to:
-            data = csv.reader(_from, quoting=csv.QUOTE_NONNUMERIC,
-                              quotechar="'")
+            data = csv.reader(_from, quoting=csv.QUOTE_NONNUMERIC, quotechar="'")
             try:
                 isOK = column_check(data)
             except IOError as e:
@@ -24,14 +24,12 @@ def read_file(FILENAME, FID, DESTFILE, FID_OUT):
                 print(e)
                 isOK = False
             _from.seek(0)
-            output = csv.writer(_to, quoting=csv.QUOTE_NONNUMERIC,
-                                quotechar="'")
+            output = csv.writer(_to, quoting=csv.QUOTE_NONNUMERIC, quotechar="'")
             # Copies the data into the file that will be base input from now on
             for line in data:
                 output.writerow(line)
 
         if (isOK):
-            print('destfile', main_name)
             DESTFILE.send(main_name)
             FID_OUT.send(ID)
 
