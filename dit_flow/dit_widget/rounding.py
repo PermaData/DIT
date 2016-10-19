@@ -1,13 +1,15 @@
-import sys
-import getopt
 import math
 
-from .common import readwrite as io
-
-__all__ = ['rounding']
+import rill
 
 
-def rounding(infile, outfile, mode, precision=0):
+@rill.component
+@rill.inport('INFILE')
+@rill.inport('OUTFILE_IN')
+@rill.inport('MODE')
+@rill.inport('PRECISION')
+@rill.outport('OUTFILE_OUT')
+def rounding(INFILE, OUTFILE_IN, MODE, PRECISION, OUTFILE_OUT):
     """Round values to the nearest integer.
 
     modes:
@@ -18,19 +20,28 @@ def rounding(infile, outfile, mode, precision=0):
             given, instead round to that many digits beyond the decimal
             point.
     """
-    data = io.pull(infile, float)
+    for infile, outfile, mode, precision in zip(INFILE.iter_contents(),
+                                                OUTFILE_IN.iter_contents(),
+                                                MODE.iter_contents(),
+                                                PRECISION.iter_contents()):
+        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as _out:
+            data = csv.reader(_in)
+            output = csv.reader(_out)
 
-    input_map = {'up': _ceil, 'ceil': _ceil, 'ceiling': _ceil,
-                 'down': _floor, 'floor': _floor,
-                 'trunc': _trunc, 'truncate': _trunc,
-                 'nearest': _round, 'round': _round,
-                 }
+            input_map = {'up': _ceil, 'ceil': _ceil, 'ceiling': _ceil,
+                         'down': _floor, 'floor': _floor,
+                         'trunc': _trunc, 'truncate': _trunc,
+                         'nearest': _round, 'round': _round,
+                         }
+            conv = input_map[mode.lower()]
 
-    conv = input_map[mode.lower()]
+            for line in data:
+                out = []
+                for item in line:
+                    out.append(conv(item, precision))
+                output.writerow(out)
 
-    out = [[conv(item, precision) for item in row] for row in data]
-
-    io.push(out, outfile)
+        OUTFILE_OUT.send(outfile)
 
 
 def _ceil(val, precision):
@@ -42,53 +53,8 @@ def _floor(val, precision):
 
 
 def _trunc(val, precision):
-    return int(val)
+    return int(val * 10**precision) / precision
 
 
 def _round(val, precision):
     return round(val, precision)
-
-
-def parse_args(args):
-    def help():
-        print('rounding.py -i <input file> -o <output file> '\
-            '-m <rounding mode> [-p <precision>]')
-
-    infile = None
-    outfile = None
-    mode = None
-
-    precision = 0
-
-    options = ('i:o:m:p:', ['input', 'output', 'mode', 'precision'])
-    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]]))
-
-    try:
-        (vals, extras) = getopt.getopt(args, *options)
-    except getopt.GetoptError as e:
-        print(str(e))
-        help()
-        sys.exit(2)
-
-    for (option, value) in vals:
-        if (option in readoptions[0]):
-            infile = value
-        elif (option in readoptions[1]):
-            outfile = value
-        elif (option in readoptions[2]):
-            mode = value
-        elif (option in readoptions[3]):
-            precision = int(value)
-
-    if (any(val is None for val in [infile, outfile, mode])):
-        help()
-        sys.exit(2)
-
-    return infile, outfile, mode
-
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-if (__name__ == '__main__'):
-    args = parse_args(sys.argv[1:])
-
-    rounding(*args)

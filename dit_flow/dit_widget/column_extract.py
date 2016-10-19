@@ -17,8 +17,12 @@ from ..rill import rill
 @rill.outport('SID_OUT')
 def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
                    DATAFILE_OUT, DATAMAP_OUT, FID_OUT, SID_OUT):
-    """
-
+    """Extracts columns from the input csv file into a temporary file.
+    DATAFILE: name of main input csv file
+    DATAMAP: dictionary of {column name: column index} within the
+    FID: number 1... that identifies the order of the current file
+    SID: number 1... that identifies the order of the current step
+    COLUMNS: a list of column names to be taken
     """
     for name, map_, step, fileid, columnset in zip(DATAFILE.iter_contents(),
                                                    DATAMAP.iter_contents(),
