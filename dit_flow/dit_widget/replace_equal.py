@@ -1,4 +1,5 @@
 #! /usr/bin/python
+import csv
 
 import rill
 
