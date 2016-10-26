@@ -1,5 +1,5 @@
-#!/usr/bin/python
-"""Adds a constant to all numeric values in a column file."""
+#! /usr/bin/python
+"""Subtracts a constant from all numeric values in a column file."""
 import csv
 
 from ..rill import rill
@@ -9,12 +9,12 @@ import common.definitions as d
 
 @rill.component
 @rill.inport('INFILE')
-@rill.inport('OUTFILE_IN')
+@rill.inport('OUTFILE')
 @rill.outport('OUTFILE_OUT')
 @rill.inport('CONSTANT')
-def add_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
-    # Adds constant to all values in infile and writes the result to
-    # outfile.
+def subtract_constant(INFILE, OUTFILE, OUTFILE_OUT, CONSTANT):
+    # Subtracts all values in infile by constant and writes the result
+    # to outfile.
     for infile, outfile, constant in zip(INFILE.iter_contents(),
                                          OUTFILE_IN.iter_contents(),
                                          CONSTANT.iter_contents()):
@@ -25,6 +25,6 @@ def add_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
             for line in _in:
                 for item in line:
                     if (float(item) not in d.missing_values):
-                        value = float(item) + constant
+                        value = float(item) - constant
 
         OUTFILE_OUT.send(outfile)

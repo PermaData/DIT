@@ -2,7 +2,7 @@
 
 import csv
 
-import rill
+from ..rill import rill
 
 
 @rill.component
@@ -16,8 +16,15 @@ def check_ints(INFILE, OUTFILE, OUTFILE_OUT):
         with open(infile, newline='') as _in, open(outfile, 'w', newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
-            for line in data:
-                for item in line:
+            for i, line in enumerate(data):
+                for j, item in enumerate(line):
+                    try:
+                        value = float(item)
+                        if abs(value - round(value)) > 0.000001:
+                            print('Row {} column {} has a non-integer value.'.format(i, j))
+                    except ValueError:
+                        print('Row {} column {} has a non-integer value.'.format(i, j))
+        OUTFILE_OUT.send(infile)
 
 
     # data = io.pull(infile, float)

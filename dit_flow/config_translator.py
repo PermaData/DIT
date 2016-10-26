@@ -42,7 +42,12 @@ def translate(filename, flowname):
             output['processes'].update(extract_init)
             initializations.append(extract_defn)
             # Create its column replacer
-            replacer, replace_init, replace_defn = make_replacer(sid, defn['output columns'], num)
+            try:
+                # If specific output columns are given, use those
+                replacer, replace_init, replace_defn = make_replacer(sid, defn['output columns'], num)
+            except KeyError:
+                # Else use the input columns again
+                replacer, replace_init, replace_defn = make_replacer(sid, defn['input columns'], num)
             replacers.append(replacer)
             output['processes'].update(replace_init)
             initializations.append(replace_defn)

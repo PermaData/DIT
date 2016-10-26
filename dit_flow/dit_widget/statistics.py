@@ -1,34 +1,42 @@
-#! /usr/bin/python
-
 import math
-import sys
-import getopt
+import csv
 
-from .common import readwrite as io
+from ..rill import rill
+
 from .common import definitions as d
 
-__all__ = ['statistics']
 
-
-def statistics(infile, outfile):
+@rill.component
+@rill.inport('INFILE')
+@rill.inport('OUTFILE_IN')
+@rill.outport('OUTFILE_OUT')
+def statistics(INFILE, OUTFILE_IN, OUTFILE_OUT):
     """Calculate and print statistical values of the data."""
-    data = io.pull(infile, float)
+    for infile, outfile in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents()):
+        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+            data = csv.reader(_in)
+            output = csv.writer(_out)
+            filtered = []
+            for line in data:
+                try:
+                    item = float(line[0])
+                except ValueError:
+                    continue
+                if item not in d.missing_values:
+                    filtered.append(item)
+            point_stats = count_points(data)
+            distribution = mean_std(filtered)
+            minmax = min_max(filtered)
+            out = []
+            names = ['Min', 'Max', 'Mean', 'Standard Deviation', 'Total points',
+                     'Valid points', 'Valid fraction']
+            formatstr = '{0}: {1:0.{p}f}'
+            for name, value in zip(names, minmax + distribution + point_stats):
+                out.append(formatstr.format(name, value, p=7))
 
-    filtered = [x for x in data if x not in d.missing_values]
-
-    point_stats = count_points(data)
-    distribution = mean_std(filtered)
-    minmax = min_max(filtered)
-
-    out = []
-    names = ['Min', 'Max', 'Mean', 'Standard Deviation', 'Total points',
-             'Valid points', 'Valid fraction']
-    formatstr = '{0}: {1:0.{p}f}'
-    for name, value in zip(names, minmax + distribution + point_stats):
-        out.append(formatstr.format(name, value, p=7))
-
-    io.push(out, outfile)
-
+            for s in out:
+                print(s)
+        OUTFILE_OUT.send(infile)
 
 # Helper functions
 
@@ -79,43 +87,3 @@ def median(data):
     else:
         # Return the mean of the two center values
         return (data[len(data) // 2] + data[len(data) // 2 + 1]) / 2
-
-
-def parse_args(args):
-    def help():
-        print('statistics.py -i <input CSV file> -o <output csv file>')
-
-
-    infile = None
-    outfile = None
-
-    options = ('i:o:',
-                ['input', 'output'])
-    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]]))
-
-    try:
-        (vals, extras) = getopt.getopt(args, *options)
-    except getopt.GetoptError as e:
-        print(str(e))
-        help()
-        sys.exit(2)
-
-    for (option, value) in vals:
-        if (option in readoptions[0]):
-            infile = value
-        elif (option in readoptions[1]):
-            outfile = value
-
-    if (any(val is None for val in
-            [infile, outfile])):
-        help()
-        sys.exit(2)
-
-    return infile, outfile
-
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-if (__name__ == '__main__'):
-    infile, outfile = parse_args(sys.argv[1:])
-
-    statistics(infile, outfile)

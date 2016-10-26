@@ -43,6 +43,48 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
             DATAFILE.iter_contents(), DATAMAP.iter_contents(),
             FID.iter_contents(), SID.iter_contents(),
             DESTFILE.iter_contents(), DESTMAP.iter_contents()):
+        
+        # while True:
+        #     tempfileP = TEMPFILE.receive()
+        #     if tempfileP is None:
+        #         continue
+        #     else:
+        #         tempfileP = tempfileP.get_contents()
+        #     tempmapP = TEMPMAP.receive()
+        #     if tempmapP is None:
+        #         continue
+        #     else:
+        #         tempmapP = tempmapP.get_contents()
+        #     datafileP = DATAFILE.receive()
+        #     if datafileP is None:
+        #         continue
+        #     else:
+        #         datafileP = datafileP.get_contents()
+        #     datamapP = DATAMAP.receive()
+        #     if datamapP is None:
+        #         continue
+        #     else:
+        #         datamapP = datamapP.get_contents()
+        #     fidP = FID.receive()
+        #     if fidP is None:
+        #         continue
+        #     else:
+        #         fidP = fidP.get_contents()
+        #     sidP = SID.receive()
+        #     if sidP is None:
+        #         continue
+        #     else:
+        #         sidP = sidP.get_contents()
+        #     destfileP = DESTFILE.receive()
+        #     if destfileP is None:
+        #         continue
+        #     else:
+        #         destfileP = destfileP.get_contents()
+        #     destmapP = DESTMAP.receive()
+        #     if destmapP is None:
+        #         continue
+        #     else:
+        #         destmapP = destmapP.get_contents()
 
         # DEBUG: Reached the next set of packets
         print('replace', fid, sid)
