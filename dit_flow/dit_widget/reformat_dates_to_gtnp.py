@@ -30,11 +30,12 @@ def reformat_dates_to_gtnp(INFILE, OUTFILE_IN, FORMAT, OUTFILE_OUT):
                 for i, item in enumerate(line):
                     try:
                         date_time = dt.datetime.strptime(item.strip(), format_)
-                        quoted_dt = "{0}".format(date_time.strftime(gtnp_date_time_format))
+                        quoted_dt = "'{0}'".format(date_time.strftime(gtnp_date_time_format))
                         line[i] = quoted_dt
                     except ValueError as error:
                         print(error)
                 output.writerow(line)
+        OUTFILE_OUT.send(outfile)
     # date_time_writer = csv.writer(open(out_file, 'wb'), lineterminator='\n')
     # with open(column_file, 'rb') as csvfile:
     #     date_time_reader = csv.reader(csvfile, delimiter=',', quotechar='"')

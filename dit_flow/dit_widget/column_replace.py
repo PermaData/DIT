@@ -37,6 +37,16 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
     # statistics to
     # The initialization of this file needs to happen in read_file though
 
+    # DEBUG: See initial conditions
+    # print('Entered replacer-1')
+    # print(TEMPFILE.upstream_count())
+    # print(TEMPMAP.upstream_count())
+    # print(DATAFILE.upstream_count())
+    # print(DATAMAP.upstream_count())
+    # print(FID.upstream_count())
+    # print(SID.upstream_count())
+    # print(DESTFILE.upstream_count())
+    # print(DESTMAP.upstream_count())
     # BUG: On the last step in the flow, this hangs endlessly. I don't know
     #   which port is the problem, or a good way to find out.
     for tempfile, tempmap, datafile, datamap, fid, sid, destfile, destmap in \
@@ -88,8 +98,12 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
         #         destmapP = destmapP.get_contents()
 
         # DEBUG: Reached the next set of packets
-        print('replace', fid, sid)
+        # print('replace', fid, sid)
         # Map indices in the temp file to indices in the in and out files
+        # print(tempmap)
+        # print(destmap)
+        # print(datamap)
+        # BUG: Fails when the original name is different from the final name
         indices = {tempmap[name]: destmap[name] for name in tempmap}
         indices_in = {tempmap[name]: datamap[name] for name in tempmap}
 
@@ -125,15 +139,15 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
         shutil.move('tempin', datafile)
 
         # DEBUG: Print statements let us know when the ports are sending data
-        print('data out', datafile)
+        # print('data out', datafile)
         DATAFILE_OUT.send(datafile)
-        print('data map out', datamap)
+        # print('data map out', datamap)
         DATAMAP_OUT.send(datamap)
-        print('fid', fid)
+        # print('fid', fid)
         FID_OUT.send(fid)
-        print('sid', sid)
+        # print('sid', sid)
         SID_OUT.send(sid + 1)
-        print('dest', destfile)
+        # print('dest', destfile)
         DESTFILE_OUT.send(destfile)
-        print('dest map', destmap)
+        # print('dest map', destmap)
         DESTMAP_OUT.send(destmap)

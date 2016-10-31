@@ -19,7 +19,7 @@ Step Definitions:
   #   Another widget definition
   -
     widget: "reformat_dates_to_gtnp"
-    input columns: ["date:time"]
+    input columns: ["Date/Time"]
     inputs:
       - format: "'%Y%m%dT%H%M'"
     output columns: ["Date/Time"]
