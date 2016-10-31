@@ -19,8 +19,8 @@ def translate(filename, flowname):
     output['processes'].update({readfile: {'component': 'dit_flow/dit_widget/read_file/read_file', 'metadata': {}}})
     variablemap = 'variablemap'
     output['processes'].update({variablemap: {'component': 'dit_flow/dit_widget/variable_map/variable_map', 'metadata': {}}})
-    # sink = 'sink'
-    # output['processes'].update({sink: {'component': 'dit_flow/dit_widget/finish/finish', 'metadata': {}}})
+    sink = 'sink'
+    output['processes'].update({sink: {'component': 'dit_flow/dit_widget/finish/finish', 'metadata': {}}})
     with open(filename) as f:
         # Read the config file
         data = yaml.load(f)
@@ -70,12 +70,16 @@ def translate(filename, flowname):
         # Link readfile and variablemap to the first step in the sequence
         connections.append(connect(readfile, 'FID_OUT', extracters[0], 'FID'))
         connections.append(connect(variablemap, 'STEP', extracters[0], 'SID'))
+        connections.append(connect(variablemap, 'IN', extracters[0], 'DATAFILE'))
+        connections.append(connect(variablemap, 'INMAP', extracters[0], 'DATAMAP'))
+        connections.append(connect(variablemap, 'OUT', replacers[0], 'DESTFILE'))
+        connections.append(connect(variablemap, 'OUTMAP', replacers[0], 'DESTMAP'))
         # Link variablemap to each step
-        for e, r in zip(extracters, replacers):
-            connections.append(connect(variablemap, 'IN', e, 'DATAFILE'))
-            connections.append(connect(variablemap, 'INMAP', e, 'DATAMAP'))
-            connections.append(connect(variablemap, 'OUT', r, 'DESTFILE'))
-            connections.append(connect(variablemap, 'OUTMAP', r, 'DESTMAP'))
+        # for e, r in zip(extracters, replacers):
+        #     connections.append(connect(variablemap, 'IN', e, 'DATAFILE'))
+        #     connections.append(connect(variablemap, 'INMAP', e, 'DATAMAP'))
+        #     connections.append(connect(variablemap, 'OUT', r, 'DESTFILE'))
+        #     connections.append(connect(variablemap, 'OUTMAP', r, 'DESTMAP'))
         # Link steps in sequence
         for from_, to_e, to_r in zip(replacers[:-1], extracters[1:], replacers[1:]):
             connections.append(connect(from_, 'DATAFILE_OUT', to_e, 'DATAFILE'))
@@ -85,8 +89,8 @@ def translate(filename, flowname):
             connections.append(connect(from_, 'FID_OUT', to_e, 'FID'))
             connections.append(connect(from_, 'SID_OUT', to_e, 'SID'))
         # # Sink all open connections of the final replacer
-        # for portname in ['DATAFILE_OUT', 'DATAMAP_OUT', 'FID_OUT', 'SID_OUT', 'DESTFILE_OUT', 'DESTMAP_OUT']:
-        #     connections.append(connect(replacers[-1], portname, sink, 'SINK'))
+        for portname in ['DATAFILE_OUT', 'DATAMAP_OUT', 'FID_OUT', 'SID_OUT', 'DESTFILE_OUT', 'DESTMAP_OUT']:
+            connections.append(connect(replacers[-1], portname, sink, 'SINK'))
         # Put connections into output json
         initializations.extend(connections)
         output['connections'] = initializations

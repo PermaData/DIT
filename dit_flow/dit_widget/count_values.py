@@ -15,8 +15,11 @@ from .common import definitions as d
 @rill.inport('MODE')
 @rill.outport('OUTFILE_OUT')
 def count_values(INFILE, OUTFILE_IN, MODE, OUTFILE_OUT):
-    for infile, outfile, mode in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents(), MODE.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+    for infile, outfile, mode in zip(INFILE.iter_contents(),
+                                     OUTFILE_IN.iter_contents(),
+                                     MODE.iter_contents()):
+        with open(infile, newline='') as _in, \
+             open(outfile, newline='', 'w') as out:
             data = csv.reader(_in)
             N = len(next(data))
             _in.seek(0)
@@ -26,6 +29,9 @@ def count_values(INFILE, OUTFILE_IN, MODE, OUTFILE_OUT):
                 print('Number of unique values by column:', out)
             elif (mode == 'double'):
                 out = double(data)
+                print('Primary Value: Number of secondary values')
+                for item in out:
+                    print(item)
 
 
 def single(data, N):

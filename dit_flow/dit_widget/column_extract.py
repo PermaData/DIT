@@ -29,9 +29,10 @@ def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
                                                    SID.iter_contents(),
                                                    FID.iter_contents(),
                                                    COLUMNS.iter_contents()):
-        template = '{fid}_{sid}_{which}_temp.csv'
-        tempin = template.format(fid=fileid, sid=step, which='In')
-        tempout = template.format(fid=fileid, sid=step, which='Out')
+        path, base = name.rsplit('/', 1)
+        template = '{pth}/{fid}_{sid}_{which}_temp.csv'
+        tempin = template.format(pth=path, fid=fileid, sid=step, which='In')
+        tempout = template.format(pth=path, fid=fileid, sid=step, which='Out')
         indices = [map_[name] for name in columnset]
 
         with open(name, newline='') as source, \

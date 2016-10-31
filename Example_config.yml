@@ -1,4 +1,5 @@
 Step Order:
+  - "reformat_dates_to_gtnp"
   - "remove_characters"
   - "divide_constant"
 
@@ -17,6 +18,12 @@ Step Definitions:
   # -
   #   Another widget definition
   -
+    widget: "reformat_dates_to_gtnp"
+    input columns: ["date:time"]
+    inputs:
+      - format: "'%Y%m%dT%H%M'"
+    output columns: ["Date/Time"]
+  -
     widget: "remove_characters"
     input columns: ["Depth"]
     inputs:
@@ -29,7 +36,7 @@ Step Definitions:
       - constant: 100
     output columns: ["Depth"]
 
-Missing Values:
+Missing Values:  # Currently unused
   -999
   "na"
 

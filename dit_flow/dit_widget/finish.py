@@ -1,10 +1,15 @@
-import gevent
-import signal
 from ..rill import rill
+
+
+class EndExecution(Exception):
+    pass
 
 
 @rill.component
 @rill.inport('SINK')
 def finish(SINK):
-    SINK.receive().drop()
-    gevent.shutdown()
+    SINK.close()
+    # HACK: Really terrible hack
+    print(EndExecution('End of Program'))
+    import sys
+    sys.exit(0)

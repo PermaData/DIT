@@ -15,7 +15,7 @@ from ..rill import rill
 @rill.outport('OUTMAP')
 def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
     # Columns are separated by whitespace
-    sep = '\t'
+    sep = '  '
     n_entries = 7
 
     if (MAPFILE.upstream_count() == 1):

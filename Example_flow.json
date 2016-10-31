@@ -4,10 +4,10 @@
       "src": {
         "data": [
           [
-            "Depth"
+            "date:time"
           ],
           [
-            "Depth"
+            "date:time"
           ]
         ]
       },
@@ -20,10 +20,10 @@
       "src": {
         "data": [
           {
-            "Depth": 0
+            "Date/Time": 0
           },
           {
-            "Depth": 0
+            "Date/Time": 0
           }
         ]
       },
@@ -35,17 +35,13 @@
     {
       "src": {
         "data": [
-          [
-            "_CMAB"
-          ],
-          [
-            "_CMAB"
-          ]
+          "'%Y%m%dT%H%M'",
+          "'%Y%m%dT%H%M'"
         ]
       },
       "tgt": {
-        "port": "CHARACTERS",
-        "process": "remove_characters-1"
+        "port": "FORMAT",
+        "process": "reformat_dates_to_gtnp-1"
       }
     },
     {
@@ -83,13 +79,61 @@
     {
       "src": {
         "data": [
+          [
+            "_CMAB"
+          ],
+          [
+            "_CMAB"
+          ]
+        ]
+      },
+      "tgt": {
+        "port": "CHARACTERS",
+        "process": "remove_characters-2"
+      }
+    },
+    {
+      "src": {
+        "data": [
+          [
+            "Depth"
+          ],
+          [
+            "Depth"
+          ]
+        ]
+      },
+      "tgt": {
+        "port": "COLUMNS",
+        "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
+        "data": [
+          {
+            "Depth": 0
+          },
+          {
+            "Depth": 0
+          }
+        ]
+      },
+      "tgt": {
+        "port": "TEMPMAP",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "data": [
           100,
           100
         ]
       },
       "tgt": {
         "port": "CONSTANT",
-        "process": "divide_constant-2"
+        "process": "divide_constant-3"
       }
     },
     {
@@ -122,7 +166,7 @@
       },
       "tgt": {
         "port": "INFILE",
-        "process": "remove_characters-1"
+        "process": "reformat_dates_to_gtnp-1"
       }
     },
     {
@@ -132,7 +176,7 @@
       },
       "tgt": {
         "port": "OUTFILE_IN",
-        "process": "remove_characters-1"
+        "process": "reformat_dates_to_gtnp-1"
       }
     },
     {
@@ -178,7 +222,7 @@
     {
       "src": {
         "port": "OUTFILE_OUT",
-        "process": "remove_characters-1"
+        "process": "reformat_dates_to_gtnp-1"
       },
       "tgt": {
         "port": "TEMPFILE",
@@ -192,7 +236,7 @@
       },
       "tgt": {
         "port": "INFILE",
-        "process": "divide_constant-2"
+        "process": "remove_characters-2"
       }
     },
     {
@@ -202,7 +246,7 @@
       },
       "tgt": {
         "port": "OUTFILE_IN",
-        "process": "divide_constant-2"
+        "process": "remove_characters-2"
       }
     },
     {
@@ -248,11 +292,81 @@
     {
       "src": {
         "port": "OUTFILE_OUT",
-        "process": "divide_constant-2"
+        "process": "remove_characters-2"
       },
       "tgt": {
         "port": "TEMPFILE",
         "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
+        "port": "TEMPIN",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "INFILE",
+        "process": "divide_constant-3"
+      }
+    },
+    {
+      "src": {
+        "port": "TEMPOUT",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "OUTFILE_IN",
+        "process": "divide_constant-3"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAFILE_OUT",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAMAP_OUT",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "port": "SID_OUT",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "SID",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "port": "OUTFILE_OUT",
+        "process": "divide_constant-3"
+      },
+      "tgt": {
+        "port": "TEMPFILE",
+        "process": "replacer-3"
       }
     },
     {
@@ -347,46 +461,6 @@
     },
     {
       "src": {
-        "port": "IN",
-        "process": "variablemap"
-      },
-      "tgt": {
-        "port": "DATAFILE",
-        "process": "extracter-2"
-      }
-    },
-    {
-      "src": {
-        "port": "INMAP",
-        "process": "variablemap"
-      },
-      "tgt": {
-        "port": "DATAMAP",
-        "process": "extracter-2"
-      }
-    },
-    {
-      "src": {
-        "port": "OUT",
-        "process": "variablemap"
-      },
-      "tgt": {
-        "port": "DESTFILE",
-        "process": "replacer-2"
-      }
-    },
-    {
-      "src": {
-        "port": "OUTMAP",
-        "process": "variablemap"
-      },
-      "tgt": {
-        "port": "DESTMAP",
-        "process": "replacer-2"
-      }
-    },
-    {
-      "src": {
         "port": "DATAFILE_OUT",
         "process": "replacer-1"
       },
@@ -444,12 +518,132 @@
         "port": "SID",
         "process": "extracter-2"
       }
+    },
+    {
+      "src": {
+        "port": "DATAFILE_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "DATAFILE",
+        "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAMAP_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "DATAMAP",
+        "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTFILE_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "DESTFILE",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTMAP_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "DESTMAP",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "FID",
+        "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
+        "port": "SID_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "SID",
+        "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAFILE_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "DATAMAP_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "FID_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "SID_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTFILE_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "DESTMAP_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
     }
   ],
   "inports": {},
   "outports": {},
   "processes": {
-    "divide_constant-2": {
+    "divide_constant-3": {
       "component": "dit_flow/dit_widget/divide_constant/divide_constant",
       "metadata": {}
     },
@@ -461,6 +655,10 @@
       "component": "dit_flow/dit_widget/column_extract/column_extract",
       "metadata": {}
     },
+    "extracter-3": {
+      "component": "dit_flow/dit_widget/column_extract/column_extract",
+      "metadata": {}
+    },
     "filemanager": {
       "component": "dit_flow/dit_widget/file_manager/file_manager",
       "metadata": {}
@@ -469,7 +667,11 @@
       "component": "dit_flow/dit_widget/read_file/read_file",
       "metadata": {}
     },
-    "remove_characters-1": {
+    "reformat_dates_to_gtnp-1": {
+      "component": "dit_flow/dit_widget/reformat_dates_to_gtnp/reformat_dates_to_gtnp",
+      "metadata": {}
+    },
+    "remove_characters-2": {
       "component": "dit_flow/dit_widget/remove_characters/remove_characters",
       "metadata": {}
     },
@@ -479,6 +681,14 @@
     },
     "replacer-2": {
       "component": "dit_flow/dit_widget/column_replace/column_replace",
+      "metadata": {}
+    },
+    "replacer-3": {
+      "component": "dit_flow/dit_widget/column_replace/column_replace",
+      "metadata": {}
+    },
+    "sink": {
+      "component": "dit_flow/dit_widget/finish/finish",
       "metadata": {}
     },
     "variablemap": {

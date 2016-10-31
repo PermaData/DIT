@@ -33,7 +33,8 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
     DESTFILE: name of output csv file
     DESTMAP: dictionary of {column name: column index} for the output file
     """
-    # TODO: Add information-writing functionality, like a file to write statistics to
+    # TODO: Add information-writing functionality, like a file to write
+    # statistics to
     # The initialization of this file needs to happen in read_file though
 
     # BUG: On the last step in the flow, this hangs endlessly. I don't know
@@ -43,7 +44,7 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
             DATAFILE.iter_contents(), DATAMAP.iter_contents(),
             FID.iter_contents(), SID.iter_contents(),
             DESTFILE.iter_contents(), DESTMAP.iter_contents()):
-        
+
         # while True:
         #     tempfileP = TEMPFILE.receive()
         #     if tempfileP is None:
@@ -98,7 +99,8 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
              open('tempin', 'w', newline='') as _in, \
              open(datafile, newline='') as _original:
             # Modifies both the in and out files at the same time
-            # Meaning that we really don't need the distinction and it would be cleaner with only one input/output file
+            # Meaning that we really don't need the distinction and it would be
+            # cleaner with only one input/output file
 
             new = csv.reader(_temp)
             existing = csv.reader(_dest)
