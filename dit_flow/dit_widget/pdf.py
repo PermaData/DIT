@@ -42,7 +42,7 @@ def pdf(INFILE, OUTFILE_IN, BINS, MINMAX, LOWER, UPPER, OUTLIERS, NORM, OUTFILE_
             BINS.iter_contents(), MINMAX.iter_contents(),
             LOWER.iter_contents(), UPPER.iter_contents(),
             OUTLIERS.iter_contents(), NORM.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             output = csv.writer(_out)
 

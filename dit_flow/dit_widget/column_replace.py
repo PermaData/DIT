@@ -2,7 +2,7 @@ import csv
 import os
 import shutil
 
-from ..rill import rill
+import rill
 
 
 @rill.component

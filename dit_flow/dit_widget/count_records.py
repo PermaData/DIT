@@ -2,7 +2,7 @@
 
 import csv
 
-from ..rill import rill
+import rill
 
 from .common import definitions as d
 
@@ -16,7 +16,7 @@ def count_records(INFILE, OUTFILE_IN, OUTFILE_OUT):
     # TODO: This needs to write to a log file
     for infile, outfile in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents()):
         valid_records = 0
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             for line in data:

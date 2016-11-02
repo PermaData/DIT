@@ -16,12 +16,13 @@ def replace_equal(INFILE, OUTFILE_IN, OUTFILE_OUT, TARGET, VALUE):
                                               OUTFILE_IN.iter_contents(),
                                               TARGET.iter_contents(),
                                               VALUE.iter_contents()):
-        with open(infile) as _in, open(outfile, 'w') as _out:
+        with open(infile, newline='') as _in, \
+             open(outfile, 'w', newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             for line in data:
                 for i, item in enumerate(line):
-                    if (item == target):
+                    if (float(item) == target):
                         line[i] = value
                 output.writerow(line)
 

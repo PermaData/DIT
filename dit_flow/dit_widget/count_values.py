@@ -5,7 +5,7 @@ Given two columns, counts the number of unique values in column 2 that
 import itertools
 import csv
 
-from ..rill import rill
+import rill
 from .common import definitions as d
 
 
@@ -19,7 +19,7 @@ def count_values(INFILE, OUTFILE_IN, MODE, OUTFILE_OUT):
                                      OUTFILE_IN.iter_contents(),
                                      MODE.iter_contents()):
         with open(infile, newline='') as _in, \
-             open(outfile, newline='', 'w') as out:
+             open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             N = len(next(data))
             _in.seek(0)

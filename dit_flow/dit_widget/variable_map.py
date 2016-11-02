@@ -2,7 +2,7 @@ import itertools
 import csv
 import re
 
-from ..rill import rill
+import rill
 
 
 @rill.component

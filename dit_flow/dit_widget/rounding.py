@@ -24,7 +24,8 @@ def rounding(INFILE, OUTFILE_IN, MODE, PRECISION, OUTFILE_OUT):
                                                 OUTFILE_IN.iter_contents(),
                                                 MODE.iter_contents(),
                                                 PRECISION.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as _out:
+        with open(infile, newline='') as _in, \
+             open(outfile, 'w', newline='') as _out:
             data = csv.reader(_in)
             output = csv.reader(_out)
 
