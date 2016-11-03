@@ -1,57 +1,37 @@
 """Checks whether all the values in a column file are integers."""
 
-import sys
-import getopt
+import csv
 
-from .common import readwrite as io
-
-__all__ = ['check_ints']
+from ..rill import rill
 
 
-def check_ints(infile, outfile):
+@rill.component
+@rill.inport('INFILE')
+@rill.inport('OUTFILE')
+@rill.outport('OUTFILE_OUT')
+def check_ints(INFILE, OUTFILE, OUTFILE_OUT):
     """Check whether a value is not an integer."""
-    data = io.pull(infile, float)
+    # TODO: This needs to write to the log file
+    for infile, outfile in zip(INFILE.iter_contents(), OUTFILE.iter_contents()):
+        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as _out:
+            data = csv.reader(_in)
+            output = csv.writer(_out)
+            for i, line in enumerate(data):
+                for j, item in enumerate(line):
+                    try:
+                        value = float(item)
+                        if abs(value - round(value)) > 0.000001:
+                            print('Row {} column {} has a non-integer value.'.format(i, j))
+                    except ValueError:
+                        print('Row {} column {} has a non-integer value.'.format(i, j))
+        OUTFILE_OUT.send(infile)
 
-    out = []
-    for (i, val) in enumerate(data):
-        if (abs(val % 1) > .000000001):
-            out.append('{0}: {1}'.format(i, val))
 
-    io.push(out, outfile)
-
-
-def parse_args(args):
-    def help():
-        print('check_int.py -i <input CSV file> -o <output csv file>')
-
-    infile = None
-    outfile = None
-
-    options = ('i:o:', ['input', 'output'])
-    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]]))
-
-    try:
-        (vals, extras) = getopt.getopt(args, *options)
-    except getopt.GetoptError as e:
-        print(str(e))
-        help()
-        sys.exit(2)
-
-    for (option, value) in vals:
-        if (option in readoptions[0]):
-            infile = value
-        elif (option in readoptions[1]):
-            outfile = value
-
-    if (any(val is None for val in [infile, outfile])):
-        help()
-        sys.exit(2)
-
-    return infile, outfile
-
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-if (__name__ == '__main__'):
-    args = parse_args(sys.argv[1:])
-
-    check_ints(*args)
+    # data = io.pull(infile, float)
+    #
+    # out = []
+    # for (i, val) in enumerate(data):
+    #     if (abs(val % 1) > .000000001):
+    #         out.append('{0}: {1}'.format(i, val))
+    #
+    # io.push(out, outfile)

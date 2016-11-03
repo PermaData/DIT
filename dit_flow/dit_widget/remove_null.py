@@ -1,21 +1,20 @@
-import sys
-import getopt
 import csv
 
+import rill
 from .common import definitions as d
 
 __all__ = ['remove_null']
 
 
-def remove_null(infile, outfile):
+@rill.inport('INFILE')
+@rill.inport('OUTFILE_IN')
+@rill.outport('OUTFILE_OUT')
+def remove_null(INFILE, OUTFILE_IN, OUTFILE_OUT):
     """Remove records with no data from the dataset."""
-    with open(infile) as fi:
-        with open(outfile, 'w') as fo:
-            data = csv.reader(fi, quoting=csv.QUOTE_NONNUMERIC)
-            push = csv.writer(fo, quoting=csv.QUOTE_NONNUMERIC,
-                              lineterminator='\n', quotechar="'")
-
-            out = []
+    for infile, outfile in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents()):
+        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+            data = csv.reader(_in)
+            output = csv.writer(_out)
             keep = False
             for row in data:
                 for item in row:
@@ -30,40 +29,4 @@ def remove_null(infile, outfile):
                     push.writerow(row)
                     keep = False
 
-
-def parse_args(args):
-    def help():
-        print('remove_null.py -i <input file> -o <output file>')
-
-    infile = None
-    outfile = None
-
-    options = ('i:o:',
-               ['input', 'output'])
-    readoptions = list(zip(['-' + c for c in options[0] if c != ':'],
-                      ['--' + o for o in options[1]]))
-
-    try:
-        (vals, extras) = getopt.getopt(args, *options)
-    except getopt.GetoptError as e:
-        print(str(e))
-        help()
-        sys.exit(2)
-
-    for (option, value) in vals:
-        if (option in readoptions[0]):
-            infile = value
-        elif (option in readoptions[1]):
-            outfile = value
-
-    if (any(val is None for val in [infile, outfile])):
-        help()
-        sys.exit(2)
-
-    return infile, outfile
-
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-if (__name__ == '__main__'):
-    args = parse_args(sys.argv[1:])
-
-    remove_null(*args)
+        OUTFILE_OUT.send(outfile)

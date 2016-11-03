@@ -1,59 +1,26 @@
 """Counts the number of valid (non-empty) records in a column file."""
 
-import sys
-import getopt
+import csv
 
-from .common import readwrite as io
+from ..rill import rill
+
 from .common import definitions as d
 
-__all__ = ['count_records']
 
-
-def count_records(infile, outfile):
+@rill.component
+@rill.inport('INFILE')
+@rill.inport('OUTFILE_IN')
+@rill.outport('OUTFILE_OUT')
+def count_records(INFILE, OUTFILE_IN, OUTFILE_OUT):
     """Count how many valid records there are."""
-    data = io.pull(infile, float)
-
-    out = 0
-    for val in data:
-        if (val not in d.missing_values):
-            out += 1
-
-    io.push([out], outfile)
-
-
-def parse_args(args):
-    def help():
-        print('minsec_to_decimal.py -i <input file> -o <output file>')
-
-    infile = None
-    outfile = None
-
-    options = ('i:o:',
-               ['input', 'output'])
-    readoptions = list(zip(['-'+c for c in options[0] if c != ':'],
-                      ['--'+o for o in options[1]]))
-
-    try:
-        (vals, extras) = getopt.getopt(args, *options)
-    except getopt.GetoptError as e:
-        print(str(e))
-        help()
-        sys.exit(2)
-
-    for (option, value) in vals:
-        if (option in readoptions[0]):
-            infile = value
-        elif (option in readoptions[1]):
-            outfile = value
-
-    if (any(val is None for val in [infile, outfile])):
-        help()
-        sys.exit(2)
-
-    return infile, outfile
-
-#                 PERFORM FUNCTION USING COMMAND-LINE OPTIONS                 #
-if (__name__ == '__main__'):
-    args = parse_args(sys.argv[1:])
-
-    count_records(*args)
+    # TODO: This needs to write to a log file
+    for infile, outfile in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents()):
+        valid_records = 0
+        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+            data = csv.reader(_in)
+            output = csv.writer(_out)
+            for line in data:
+                if not any(item in d.missing_values for item in line):
+                    valid_records += 1
+            print('Valid Records:', valid_records)
+            OUTFILE_OUT.send(infile)

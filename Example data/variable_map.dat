@@ -1,0 +1,6 @@
+input name      operation       output name     input column    output column   units       description
+Station         'copy'          Station         1               1               ''          'Station identifier'
+Date/Time       'modify'        Date/Time       2               2               Y/M/D       'Date and time of measurement'
+Depth           'modify'        Depth           3               3               m           'Depth of measurement'
+Quality Code    'remove'        ''              4               0               ''          'Indicates missing values'
+Temperature     'modify'        Temperature     5               4               degrees C   'Temperature at depth'

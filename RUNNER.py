@@ -1,8 +1,15 @@
 import json
 
-import rill
+import dit_flow.rill.rill as rill
 
-f = open('Demonstration_flow.json')
+from dit_flow import config_translator as trans
+
+configname = 'Example_config.yml'
+flowname = 'Example_flow.json'
+
+trans.translate(configname, flowname)
+
+f = open(flowname)
 data = json.load(f)
 
 graph = rill.engine.network.Graph.from_dict(data)
