@@ -1,6 +1,6 @@
 import json
 
-import dit_flow.rill.rill as rill
+import rill
 
 from dit_flow import config_translator as trans
 
