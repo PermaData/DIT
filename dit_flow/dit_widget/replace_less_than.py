@@ -21,7 +21,7 @@ def replace_less_than(INFILE, OUTFILE_IN, THRESHOLD, VALUE, OUTFILE_OUT):
             output = csv.writer(_out)
             for line in data:
                 for i, item in enumerate(line):
-                    if (item < threshold):
+                    if (float(item) < threshold):
                         line[i] = value
                 output.writerow(line)
 

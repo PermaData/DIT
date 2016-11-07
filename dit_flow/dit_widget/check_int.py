@@ -2,7 +2,7 @@
 
 import csv
 
-from ..rill import rill
+import rill
 
 
 @rill.component
