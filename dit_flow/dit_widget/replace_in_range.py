@@ -11,7 +11,7 @@ import rill
 @rill.inport('LOWER')
 @rill.inport('VALUE')
 @rill.outport('OUTFILE_OUT')
-def replace_rangex(INFILE, OUTFILE_IN, THRESHOLD, VALUE, OUTFILE_OUT):
+def replace_rangex(INFILE, OUTFILE_IN, UPPER, LOWER, VALUE, OUTFILE_OUT):
     """Replace values within the range defined by threshold with value within a column file."""
     for infile, outfile, upper, lower, value in zip(INFILE.iter_contents(),
                                                     OUTFILE_IN.iter_contents(),
@@ -24,7 +24,7 @@ def replace_rangex(INFILE, OUTFILE_IN, THRESHOLD, VALUE, OUTFILE_OUT):
             output = csv.writer(_out)
             for line in data:
                 for i, item in enumerate(line):
-                    if (float(item) >= lower and float(item) <= upper):
+                    if (lower <= float(item) <= upper):
                         line[i] = value
                 output.writerow(line)
 

@@ -20,10 +20,14 @@ def rounding(INFILE, OUTFILE_IN, MODE, PRECISION, OUTFILE_OUT):
             given, instead round to that many digits beyond the decimal
             point.
     """
-    for infile, outfile, mode, precision in zip(INFILE.iter_contents(),
-                                                OUTFILE_IN.iter_contents(),
-                                                MODE.iter_contents(),
-                                                PRECISION.iter_contents()):
+    precision_iter = PRECISION.iter_contents()
+    for infile, outfile, mode in zip(INFILE.iter_contents(),
+                                     OUTFILE_IN.iter_contents(),
+                                     MODE.iter_contents()):
+        try:
+            precision = int(next(precision_iter))
+        except StopIteration:
+            precision = 0
         with open(infile, newline='') as _in, \
              open(outfile, 'w', newline='') as _out:
             data = csv.reader(_in)
@@ -46,15 +50,24 @@ def rounding(INFILE, OUTFILE_IN, MODE, PRECISION, OUTFILE_OUT):
 
 
 def _ceil(val, precision):
-    return float(math.ceil(val * 10**precision)) / precision
+    if (precision):
+        return float(math.ceil(val * 10**precision)) / 10**precision
+    else:
+        return float(math.ceil(val))
 
 
 def _floor(val, precision):
-    return float(math.floor(val * 10**precision)) / precision
+    if (precision):
+        return float(math.floor(val * 10**precision)) / 10**precision
+    else:
+        return float(math.floor(val))
 
 
 def _trunc(val, precision):
-    return int(val * 10**precision) / precision
+    if (precision):
+        return int(val * 10**precision) / 10**precision
+    else:
+        return int(val)
 
 
 def _round(val, precision):
