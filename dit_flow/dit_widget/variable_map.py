@@ -2,7 +2,7 @@ import itertools
 import csv
 import re
 
-from ..rill import rill
+import rill
 
 
 @rill.component
@@ -72,8 +72,9 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
             output.writerow(headline)
             copies = {}
             for in_name in in_map.keys():
-                # Figure out which items need to be copied
+                # Figure out which columns need to be copied
                 if name_converter[in_name] in out_map:
+                    # copies is a dictionary of input column index -> output column index
                     copies[in_map[in_name]] = out_map[name_converter[in_name]]
             firstline = True
             for line in data:
@@ -86,10 +87,15 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
                     outputline[_to] = line[_from]
                 output.writerow(outputline)
 
+        # Sends the name of the input csv.
         IN.send(Dname)
+        # Sends the name of the output csv.
         OUT.send(convert_to_out(Dname))
+        # This initiates the sequence, so tells the begins the first step
         STEP.send(1)
+        # Sends a dictionary of column name -> index for the input csv
         INMAP.send(in_map)
+        # sends a dictionary of column name -> index for the output csv
         OUTMAP.send(out_map)
 
 

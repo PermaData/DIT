@@ -10,6 +10,8 @@ import getopt
 import re
 import sys
 
+import rill
+
 
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
@@ -27,7 +29,7 @@ def move_text(INFILE, OUTFILE_IN, FROM_REGEX, TO_REGEX, OUTFILE_OUT):
     for infile, outfile, from_regex, to_regex in \
         zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents(),
             FROM_REGEX.iter_contents(), TO_REGEX.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             for row in data:

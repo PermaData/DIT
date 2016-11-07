@@ -3,7 +3,7 @@
 import csv
 import shutil
 
-from ..rill import rill
+import rill
 
 from .common import definitions as d
 

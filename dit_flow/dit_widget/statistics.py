@@ -1,7 +1,7 @@
 import math
 import csv
 
-from ..rill import rill
+import rill
 
 from .common import definitions as d
 
@@ -13,7 +13,8 @@ from .common import definitions as d
 def statistics(INFILE, OUTFILE_IN, OUTFILE_OUT):
     """Calculate and print statistical values of the data."""
     for infile, outfile in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+        with open(infile, newline='') as _in, \
+             open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             filtered = []

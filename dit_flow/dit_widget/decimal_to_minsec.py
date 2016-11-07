@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import csv
 
-from ..rill import rill
+import rill
 
 from .common import definitions as d
 

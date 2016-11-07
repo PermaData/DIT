@@ -16,7 +16,8 @@ def replace_less_than(INFILE, OUTFILE_IN, THRESHOLD, VALUE, OUTFILE_OUT):
                                                  OUTFILE_IN.iter_contents(),
                                                  THRESHOLD.iter_contents(),
                                                  VALUE.iter_contents()):
-        with open(infile) as _in, open(outfile, 'w') as _out:
+        with open(infile, newline='') as _in, \
+             open(outfile, 'w', newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             for line in data:

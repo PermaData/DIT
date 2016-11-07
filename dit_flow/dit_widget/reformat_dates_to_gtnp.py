@@ -3,7 +3,7 @@
 import csv
 import datetime as dt
 
-from ..rill import rill
+import rill
 
 gtnp_date_time_format = '%Y-%m-%d %H:%M'
 

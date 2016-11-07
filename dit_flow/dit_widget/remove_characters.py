@@ -1,7 +1,7 @@
 import re
 import csv
 
-from ..rill import rill
+import rill
 
 
 @rill.component
@@ -34,7 +34,7 @@ def remove_characters(INFILE, OUTFILE_IN, CHARACTERS, OUTFILE_OUT):
                 target = re.escape(chars)
             else:
                 # Treat chars as individual characters
-                target = '[' + chars + ']'
+                target = '[' + re.escape(chars) + ']'
             with open(infile, newline='') as _in, \
                  open(outfile, 'w', newline='') as _out:
                 data = csv.reader(_in)

@@ -1,9 +1,9 @@
 """Converts latitude/longitude coordinates into UTM. The input coordinates must
 be in decimal format."""
 import csv
-import utm
 
-from ..rill import rill
+import rill
+import utm
 
 
 @rill.component

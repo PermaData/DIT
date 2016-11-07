@@ -9,7 +9,7 @@ import rill
 @rill.inport('INFILE')
 @rill.inport('OUTFILE')
 @rill.outport('OUTFILE_OUT')
-def check_ints(INFILE, OUTFILE, OUTFILE_OUT):
+def check_int(INFILE, OUTFILE, OUTFILE_OUT):
     """Check whether a value is not an integer."""
     # TODO: This needs to write to the log file
     for infile, outfile in zip(INFILE.iter_contents(), OUTFILE.iter_contents()):

@@ -1,7 +1,7 @@
 import csv
 import os
 
-from ..rill import rill
+import rill
 
 
 @rill.component
