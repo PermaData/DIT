@@ -13,7 +13,8 @@ import rill
 @rill.outport('STEP')
 @rill.outport('INMAP')
 @rill.outport('OUTMAP')
-def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
+@rill.outport('CROSSMAP')
+def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
     # Columns are separated by whitespace
     sep = '  '
     n_entries = 7
@@ -55,10 +56,12 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
                     if (out_header and out_index):
                         out_map.update({out_header: out_index-1})
                         out_details.update({out_header: [units, description]})
-        with open(Dname, newline='') as _in, open(convert_to_out(Dname), 'w', newline='') as _out:
+        with open(Dname, newline='') as _in, \
+             open(convert_to_out(Dname), 'w', newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             # headline = next(data)  # Pulls the first line of the file as headers
+            # Construct the first line of the output file from the
             headline = [''] * len(out_map)
             for name, index, details in zip(out_map.keys(), out_map.values(),
                                             out_details.values()):
@@ -97,6 +100,8 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP):
         INMAP.send(in_map)
         # sends a dictionary of column name -> index for the output csv
         OUTMAP.send(out_map)
+        # sends a dictionary of data column name -> destination column name
+        CROSSMAP.send({v:k for k, v in name_converter.items()})
 
 
 def convert_to_out(infile_name):
