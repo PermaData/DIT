@@ -108,9 +108,9 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
         indices_in = {tempmap[name]: datamap[name] for name in tempmap}
 
         with open(tempfile, newline='') as _temp, \
-             open('tempout', 'w', newline='') as _out, \
+             open('tempout', 'w', 0o666, newline='') as _out, \
              open(destfile, newline='') as _dest, \
-             open('tempin', 'w', newline='') as _in, \
+             open('tempin', 'w', 0o666, newline='') as _in, \
              open(datafile, newline='') as _original:
             # Modifies both the in and out files at the same time
             # Meaning that we really don't need the distinction and it would be
