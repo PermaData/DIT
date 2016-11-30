@@ -74,6 +74,7 @@ def translate(filename, flowname):
         connections.append(connect(variablemap, 'INMAP', extracters[0], 'DATAMAP'))
         connections.append(connect(variablemap, 'OUT', replacers[0], 'DESTFILE'))
         connections.append(connect(variablemap, 'OUTMAP', replacers[0], 'DESTMAP'))
+        connections.append(connect(variablemap, 'CROSSMAP', replacers[0], 'CROSSMAP'))
         # Link variablemap to each step
         # for e, r in zip(extracters, replacers):
         #     connections.append(connect(variablemap, 'IN', e, 'DATAFILE'))
@@ -88,8 +89,10 @@ def translate(filename, flowname):
             connections.append(connect(from_, 'DESTMAP_OUT', to_r, 'DESTMAP'))
             connections.append(connect(from_, 'FID_OUT', to_e, 'FID'))
             connections.append(connect(from_, 'SID_OUT', to_e, 'SID'))
+            connections.append(connect(from_, 'CROSSMAP_OUT', to_r, 'CROSSMAP'))
         # # Sink all open connections of the final replacer
-        for portname in ['DATAFILE_OUT', 'DATAMAP_OUT', 'FID_OUT', 'SID_OUT', 'DESTFILE_OUT', 'DESTMAP_OUT']:
+        for portname in ['DATAFILE_OUT', 'DATAMAP_OUT', 'FID_OUT', 'SID_OUT',
+                         'DESTFILE_OUT', 'DESTMAP_OUT', 'CROSSMAP_OUT']:
             connections.append(connect(replacers[-1], portname, sink, 'SINK'))
         # Put connections into output json
         initializations.extend(connections)

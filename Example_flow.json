@@ -4,10 +4,10 @@
       "src": {
         "data": [
           [
-            "Date/Time"
+            "date:time"
           ],
           [
-            "Date/Time"
+            "date:time"
           ]
         ]
       },
@@ -587,6 +587,16 @@
     },
     {
       "src": {
+        "port": "CROSSMAP",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "CROSSMAP",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
         "port": "DATAFILE_OUT",
         "process": "replacer-1"
       },
@@ -647,6 +657,16 @@
     },
     {
       "src": {
+        "port": "CROSSMAP_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "CROSSMAP",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
         "port": "DATAFILE_OUT",
         "process": "replacer-2"
       },
@@ -703,6 +723,16 @@
       "tgt": {
         "port": "SID",
         "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
+        "port": "CROSSMAP_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "CROSSMAP",
+        "process": "replacer-3"
       }
     },
     {
