@@ -15,7 +15,7 @@ def read_file(FILENAME, FID, DESTFILE, FID_OUT):
     for name, ID in zip(FILENAME.iter_contents(), FID.iter_contents()):
         path, base = name.rsplit('/', 1)
         main_name = '{pth}/{ID}_In_{base}.csv'.format(pth=path, ID=ID, base=base)
-        with open(name, newline='') as _from, open(main_name, 'w', newline='') as _to:
+        with open(name, newline='') as _from, open(main_name, 'w', 0o666, newline='') as _to:
             data = csv.reader(_from, quoting=csv.QUOTE_NONNUMERIC, quotechar="'")
             try:
                 isOK = column_check(data)

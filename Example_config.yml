@@ -52,11 +52,11 @@ Step Definitions:
 Files:
   # Format:
   # - "path/to/file"
-  - "./Example data/AKUL232"
-  - "./Example data/AUPA299"
+  - "./Example_data/AKUL232"
+  - "./Example_data/AUPA299"
 
 Variable map file:
-  - "./Example data/variable_map.dat"
+  - "./Example_data/variable_map.dat"
 
 
 

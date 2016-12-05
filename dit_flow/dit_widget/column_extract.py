@@ -1,4 +1,5 @@
 import csv
+import os
 
 import rill
 
@@ -48,6 +49,9 @@ def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
                     continue
                 outputline = [line[i] for i in indices]
                 output.writerow(outputline)
+	
+        os.chmod(tempin, 0o666)
+        os.chmod(tempout, 0o666)
 
         TEMPIN.send(tempin)
         TEMPOUT.send(tempout)

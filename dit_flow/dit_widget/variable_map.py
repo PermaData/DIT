@@ -57,7 +57,7 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
                         out_map.update({out_header: out_index-1})
                         out_details.update({out_header: [units, description]})
         with open(Dname, newline='') as _in, \
-             open(convert_to_out(Dname), 'w', newline='') as _out:
+             open(convert_to_out(Dname), 'w', 0o666, newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             # headline = next(data)  # Pulls the first line of the file as headers
@@ -69,7 +69,7 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
                     formatstr = '{name} ({unit})'
                 else:
                     formatstr = '{name}'
-                headline[index-1] = formatstr.format(name=name, unit=details[0])
+                headline[index] = formatstr.format(name=name, unit=details[0])
             # print(headline)
             # assert False
             output.writerow(headline)

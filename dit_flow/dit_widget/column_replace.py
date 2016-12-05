@@ -113,9 +113,9 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
         indices_in = {tempmap[name]: datamap[crossmap[name]] for name in tempmap}
 
         with open(tempfile, newline='') as _temp, \
-             open('tempout', 'w', 0o666, newline='') as _out, \
+             open('tempout', 'w', newline='') as _out, \
              open(destfile, newline='') as _dest, \
-             open('tempin', 'w', 0o666, newline='') as _in, \
+             open('tempin', 'w', newline='') as _in, \
              open(datafile, newline='') as _original:
             # Modifies both the in and out files at the same time
             # Meaning that we really don't need the distinction and it would be
@@ -142,6 +142,8 @@ def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
                 modified_in.writerow(output_in)
         shutil.move('tempout', destfile)
         shutil.move('tempin', datafile)
+        os.chmod(destfile, 0o666)
+        os.chmod(datafile, 0o666)
 
         # DEBUG: Print statements let us know when the ports are sending data
         # print('data out', datafile)
