@@ -49,7 +49,9 @@ def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
                     continue
                 outputline = [line[i] for i in indices]
                 output.writerow(outputline)
-	
+
+        # Create tempout as an empty file so we can set permissions here as opposed to in the widget
+        open(tempout, 'a').close()
         os.chmod(tempin, 0o666)
         os.chmod(tempout, 0o666)
 
