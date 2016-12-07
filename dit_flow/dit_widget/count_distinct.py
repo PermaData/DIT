@@ -13,18 +13,22 @@ from .common import definitions as d
 @rill.component
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
+@rill.inport('LOGFILE_IN')
 @rill.outport('OUTFILE_OUT')
-def count_distinct(INFILE, OUTFILE_IN, OUTFILE_OUT):
-    for infile, outfile in zip(INFILE.iter_contents(),
-                               OUTFILE_IN.iter_contents()):
+@rill.outport('LOGFILE_OUT')
+def count_distinct(INFILE, OUTFILE_IN, LOGFILE_IN, OUTFILE_OUT, LOGFILE_OUT):
+    for infile, outfile, logfile in zip(INFILE.iter_contents(),
+                               OUTFILE_IN.iter_contents(),
+                               LOGFILE_IN.iter_contents()):
         with open(infile, newline='') as _in, \
-             open(outfile, 'w', newline='') as out:
+             open(outfile, 'w', newline='') as out, \
+             open(logfile, 'a') as _log:
             data = csv.reader(_in)
             N = len(next(data))
             _in.seek(0)
 
             out = single(data, N)
-            print('Number of unique values by column:', out)
+            print('Number of unique values by column:', out, file=_log)
 
 
 def single(data, N):

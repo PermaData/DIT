@@ -10,14 +10,17 @@ import rill
 @rill.inport('FID')
 @rill.inport('SID')
 @rill.inport('COLUMNS')
+@rill.inport('LOGFILE')
 @rill.outport('TEMPIN')
 @rill.outport('TEMPOUT')
 @rill.outport('DATAFILE_OUT')
 @rill.outport('DATAMAP_OUT')
 @rill.outport('FID_OUT')
 @rill.outport('SID_OUT')
-def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
-                   DATAFILE_OUT, DATAMAP_OUT, FID_OUT, SID_OUT):
+@rill.outport('LOGFILE_OUT')
+def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, LOGFILE, TEMPIN,
+                   TEMPOUT, DATAFILE_OUT, DATAMAP_OUT, FID_OUT, SID_OUT,
+                   LOGFILE_OUT):
     """Extracts columns from the input csv file into a temporary file.
     DATAFILE: name of main input csv file
     DATAMAP: dictionary of {column name: column index} within the
@@ -25,11 +28,11 @@ def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
     SID: number 1... that identifies the order of the current step
     COLUMNS: a list of column names to be taken
     """
-    for name, map_, step, fileid, columnset in zip(DATAFILE.iter_contents(),
-                                                   DATAMAP.iter_contents(),
-                                                   SID.iter_contents(),
-                                                   FID.iter_contents(),
-                                                   COLUMNS.iter_contents()):
+    for name, map_, step, fileid, columnset, logfile in \
+        zip(DATAFILE.iter_contents(), DATAMAP.iter_contents(),
+            SID.iter_contents(), FID.iter_contents(),
+            COLUMNS.iter_contents(), LOGFILE.iter_contents()):
+        # TODO: Log any errors to the log file
         path, base = name.rsplit('/', 1)
         template = '{pth}/{fid}_{sid}_{which}_temp.csv'
         tempin = template.format(pth=path, fid=fileid, sid=step, which='In')
@@ -61,3 +64,4 @@ def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, TEMPIN, TEMPOUT,
         DATAMAP_OUT.send(map_)
         FID_OUT.send(fileid)
         SID_OUT.send(step)
+        LOGFILE_OUT.send(logfile)

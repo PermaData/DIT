@@ -8,13 +8,15 @@ import rill
 @rill.component
 @rill.inport('FILENAME')
 @rill.inport('MAPFILE')
+@rill.inport('LOGFILE')
 @rill.outport('IN')
 @rill.outport('OUT')
 @rill.outport('STEP')
 @rill.outport('INMAP')
 @rill.outport('OUTMAP')
 @rill.outport('CROSSMAP')
-def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
+@rill.outport('LOGFILE_OUT')
+def variable_map(FILENAME, MAPFILE, LOGFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP, LOGFILE_OUT):
     # Columns are separated by whitespace
     sep = '  '
     n_entries = 7
@@ -26,10 +28,8 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
         # use different map files
         mapiter = MAPFILE.iter_contents()
 
-    for Dname, Mname in zip(FILENAME.iter_contents(), mapiter):
-        # Dname is the data file name
-        # Mname is the map file name
-
+    for filename, mapfile, logfile in zip(FILENAME.iter_contents(), mapiter,
+                                          LOGFILE.iter_contents()):
         # in_map = {column name: column index} of the original data file
         # in_details: {column name: [units, description]} of the original data file
         # out_map = {column name: column index} of the processed file
@@ -40,7 +40,7 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
         out_map = {}
         out_details = {}
         name_converter = {}
-        with open(Mname) as f:
+        with open(mapfile) as f:
             # Possible improvement: skip over n "headlines" instead of just 1
             firstline = True
             for line in f:
@@ -52,8 +52,12 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
                 pattern = '{0}+'.format(sep)
                 entries = re.split(pattern, line)
                 if (len(entries) != n_entries and len(entries) != 0):
-                    # Check that the number of
-                    print(entries)
+                    # Check that the number of entries is correct
+                    with open(logfile, 'a') as log:
+                        print('Map file: {m}'.format(m=mapfile), file=log)
+                        print('Expected number of columns: {e}'.format(e=n_entries), file=log)
+                        print('Read number of columns: {r}'.format(r=len(entries)), file=log)
+                        print('Read entries: ', entries, sep=' ', file=log)
                     raise IndexError('File has the wrong number of columns.')
                 else:
                     in_header, operation, out_header, in_index, out_index, \
@@ -70,8 +74,8 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
                         out_map.update({out_header: out_index-1})
                         out_details.update({out_header: [units, description]})
 
-        with open(Dname, newline='') as _in, \
-             open(convert_to_out(Dname), 'w', 0o666, newline='') as _out:
+        with open(filename, newline='') as _in, \
+             open(convert_to_out(filename), 'w', 0o666, newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             # headline = next(data)  # Pulls the first line of the file as headers
@@ -105,9 +109,9 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
                 output.writerow(outputline)
 
         # Sends the name of the input csv.
-        IN.send(Dname)
+        IN.send(filename)
         # Sends the name of the output csv.
-        OUT.send(convert_to_out(Dname))
+        OUT.send(convert_to_out(filename))
         # This initiates the sequence, so tells the begins the first step
         STEP.send(1)
         # Sends a dictionary of column name -> index for the input csv
@@ -116,6 +120,7 @@ def variable_map(FILENAME, MAPFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP):
         OUTMAP.send(out_map)
         # sends a dictionary of data column name -> destination column name
         CROSSMAP.send({v: k for k, v in name_converter.items()})
+        LOGFILE_OUT.send(logfile)
 
 
 def convert_to_out(infile_name):

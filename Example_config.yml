@@ -11,7 +11,7 @@ Step Order:
   - "replace_less_than"
 
 Step Definitions:
-  # The order in this list needs to match the `Step Order` above. 
+  # The order in this list needs to match the `Step Order` above.
   # Format:
   # -
   #   widget: "Widget name"
@@ -54,6 +54,7 @@ Files:
   # - "path/to/file"
   - "./Example_data/AKUL232"
   - "./Example_data/AUPA299"
+  - "./Example_data/DNE"
 
 Variable map file:
   - "./Example_data/variable_map.dat"
@@ -63,4 +64,3 @@ Variable map file:
 Missing Values:  # Currently unused
   -999
   "na"
-

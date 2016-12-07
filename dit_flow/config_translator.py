@@ -63,8 +63,10 @@ def translate(filename, flowname):
         # Link filemanager to readfile
         connections.append(connect(filemanager, 'CURRENT', readfile, 'FILENAME'))
         connections.append(connect(filemanager, 'FID', readfile, 'FID'))
+        connections.append(connect(filemanager, 'LOGFILE', readfile, 'LOGFILE'))
         # Link readfile to variablemap
         connections.append(connect(readfile, 'DESTFILE', variablemap, 'FILENAME'))
+        connections.append(connect(readfile, 'LOGFILE_OUT', variablemap, 'LOGFILE'))
         # Give variable_map the variables file
         initializations.append(data_connection(variablemap, 'MAPFILE', data['Variable map file']))
         # Link readfile and variablemap to the first step in the sequence
@@ -72,6 +74,7 @@ def translate(filename, flowname):
         connections.append(connect(variablemap, 'STEP', extracters[0], 'SID'))
         connections.append(connect(variablemap, 'IN', extracters[0], 'DATAFILE'))
         connections.append(connect(variablemap, 'INMAP', extracters[0], 'DATAMAP'))
+        connections.append(connect(variablemap, 'LOGFILE_OUT', extracters[0], 'LOGFILE'))
         connections.append(connect(variablemap, 'OUT', replacers[0], 'DESTFILE'))
         connections.append(connect(variablemap, 'OUTMAP', replacers[0], 'DESTMAP'))
         connections.append(connect(variablemap, 'CROSSMAP', replacers[0], 'CROSSMAP'))
@@ -90,9 +93,11 @@ def translate(filename, flowname):
             connections.append(connect(from_, 'FID_OUT', to_e, 'FID'))
             connections.append(connect(from_, 'SID_OUT', to_e, 'SID'))
             connections.append(connect(from_, 'CROSSMAP_OUT', to_r, 'CROSSMAP'))
+            connections.append(connect(from_, 'LOGFILE_OUT', to_e, 'LOGFILE'))
         # # Sink all open connections of the final replacer
         for portname in ['DATAFILE_OUT', 'DATAMAP_OUT', 'FID_OUT', 'SID_OUT',
-                         'DESTFILE_OUT', 'DESTMAP_OUT', 'CROSSMAP_OUT']:
+                         'DESTFILE_OUT', 'DESTMAP_OUT', 'CROSSMAP_OUT',
+                         'LOGFILE_OUT']:
             connections.append(connect(replacers[-1], portname, sink, 'SINK'))
         # Put connections into output json
         initializations.extend(connections)
@@ -128,6 +133,7 @@ def link_step_internal(extracter, widget, replacer):
     out = []
     out.append(connect(extracter, 'TEMPIN', widget, 'INFILE'))
     out.append(connect(extracter, 'TEMPOUT', widget, 'OUTFILE_IN'))
+    out.append(connect(extracter, 'LOGFILE_OUT', widget, 'LOGFILE_IN'))
 
     out.append(connect(extracter, 'DATAFILE_OUT', replacer, 'DATAFILE'))
     out.append(connect(extracter, 'DATAMAP_OUT', replacer, 'DATAMAP'))
@@ -135,6 +141,8 @@ def link_step_internal(extracter, widget, replacer):
     out.append(connect(extracter, 'SID_OUT', replacer, 'SID'))
 
     out.append(connect(widget, 'OUTFILE_OUT', replacer, 'TEMPFILE'))
+
+    out.append(connect(widget, 'LOGFILE_OUT', replacer, 'LOGFILE'))
 
     return out
 

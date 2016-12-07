@@ -10,17 +10,23 @@ from .common import definitions as d
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
 @rill.outport('OUTFILE_OUT')
-def count_corresponding(INFILE, OUTFILE_IN, OUTFILE_OUT):
-    for infile, outfile in zip(INFILE.iter_contents(),
-                               OUTFILE_IN.iter_contents()):
+@rill.inport('LOGFILE_IN')
+@rill.outport('LOGFILE_OUT')
+def count_corresponding(INFILE, OUTFILE_IN, OUTFILE_OUT, LOGFILE_IN, LOGFILE_OUT):
+    for infile, outfile, logfile in zip(INFILE.iter_contents(),
+                                        OUTFILE_IN.iter_contents(),
+                                        LOGFILE_IN.iter_contents()):
         with open(infile, newline='') as _in, \
-             open(outfile, 'w', newline='') as out:
+             open(outfile, 'w', newline='') as _out, \
+             open(logfile, 'a') as _log:
             data = csv.reader(_in)
 
             out = double(data)
-            print('Primary Value: Number of secondary values')
+            print('Primary Value: Number of secondary values', file=_log)
             for item in out:
-                print(item)
+                print(item, file=_log)
+        OUTFILE_OUT.send(outfile)
+        LOGFILE_OUT.send(logfile)
 
 
 def double(data):

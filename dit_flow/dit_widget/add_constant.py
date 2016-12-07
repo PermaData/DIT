@@ -10,16 +10,22 @@ import common.definitions as d
 @rill.component
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
-@rill.outport('OUTFILE_OUT')
+@rill.inport('LOGFILE_IN')
 @rill.inport('CONSTANT')
-def add_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
+@rill.outport('OUTFILE_OUT')
+@rill.outport('LOGFILE_OUT')
+def add_constant(INFILE, OUTFILE_IN, LOGFILE_IN, CONSTANT, OUTFILE_OUT,
+                 LOGFILE_OUT):
     # Adds constant to all values in infile and writes the result to
     # outfile.
-    for infile, outfile, constant in zip(INFILE.iter_contents(),
-                                         OUTFILE_IN.iter_contents(),
-                                         CONSTANT.iter_contents()):
+    for infile, outfile, constant, logfile in zip(INFILE.iter_contents(),
+                                                  OUTFILE_IN.iter_contents(),
+                                                  CONSTANT.iter_contents(),
+                                                  LOGFILE_IN.iter_contents()):
         with open(infile, newline='') as _in, \
-             open(outfile, 'w', newline='') as _out:
+             open(outfile, 'w', newline='') as _out
+             open(logfile, 'a') as _log:
+            print('Adding {} to the column'.format(constant), file=_log)
             data = csv.reader(_in, )
             output = csv.writer(_out)
             for line in _in:
@@ -28,3 +34,4 @@ def add_constant(INFILE, OUTFILE_IN, OUTFILE_OUT, CONSTANT):
                         value = float(item) + constant
 
         OUTFILE_OUT.send(outfile)
+        LOGFILE_OUT.send(logfile)
