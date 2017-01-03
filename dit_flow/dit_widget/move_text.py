@@ -10,13 +10,18 @@ import getopt
 import re
 import sys
 
+import rill
+
 
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
+@rill.inport('LOGFILE_IN')
 @rill.inport('FROM_REGEX')
 @rill.inport('TO_REGEX')
 @rill.outport('OUTFILE_OUT')
-def move_text(INFILE, OUTFILE_IN, FROM_REGEX, TO_REGEX, OUTFILE_OUT):
+@rill.outport('LOGFILE_OUT')
+def move_text(INFILE, OUTFILE_IN, LOGFILE_IN, FROM_REGEX, TO_REGEX,
+              OUTFILE_OUT, LOGFILE_OUT):
     """
     move text within field with new text.
     :param ggd361_csv: input CSV file
@@ -24,10 +29,13 @@ def move_text(INFILE, OUTFILE_IN, FROM_REGEX, TO_REGEX, OUTFILE_OUT):
     :param move_from_regex: substring regular expression to move
     :param move_to_regex: substring regular expression to replace
     """
-    for infile, outfile, from_regex, to_regex in \
+    for infile, outfile, from_regex, to_regex, logfile in \
         zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents(),
-            FROM_REGEX.iter_contents(), TO_REGEX.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+            FROM_REGEX.iter_contents(), TO_REGEX.iter_contents(),
+            LOGFILE_IN.iter_contents()):
+        with open(infile, newline='') as _in, \
+             open(outfile, 'w', newline='') as out, \
+             open(logfile, 'a') as _log:
             data = csv.reader(_in)
             output = csv.writer(_out)
             for row in data:
@@ -36,6 +44,8 @@ def move_text(INFILE, OUTFILE_IN, FROM_REGEX, TO_REGEX, OUTFILE_OUT):
                     output.writerow(new_row)
                 else:
                     output.writerow(row)
+        OUTFILE_OUT.send(outfile)
+        LOGFILE_OUT.send(logfile)
 
     # ofile = open(output_csv, 'w')
     # writer = csv.writer(ofile, delimiter=',', quoting=csv.QUOTE_NONE, lineterminator='\n')

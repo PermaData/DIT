@@ -1,15 +1,17 @@
 import re
 import csv
 
-from ..rill import rill
+import rill
 
 
 @rill.component
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
 @rill.inport('CHARACTERS')
+@rill.inport('LOGFILE_IN')
 @rill.outport('OUTFILE_OUT')
-def remove_characters(INFILE, OUTFILE_IN, CHARACTERS, OUTFILE_OUT):
+@rill.outport('LOGFILE_OUT')
+def remove_characters(INFILE, OUTFILE_IN, CHARACTERS, LOGFILE_IN, OUTFILE_OUT, LOGFILE_OUT):
     """Remove all from a set of characters from a column.
 
     Input:
@@ -25,18 +27,20 @@ def remove_characters(INFILE, OUTFILE_IN, CHARACTERS, OUTFILE_OUT):
     # possible within rill
     substring = False
     placeholder = ''
-    for infile, outfile, charset in zip(INFILE.iter_contents(),
+    for infile, outfile, charset, logfile in zip(INFILE.iter_contents(),
                                         OUTFILE_IN.iter_contents(),
-                                        CHARACTERS.iter_contents()):
+                                        CHARACTERS.iter_contents(),
+                                        LOGFILE_IN.iter_contents()):
         for chars in charset:
             if (substring):
                 # Treat chars as a strict substring
                 target = re.escape(chars)
             else:
                 # Treat chars as individual characters
-                target = '[' + chars + ']'
+                target = '[' + re.escape(chars) + ']'
             with open(infile, newline='') as _in, \
-                 open(outfile, 'w', newline='') as _out:
+                 open(outfile, 'w', newline='') as _out, \
+                 open(logfile, 'a') as _log:
                 data = csv.reader(_in)
                 output = csv.writer(_out)
                 for line in data:
@@ -46,3 +50,4 @@ def remove_characters(INFILE, OUTFILE_IN, CHARACTERS, OUTFILE_OUT):
                     output.writerow(modified)
 
             OUTFILE_OUT.send(outfile)
+            LOGFILE_OUT.send(logfile)

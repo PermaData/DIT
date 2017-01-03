@@ -1,17 +1,23 @@
+# Notes: leading dashes set off items in an ordered list.
+# Indentation is done with spaces. It determines the scope of some items.
+
 Step Order:
+  # Format:
+  # - "widget_name"
+  # - ...
   - "reformat_dates_to_gtnp"
   - "remove_characters"
   - "divide_constant"
+  - "replace_less_than"
 
 Step Definitions:
+  # The order in this list needs to match the `Step Order` above.
   # Format:
-  # "Step being defined":
+  # -
   #   widget: "Widget name"
-  #   columns:
-  #     - "column 1 name"
-  #     - "column 2 name"
-  #     - ...
-  #   args:
+  #   input columns: ["col1", "col2"]
+  #   output columns: ["col1", "col2"]
+  #   inputs:
   #     - port1: data1
   #     - port2: data2
   #     - ...
@@ -19,7 +25,7 @@ Step Definitions:
   #   Another widget definition
   -
     widget: "reformat_dates_to_gtnp"
-    input columns: ["Date/Time"]
+    input columns: ["date:time"]
     inputs:
       - format: "'%Y%m%dT%H%M'"
     output columns: ["Date/Time"]
@@ -35,54 +41,26 @@ Step Definitions:
     inputs:
       - constant: 100
     output columns: ["Depth"]
+  -
+    widget: "replace_less_than"
+    input columns: ["Temperature"]
+    output columns: ["Temperature"]
+    inputs:
+      - threshold: -200
+      - value: -999.0
+
+Files:
+  # Format:
+  # - "path/to/file"
+  - "./Example_data/AKUL232"
+  - "./Example_data/AUPA299"
+  - "./Example_data/DNE"
+
+Variable map file:
+  - "./Example_data/variable_map.dat"
+
+
 
 Missing Values:  # Currently unused
   -999
   "na"
-
-
-Files:
-  # Format:
-  # -
-  #   filename: path to data file
-  - "./Example data/AKUL232"
-  - "./Example data/AUPA299"
-
-
-Variable map file:
-  - "./Example data/variable_map.dat"
-
-# Variable map:
-#   # -
-#   #   input header: "name"
-#   #   output header: "name"; this plus units will become the header of the column in the output file
-#   #   operation: "copy", "change", "create", or "remove"
-#   #   input column: an integer or "null"
-#   #   output column: an integer or "null"
-#   #   units: "m", "degrees C", etc.
-#   #   description: a couple words to tell you what it is
-#   # -
-#   #   More variable definitions
-#   -
-#     input header: "Station"
-#     output header: "Station"
-#     operation: "copy"
-#     input column: 1
-#     output column: 1
-#     units: ""
-#     description: "Station ID"
-#   -
-#     input header: "qc"
-#     output header: "Quality Code"
-#     operation: "remove"
-#     input column: 3
-#     output column: "null"
-#     units: ""
-#     description: "Quality control code"
-#   -
-#     input header: "Depth"
-#     operation: "copy"
-#     input column: 4
-#     output column: 3
-#     units: "m"
-#     description: "Depth of measurement"

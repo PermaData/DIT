@@ -2,7 +2,7 @@
 """Subtracts a constant from all numeric values in a column file."""
 import csv
 
-from ..rill import rill
+import rill
 
 import common.definitions as d
 

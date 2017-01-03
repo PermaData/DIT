@@ -1,31 +1,34 @@
-from ..rill import rill
+import os
+
+import rill
 
 
 @rill.component
 @rill.inport('FILENAMES')
 @rill.outport('CURRENT')
 @rill.outport('FID')
-def file_manager(FILENAMES, CURRENT, FID):
+@rill.outport('LOGFILE')
+def file_manager(FILENAMES, CURRENT, FID, LOGFILE):
     """
-    takes in a collection of file names through that port
-    does some preprocessing? at least verify that the file exists
-    perhaps copy the original file into a temporary one?
-    sends the CURRENT file that needs to be processed to the other port
-    """
-    """
-    for name in FILENAMES:
-        try:
-            f = open(name)
-            CURRENT.send(name)
-        except FileNotFoundError:
-            drop severity to a warning and don't pass the file on
+    FILENAMES: a sequence of paths to data files
+    CURRENT: sends out a sequence of filenames after confirming they exist
+    FID: a sequential numeric identifier for each file
+    LOGFILE: sends out a sequence of log filenames that correspond to a data file
     """
     for identifier, name in enumerate(FILENAMES.iter_contents()):
+        path, fname = name.rsplit('/', 1)
+        log_name = '{pth}/{name}.log'.format(pth=path, name=fname)
         try:
-            f = open(name)
+            # Open the file. If the file doesn't exist, the error will be
+            # caught.
+            f = open(name, 'r')
             f.close()
+            # Create/clear the log file
+            open(log_name, 'w').close()
+            os.chmod(log_name, 0o666)
             CURRENT.send(name)
-            FID.send(identifier+1)
+            FID.send(identifier + 1)
+            LOGFILE.send(log_name)
         except FileNotFoundError:
-            # TODO: Make this send to some log instead of the console
-            print('The file {f} was not found.'.format(f=name))
+            with open(log_name, 'w') as log:
+                print('The file {f} was not found.'.format(f=name), file=log)

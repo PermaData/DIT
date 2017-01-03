@@ -3,7 +3,7 @@
 import csv
 import shutil
 
-from ..rill import rill
+import rill
 
 from .common import definitions as d
 
@@ -11,16 +11,20 @@ from .common import definitions as d
 @rill.component
 @rill.inport('INFILE')
 @rill.inport('OUTFILE_IN')
+@rill.inport('LOGFILE_IN')
 @rill.inport('CONSTANT')
 @rill.outport('OUTFILE_OUT')
-def divide_constant(INFILE, OUTFILE_IN, CONSTANT, OUTFILE_OUT):
+@rill.outport('LOGFILE_OUT')
+def divide_constant(INFILE, OUTFILE_IN, LOGFILE_IN, CONSTANT, OUTFILE_OUT, LOGFILE_OUT):
     # Adds constant to all values in infile and writes the result to
     # outfile.
-    for infile, outfile, constant in zip(INFILE.iter_contents(),
-                                         OUTFILE_IN.iter_contents(),
-                                         CONSTANT.iter_contents()):
+    for infile, outfile, constant, logfile in zip(INFILE.iter_contents(),
+                                                  OUTFILE_IN.iter_contents(),
+                                                  CONSTANT.iter_contents(),
+                                                  LOGFILE_IN.iter_contents()):
         with open(infile, newline='') as _in, \
-             open(outfile, 'w', newline='') as _out:
+             open(outfile, 'w', newline='') as _out, \
+             open(logfile, 'a') as _log:
             data = csv.reader(_in)
             output = csv.writer(_out)
             if (constant == 0):
@@ -36,3 +40,4 @@ def divide_constant(INFILE, OUTFILE_IN, CONSTANT, OUTFILE_OUT):
                     output.writerow(modified)
 
         OUTFILE_OUT.send(outfile)
+        LOGFILE_OUT.send(logfile)

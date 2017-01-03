@@ -1,6 +1,6 @@
 import csv
 
-from ..rill import rill
+import rill
 
 
 @rill.inport('INFILE')
@@ -11,7 +11,7 @@ def remove_duplicate(INFILE, OUTFILE_IN, OUTFILE_OUT):
     for infile, outfile in zip(INFILE.iter_contents(),
                                OUTFILE_IN.iter_contents()):
         with open(infile, newline='') as _in, \
-             open(outfile, newline='', 'w') as out:
+             open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             track = set()

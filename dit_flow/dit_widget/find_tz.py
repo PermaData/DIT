@@ -4,6 +4,7 @@ import datetime
 import time
 import csv
 
+import rill
 from tzwhere import tzwhere
 import pytz
 
@@ -23,7 +24,7 @@ def find_tz(INFILE, OUTFILE_IN, OUTFILE_OUT):
     """
     header = True
     for infile, outfile in zip(INFILE.iter_contents(), OUTFILE_IN.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, newline='', 'w') as out:
+        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             finder = tzwhere.tzwhere()

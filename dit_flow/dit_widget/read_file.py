@@ -1,30 +1,36 @@
 import csv
 import os
 
-from ..rill import rill
+import rill
 
 
 @rill.component
 @rill.inport('FILENAME')
 @rill.inport('FID')
+@rill.inport('LOGFILE')
 @rill.outport('DESTFILE')
 @rill.outport('FID_OUT')
+@rill.outport('LOGFILE_OUT')
 # IMPORTANT: the order of the decorators has to correspond to the order of the arguments
-def read_file(FILENAME, FID, DESTFILE, FID_OUT):
-    # TODO: Create a log file where all meta information is sent, like statistics and errors
-    for name, ID in zip(FILENAME.iter_contents(), FID.iter_contents()):
+def read_file(FILENAME, FID, LOGFILE, DESTFILE, FID_OUT, LOGFILE_OUT):
+    for name, ID, logfile in zip(FILENAME.iter_contents(), FID.iter_contents(),
+                                 LOGFILE.iter_contents()):
         path, base = name.rsplit('/', 1)
-        main_name = '{pth}/{ID}_In_{base}.csv'.format(pth=path, ID=ID, base=base)
-        with open(name, newline='') as _from, open(main_name, 'w', newline='') as _to:
-            data = csv.reader(_from, quoting=csv.QUOTE_NONNUMERIC, quotechar="'")
+        main_name = '{pth}/{ID}_In_{base}.csv'.format(pth=path, ID=ID,
+                                                      base=base)
+        with open(name, newline='') as _from, \
+             open(main_name, 'w', 0o666, newline='') as _to:
+            data = csv.reader(_from, quoting=csv.QUOTE_NONNUMERIC,
+                              quotechar="'")
             try:
                 isOK = column_check(data)
             except IOError as e:
-                # TODO: log the error to some file rather than sending to the console
-                print(e)
+                with open(logfile, 'a') as log:
+                    print(e, file=log)
                 isOK = False
             _from.seek(0)
-            output = csv.writer(_to, quoting=csv.QUOTE_NONNUMERIC, quotechar="'")
+            output = csv.writer(_to, quoting=csv.QUOTE_NONNUMERIC,
+                                quotechar="'")
             # Copies the data into the file that will be base input from now on
             for line in data:
                 output.writerow(line)
@@ -32,11 +38,13 @@ def read_file(FILENAME, FID, DESTFILE, FID_OUT):
         if (isOK):
             DESTFILE.send(main_name)
             FID_OUT.send(ID)
+            LOGFILE_OUT.send(logfile)
 
 
 def column_check(data):
     # TODO: Check if this exhausts the iterator in containing scope
     # NOTE: It does, you need to reset with a seek(0) command
+    # TODO: Pass in the log file so errors can be saved for later inspection
     """Expects a csv.reader object."""
     count = []
     for line in data:

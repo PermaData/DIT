@@ -1,4 +1,4 @@
-from ..rill import rill
+import rill
 
 
 class EndExecution(Exception):

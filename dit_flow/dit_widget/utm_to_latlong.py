@@ -19,7 +19,8 @@ def utm_to_latlong(INFILE, OUTFILE_IN, OUTFILE_OUT):
     hemisphere = ''
     for infile, outfile in zip(INFILE.iter_contents(),
                                OUTFILE_IN.iter_contents()):
-        with open(infile, newline='') as _in, open(outfile, 'w', newline='') as _out:
+        with open(infile, newline='') as _in, \
+             open(outfile, 'w', newline='') as _out:
             data = csv.reader(_in)
             output = csv.writer(_out)
             for row in data:
