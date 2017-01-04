@@ -13,11 +13,12 @@ bash Miniconda3-latest-Linux-x86_64.sh -b -p $CONDA_PATH
 export PATH=$CONDA_PATH/bin:$PATH
 conda create -y -n dit_3 python=3.5
 source activate dit_3
+pip install -r dit_flow/requirements.txt
 
 echo "Create environment setup script to run before using DIT."
 ENV_SH="
 echo 'Adding conda to your path...'
-export PATH=$CONDA_PATH/bin:$PATH
+export PATH=$CONDA_PATH/bin:\$PATH
 echo 'Activating dit_3 conda environment...'
 source activate dit_3
 echo 'All done. Enjoy!'"
