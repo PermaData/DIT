@@ -18,15 +18,34 @@ The Data Integration Tool (DIT) consists of:
 * dit_core - the original Fortran based tool.
 
 ## Installation
-
 ### 64-bit Linux/unix
 #### Requirements:
 * writable directory
 * installed curl package
 * installed unzip package
-
 From within a writable directory, run the following command:
 curl -L http://bit.ly/2j2SZz3 | bash
+
+## Running DIT
+### Example Run on Linux
+From within the DIT-master directory, run the following commands:
+$ source env.sh
+* Should see the following output...
+Adding conda to your path...
+Activating dit_3 conda environment...
+All done. Enjoy!
+
+$ python RUNNER.py
+* Should see similar log output to the following:
+DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
+DEBUG : filemanager     Dropping packet: './Example_data/AKUL232'
+DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
+DEBUG : filemanager     Creating packet: 1
+DEBUG : filemanager     Creating packet: './Example_data/AKUL232.log'
+DEBUG : filemanager     Creating packet: './Example_data/AUPA299'
+DEBUG : filemanager     Dropping packet: './Example_data/AUPA299'
+DEBUG : filemanager     Creating packet: './Example_data/AUPA299'
+DEBUG : filemanager     Creating packet: 2
 
 ## Credit
 

@@ -25,7 +25,6 @@ pip install -r dit_flow/requirements.txt
 
 echo "Create environment setup script to run before using DIT."
 ENV_SH="
-echo '#!/bin/bash'
 echo 'Adding conda to your path...'
 export PATH=$(pwd)/conda/bin:\$PATH
 echo 'Activating dit_3 conda environment...'
