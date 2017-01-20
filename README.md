@@ -17,6 +17,17 @@ The Data Integration Tool (DIT) consists of:
 * dit_gui - a graphical user interface that creates dit flows which interact with dit_flow.
 * dit_core - the original Fortran based tool.
 
+## Installation
+
+### 64-bit Linux/unix
+#### Requirements:
+* writable directory
+* installed curl package
+* installed unzip package
+
+From within a writable directory, run the following command:
+curl -L http://bit.ly/2j2SZz3 | bash
+
 ## Credit
 
 This software was developed by the National Snow and Ice Data Center under NSF award number 1416712.
