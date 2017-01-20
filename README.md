@@ -30,7 +30,7 @@ curl -L http://bit.ly/2j2SZz3 | bash
 ## Running DIT
 ### Example Run on Linux
 From within the DIT-master directory, run the following commands:
-`$ source env.sh`
+    $ source env.sh
 * Should see the following output...
 ``` html
 Adding conda to your path...
@@ -38,7 +38,7 @@ Activating dit_3 conda environment...
 All done. Enjoy!
 ```
 
-`$ python RUNNER.py`
+    $ python RUNNER.py
 * Should see similar log output to the following:
 ``` html
 DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
