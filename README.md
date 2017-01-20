@@ -1,5 +1,5 @@
 DIT
-=====================
+___
 
 ## About
 
@@ -17,6 +17,7 @@ The Data Integration Tool (DIT) consists of:
 * dit_gui - a graphical user interface that creates dit flows which interact with dit_flow.
 * dit_core - the original Fortran based tool.
 
+___
 ## Installation
 ### 64-bit Linux/unix
 #### Requirements:
@@ -29,14 +30,17 @@ curl -L http://bit.ly/2j2SZz3 | bash
 ## Running DIT
 ### Example Run on Linux
 From within the DIT-master directory, run the following commands:
-$ source env.sh
+`$ source env.sh`
 * Should see the following output...
+``` html
 Adding conda to your path...
 Activating dit_3 conda environment...
 All done. Enjoy!
+```
 
-$ python RUNNER.py
+`$ python RUNNER.py`
 * Should see similar log output to the following:
+``` html
 DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
 DEBUG : filemanager     Dropping packet: './Example_data/AKUL232'
 DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
@@ -46,7 +50,9 @@ DEBUG : filemanager     Creating packet: './Example_data/AUPA299'
 DEBUG : filemanager     Dropping packet: './Example_data/AUPA299'
 DEBUG : filemanager     Creating packet: './Example_data/AUPA299'
 DEBUG : filemanager     Creating packet: 2
+```
 
+___
 ## Credit
 
 This software was developed by the National Snow and Ice Data Center under NSF award number 1416712.
