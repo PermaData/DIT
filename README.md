@@ -24,8 +24,11 @@ ___
 * writable directory
 * installed curl package
 * installed unzip package
+
 From within a writable directory, run the following command:
+``` html
 curl -L http://bit.ly/2j2SZz3 | bash
+```
 
 ## Running DIT
 ### Example Run on Linux
