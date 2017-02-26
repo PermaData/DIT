@@ -8,6 +8,9 @@
           ],
           [
             "date:time"
+          ],
+          [
+            "date:time"
           ]
         ]
       },
@@ -19,6 +22,9 @@
     {
       "src": {
         "data": [
+          {
+            "Date/Time": 0
+          },
           {
             "Date/Time": 0
           },
@@ -36,6 +42,7 @@
       "src": {
         "data": [
           "'%Y%m%dT%H%M'",
+          "'%Y%m%dT%H%M'",
           "'%Y%m%dT%H%M'"
         ]
       },
@@ -47,6 +54,9 @@
     {
       "src": {
         "data": [
+          [
+            "Depth"
+          ],
           [
             "Depth"
           ],
@@ -68,6 +78,9 @@
           },
           {
             "Depth": 0
+          },
+          {
+            "Depth": 0
           }
         ]
       },
@@ -79,6 +92,9 @@
     {
       "src": {
         "data": [
+          [
+            "_CMAB"
+          ],
           [
             "_CMAB"
           ],
@@ -100,6 +116,9 @@
           ],
           [
             "Depth"
+          ],
+          [
+            "Depth"
           ]
         ]
       },
@@ -111,6 +130,9 @@
     {
       "src": {
         "data": [
+          {
+            "Depth": 0
+          },
           {
             "Depth": 0
           },
@@ -128,6 +150,7 @@
       "src": {
         "data": [
           100,
+          100,
           100
         ]
       },
@@ -139,6 +162,9 @@
     {
       "src": {
         "data": [
+          [
+            "Temperature"
+          ],
           [
             "Temperature"
           ],
@@ -160,6 +186,9 @@
           },
           {
             "Temperature": 0
+          },
+          {
+            "Temperature": 0
           }
         ]
       },
@@ -171,6 +200,7 @@
     {
       "src": {
         "data": [
+          -200,
           -200,
           -200
         ]
@@ -184,6 +214,7 @@
       "src": {
         "data": [
           -999.0,
+          -999.0,
           -999.0
         ]
       },
@@ -195,8 +226,9 @@
     {
       "src": {
         "data": [
-          "./Example data/AKUL232",
-          "./Example data/AUPA299"
+          "./Example_data/AKUL232",
+          "./Example_data/AUPA299",
+          "./Example_data/DNE"
         ]
       },
       "tgt": {
@@ -207,7 +239,7 @@
     {
       "src": {
         "data": [
-          "./Example data/variable_map.dat"
+          "./Example_data/variable_map.dat"
         ]
       },
       "tgt": {
@@ -237,6 +269,16 @@
     },
     {
       "src": {
+        "port": "LOGFILE_OUT",
+        "process": "extracter-1"
+      },
+      "tgt": {
+        "port": "LOGFILE_IN",
+        "process": "reformat_dates_to_gtnp-1"
+      }
+    },
+    {
+      "src": {
         "port": "DATAFILE_OUT",
         "process": "extracter-1"
       },
@@ -287,6 +329,16 @@
     },
     {
       "src": {
+        "port": "LOGFILE_OUT",
+        "process": "reformat_dates_to_gtnp-1"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "replacer-1"
+      }
+    },
+    {
+      "src": {
         "port": "TEMPIN",
         "process": "extracter-2"
       },
@@ -302,6 +354,16 @@
       },
       "tgt": {
         "port": "OUTFILE_IN",
+        "process": "remove_characters-2"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "extracter-2"
+      },
+      "tgt": {
+        "port": "LOGFILE_IN",
         "process": "remove_characters-2"
       }
     },
@@ -357,6 +419,16 @@
     },
     {
       "src": {
+        "port": "LOGFILE_OUT",
+        "process": "remove_characters-2"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "replacer-2"
+      }
+    },
+    {
+      "src": {
         "port": "TEMPIN",
         "process": "extracter-3"
       },
@@ -372,6 +444,16 @@
       },
       "tgt": {
         "port": "OUTFILE_IN",
+        "process": "divide_constant-3"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "extracter-3"
+      },
+      "tgt": {
+        "port": "LOGFILE_IN",
         "process": "divide_constant-3"
       }
     },
@@ -427,6 +509,16 @@
     },
     {
       "src": {
+        "port": "LOGFILE_OUT",
+        "process": "divide_constant-3"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "replacer-3"
+      }
+    },
+    {
+      "src": {
         "port": "TEMPIN",
         "process": "extracter-4"
       },
@@ -442,6 +534,16 @@
       },
       "tgt": {
         "port": "OUTFILE_IN",
+        "process": "replace_less_than-4"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "extracter-4"
+      },
+      "tgt": {
+        "port": "LOGFILE_IN",
         "process": "replace_less_than-4"
       }
     },
@@ -492,6 +594,16 @@
       },
       "tgt": {
         "port": "TEMPFILE",
+        "process": "replacer-4"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "replace_less_than-4"
+      },
+      "tgt": {
+        "port": "LOGFILE",
         "process": "replacer-4"
       }
     },
@@ -517,11 +629,31 @@
     },
     {
       "src": {
+        "port": "LOGFILE",
+        "process": "filemanager"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "readfile"
+      }
+    },
+    {
+      "src": {
         "port": "DESTFILE",
         "process": "readfile"
       },
       "tgt": {
         "port": "FILENAME",
+        "process": "variablemap"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "readfile"
+      },
+      "tgt": {
+        "port": "LOGFILE",
         "process": "variablemap"
       }
     },
@@ -562,6 +694,16 @@
       },
       "tgt": {
         "port": "DATAMAP",
+        "process": "extracter-1"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "variablemap"
+      },
+      "tgt": {
+        "port": "LOGFILE",
         "process": "extracter-1"
       }
     },
@@ -667,6 +809,16 @@
     },
     {
       "src": {
+        "port": "LOGFILE_OUT",
+        "process": "replacer-1"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "extracter-2"
+      }
+    },
+    {
+      "src": {
         "port": "DATAFILE_OUT",
         "process": "replacer-2"
       },
@@ -737,6 +889,16 @@
     },
     {
       "src": {
+        "port": "LOGFILE_OUT",
+        "process": "replacer-2"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "extracter-3"
+      }
+    },
+    {
+      "src": {
         "port": "DATAFILE_OUT",
         "process": "replacer-3"
       },
@@ -797,6 +959,26 @@
     },
     {
       "src": {
+        "port": "CROSSMAP_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "CROSSMAP",
+        "process": "replacer-4"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
+        "process": "replacer-3"
+      },
+      "tgt": {
+        "port": "LOGFILE",
+        "process": "extracter-4"
+      }
+    },
+    {
+      "src": {
         "port": "DATAFILE_OUT",
         "process": "replacer-4"
       },
@@ -848,6 +1030,26 @@
     {
       "src": {
         "port": "DESTMAP_OUT",
+        "process": "replacer-4"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "CROSSMAP_OUT",
+        "process": "replacer-4"
+      },
+      "tgt": {
+        "port": "SINK",
+        "process": "sink"
+      }
+    },
+    {
+      "src": {
+        "port": "LOGFILE_OUT",
         "process": "replacer-4"
       },
       "tgt": {

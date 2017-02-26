@@ -32,3 +32,4 @@ def file_manager(FILENAMES, CURRENT, FID, LOGFILE):
         except FileNotFoundError:
             with open(log_name, 'w') as log:
                 print('The file {f} was not found.'.format(f=name), file=log)
+                os.chmod(log_name, 0o666)
