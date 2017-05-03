@@ -1,45 +1,37 @@
 import csv
 import os
 
-import rill
+from circuits import Component
 
+class ColumnExtract(Component):
 
-@rill.component
-@rill.inport('DATAFILE')
-@rill.inport('DATAMAP')
-@rill.inport('FID')
-@rill.inport('SID')
-@rill.inport('COLUMNS')
-@rill.inport('LOGFILE')
-@rill.outport('TEMPIN')
-@rill.outport('TEMPOUT')
-@rill.outport('DATAFILE_OUT')
-@rill.outport('DATAMAP_OUT')
-@rill.outport('FID_OUT')
-@rill.outport('SID_OUT')
-@rill.outport('LOGFILE_OUT')
-def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, LOGFILE, TEMPIN,
-                   TEMPOUT, DATAFILE_OUT, DATAMAP_OUT, FID_OUT, SID_OUT,
-                   LOGFILE_OUT):
+    channel = 'ColumnExtract'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
+
+def column_extract(datafile, datamap, step_id, file_id, columnset, logfile, tempin,
+                   tempout, datafile_out, datamapout, fid_out, sid_out,
+                   logfile_out):
     """Extracts columns from the input csv file into a temporary file.
-    DATAFILE: name of main input csv file
-    DATAMAP: dictionary of {column name: column index} within the
+    DATAFILE: datafile of main input csv file
+    DATAMAP: dictionary of {column datafile: column index} within the
     FID: number 1... that identifies the order of the current file
-    SID: number 1... that identifies the order of the current step
-    COLUMNS: a list of column names to be taken
+    SID: number 1... that identifies the order of the current step_id
+    COLUMNS: a list of column datafiles to be taken
     """
-    for name, map_, step, fileid, columnset, logfile in \
+    for datafile, datamap, step_id, file_id, columnset, logfile in \
         zip(DATAFILE.iter_contents(), DATAMAP.iter_contents(),
             SID.iter_contents(), FID.iter_contents(),
             COLUMNS.iter_contents(), LOGFILE.iter_contents()):
         # TODO: Log any errors to the log file
-        path, base = name.rsplit('/', 1)
+        path, base = datafile.rsplit('/', 1)
         template = '{pth}/{fid}_{sid}_{which}_temp.csv'
-        tempin = template.format(pth=path, fid=fileid, sid=step, which='In')
-        tempout = template.format(pth=path, fid=fileid, sid=step, which='Out')
-        indices = [map_[name] for name in columnset]
+        tempin = template.format(pth=path, fid=file_id, sid=step_id, which='In')
+        tempout = template.format(pth=path, fid=file_id, sid=step_id, which='Out')
+        indices = [datamap[datafile] for column in columnset]
 
-        with open(name, newline='') as source, \
+        with open(datafile, newline='') as source, \
              open(tempin, 'w', newline='') as dest:
             data = csv.reader(source, quoting=csv.QUOTE_NONNUMERIC,
                               quotechar="'")
@@ -60,8 +52,8 @@ def column_extract(DATAFILE, DATAMAP, FID, SID, COLUMNS, LOGFILE, TEMPIN,
 
         TEMPIN.send(tempin)
         TEMPOUT.send(tempout)
-        DATAFILE_OUT.send(name)
-        DATAMAP_OUT.send(map_)
-        FID_OUT.send(fileid)
-        SID_OUT.send(step)
+        DATAFILE_OUT.send(datafile)
+        DATAdatamapOUT.send(datamap)
+        FID_OUT.send(file_id)
+        SID_OUT.send(step_id)
         LOGFILE_OUT.send(logfile)

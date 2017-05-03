@@ -1,17 +1,15 @@
 #! /usr/bin/python
 import csv
 
-import rill
+from circuits import Component
 
+class ReplaceLessThan(Component):
 
-@rill.component
-@rill.inport('INFILE')
-@rill.inport('OUTFILE_IN')
-@rill.inport('LOGFILE_IN')
-@rill.inport('THRESHOLD')
-@rill.inport('VALUE')
-@rill.outport('OUTFILE_OUT')
-@rill.outport('LOGFILE_OUT')
+    channel = 'ReplaceLessThan'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
+
 def replace_less_than(INFILE, OUTFILE_IN, LOGFILE_IN, THRESHOLD, VALUE, OUTFILE_OUT, LOGFILE_OUT):
     """Replace values less than threshold with value within a column file."""
     for infile, outfile, threshold, value, logfile in zip(INFILE.iter_contents(),

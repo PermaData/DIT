@@ -1,0 +1,11 @@
+<form action="/step" method="post">
+  <%page args="step"/>
+  <tr>
+   <td>Step Order:</td>
+   <td>
+       % if ${step} is not None:
+            <input type="text" name="stepOrder" value=${step} ><input type="submit" name=
+       % else
+       % endif
+   </td>
+  </tr>

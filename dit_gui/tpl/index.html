@@ -1,0 +1,37 @@
+<%inherit file="base.html"/>
+
+<p>
+ Example of using
+ <a href="http://trac.softcircuit.com.au/circuits/">circuits</a> and its
+ <b>Web Components</b> to build a simple web application that handles
+ some basic form data.
+</p>
+% if message:
+	<div id="message">${message}</div>
+% endif
+<form action="submit" method="POST">
+ <table border="0" rules="none">
+  <%include file="steps.html"/>
+  <tr>
+   <td>Step Definition:</td>
+   <td><input type="text" name="stepDefinition"></td>
+  </tr>
+  <tr>
+   <td>Files:</td>
+   <td><input type="text" name="files"></td>
+  </tr>
+  <tr>
+   <td>Variable Map File:</td>
+   <td><input type="text" name="variableMapFile"></td>
+  </tr>
+  <tr>
+   <td>Missing Values:</td>
+   <td><input type="text" name="missingValues"></td>
+  </tr>
+<tr>
+ <td colspan=2" align="center">
+  <input type="submit" value="Submit">
+   </td>
+</tr>
+ </table>
+</form>

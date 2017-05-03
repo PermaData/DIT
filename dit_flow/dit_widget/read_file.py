@@ -1,16 +1,15 @@
 import csv
 import os
 
-import rill
+from circuits import Component
 
+class ReadFile(Component):
 
-@rill.component
-@rill.inport('FILENAME')
-@rill.inport('FID')
-@rill.inport('LOGFILE')
-@rill.outport('DESTFILE')
-@rill.outport('FID_OUT')
-@rill.outport('LOGFILE_OUT')
+    channel = 'ReadFile'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
+
 # IMPORTANT: the order of the decorators has to correspond to the order of the arguments
 def read_file(FILENAME, FID, LOGFILE, DESTFILE, FID_OUT, LOGFILE_OUT):
     for name, ID, logfile in zip(FILENAME.iter_contents(), FID.iter_contents(),

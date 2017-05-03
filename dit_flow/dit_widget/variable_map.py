@@ -2,20 +2,15 @@ import itertools
 import csv
 import re
 
-import rill
+from circuits import Component
 
+class VariableMap(Component):
 
-@rill.component
-@rill.inport('FILENAME')
-@rill.inport('MAPFILE')
-@rill.inport('LOGFILE')
-@rill.outport('IN')
-@rill.outport('OUT')
-@rill.outport('STEP')
-@rill.outport('INMAP')
-@rill.outport('OUTMAP')
-@rill.outport('CROSSMAP')
-@rill.outport('LOGFILE_OUT')
+    channel = 'variable_map'
+
+    def go(self, *args, **kwargs):
+        print(self.channel, ' received go event')
+
 def variable_map(FILENAME, MAPFILE, LOGFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSSMAP, LOGFILE_OUT):
     # Columns are separated by whitespace
     sep = '  '
@@ -108,9 +103,14 @@ def variable_map(FILENAME, MAPFILE, LOGFILE, IN, OUT, STEP, INMAP, OUTMAP, CROSS
                     outputline[_to] = line[_from]
                 output.writerow(outputline)
 
-        # Sends the name of the input csv.
+        # Returns:
+        #   - the name of the input csv.
+        #   - the name of the output csv.
+        #   - a dictionary of column name -> index for the input csv
+        #   - a dictionary of column name -> index for the output csv
+        #   - a dictionary of data column name -> destination column name
         IN.send(filename)
-        # Sends the name of the output csv.
+        # Sends 
         OUT.send(convert_to_out(filename))
         # This initiates the sequence, so tells the begins the first step
         STEP.send(1)

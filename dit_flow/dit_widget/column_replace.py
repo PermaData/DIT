@@ -2,28 +2,15 @@ import csv
 import os
 import shutil
 
-import rill
+from circuits import Component
 
+class ColumnReplacer(Component):
 
-@rill.component
-@rill.inport('TEMPFILE')
-@rill.inport('TEMPMAP')
-@rill.inport('DATAFILE')
-@rill.inport('DATAMAP')
-@rill.inport('FID')
-@rill.inport('SID')
-@rill.inport('DESTFILE')
-@rill.inport('DESTMAP')
-@rill.inport('CROSSMAP')
-@rill.inport('LOGFILE')
-@rill.outport('DATAFILE_OUT')
-@rill.outport('DATAMAP_OUT')
-@rill.outport('FID_OUT')
-@rill.outport('SID_OUT')
-@rill.outport('DESTFILE_OUT')
-@rill.outport('DESTMAP_OUT')
-@rill.outport('CROSSMAP_OUT')
-@rill.outport('LOGFILE_OUT')
+    channel = 'ColumnReplacer'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
+
 def column_replace(TEMPFILE, TEMPMAP, DATAFILE, DATAMAP, FID, SID, DESTFILE,
                    DESTMAP, CROSSMAP, LOGFILE, DATAFILE_OUT, DATAMAP_OUT,
                    FID_OUT, SID_OUT, DESTFILE_OUT, DESTMAP_OUT, CROSSMAP_OUT,
