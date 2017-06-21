@@ -1,13 +1,13 @@
 from enum import Enum
-from circuits import Component
 
 class PortType(Enum):
     INT = 1
     REAL = 2
     STR = 3
     ARRAY = 4
+    DICT = 5
 
-class Port(Component):
+class Port():
     """
     FBP style port with:
     addressable: boolean telling whether the port is an ArrayPort

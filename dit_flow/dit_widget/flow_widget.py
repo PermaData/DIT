@@ -1,38 +1,39 @@
-import os
-
 from abc import abstractmethod
-from circuits import Component
-from port import PortType
+class FlowWidget():
+    name_key = 'widget_name'
+    description_key = 'description'
+    icon_key = 'icon'
+    inputs_key = 'inPorts'
+    outputs_key = 'outPorts'
 
-
-class FileWidget(Component):
-
-    metadata = {
-        'widget_name': '', # component name in format that can be used in graphs
-        'description': '', # (optional) textual description on what the component does
-        'icon': '', # (optional): URL to visual icon for the component, matching icon names in Font Awesome
-        'inPorts': { # list of input ports
-                # e.g. 'FILENAMES': PortType.ARRAY
-            },
-        'outPorts': { # list of output ports
-                # e.g. 'FID': PortType.INT,
-            }
-    }
+    metadata = {}
 
     def get_metadata(self):
         return self.metadata
 
     def get_name(self):
-        return self.metadata['widget_name']
+        return self.metadata[self.name_key]
 
     def get_description(self):
-        return self.metadata['description']
+        return self.metadata[self.description_key]
 
     def get_input_ports(self):
-        return self.metadata['inPorts']
+        return self.metadata[self.inputs_key]
 
     def get_output_ports(self):
-        return self.metadata['outPorts']
+        return self.metadata[self.outputs_key]
+
+    def get_input_port_names(self):
+        return [port[0] for port in self.metadata[self.inputs_key]]
+
+    def get_output_port_names(self):
+        return [port[0] for port in self.metadata[self.outputs_key]]
+
+    def get_input_port_values(self):
+        return [port[1] for port in self.metadata[self.inputs_key]]
+
+    def get_output_port_values(self):
+        return [port[1] for port in self.metadata[self.outputs_key]]
 
     @abstractmethod
     def go(self, *args, **kwargs):

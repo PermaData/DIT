@@ -1,52 +1,32 @@
 import os
 
 from circuits import Component
-from port import PortType
+from dit_flow.dit_widget.flow_widget import FlowWidget
+from dit_flow.dit_widget.port import PortType
 
 
-class FileManager(Component):
+class FileManager(Component, FlowWidget):
 
     channel = 'file_manager'
 
     metadata = {
-        'widget_name': 'FileManager', # component name in format that can be used in graphs
-        'description': 'Loops through input files and creates flow unique filenames for each ' \
+        FlowWidget.name_key: 'FileManager', # component name in format that can be used in graphs
+        FlowWidget.description_key: 'Loops through input files and creates flow unique filenames for each ' \
                        'step in the flow', # (optional) textual description on what the component does
         # icon: (optional): visual icon for the component, matching icon names in Font Awesome
-        'inPorts': { # list of input ports
-                'FILENAMES': PortType.ARRAY
-            },
-        'outPorts': { # list of output ports
-                'CURRENT': PortType.ARRAY,
-                'FID': PortType.INT,
-                'LOGFILE': PortType.STR
-            }
+        FlowWidget.inputs_key: [ # list of input ports
+            ('FILENAMES', PortType.ARRAY)
+            ],
+        FlowWidget.outputs_key: [ # list of output ports
+                ('CURRENT', PortType.ARRAY),
+                ('FID', PortType.INT),
+                ('LOGFILE', PortType.STR)
+            ]
     }
 
-    def get_metadata(self):
-        return metadata
-
-    def get_name(self):
-        return self.metadata['widget_name']
-
-    def get_description(self):
-        return self.metadata['description']
-
-    def get_input_ports(self):
-        return self.metadata['inPorts']
-
-    def get_output_ports(self):
-        return self.metadata['outPorts']
-
     def go(self, *args, **kwargs):
-        print("Received args: ", args, kwargs)
         result = file_manager(*args)
-        print('result: ', result)
         return result
-
-    def la(self, *args, **kwargs):
-        print('Received la event...')
-        return 'success!!'
 
 def file_manager(FILENAMES):
     """
@@ -58,7 +38,6 @@ def file_manager(FILENAMES):
     print("inside file_manager, filenames: ", FILENAMES)
     step_files = []
     for identifier, name in enumerate(FILENAMES):
-        print("identifier: ", identifier, "  name: ", name)
         path, fname = name.rsplit('/', 1)
         log_name = '{pth}/{name}.log'.format(pth=path, name=fname)
         try:

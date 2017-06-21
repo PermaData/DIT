@@ -58,20 +58,33 @@ def run_flow(flowname):
     m.flush()
     print("res: ", logs_n_ids)
 
+    # Setup step input CSVs and logfiles.
+    file_reader = loader.load('read_file')
+    file_reader.channel = 'read_file'
+    in_csvs_n_logs = []
+
     # Setup variable mapper
     variable_map = loader.load('variable_map')
     variable_map.channel = 'variable_map'
-    res = m.fire(go(config['Variable map file'], complete=True), 'variable_map')
-    m.flush()
-    print("res: ", res)
 
-#    flow_widgets = {}
-#    for widget_id, widget_info in config['processes'].items():
-#        # print("Loading: ", widget_id)
-#        flow_widgets[widget_id] = loader.load(widget_info['component'])
-#        flow_widgets[widget_id].channel = widget_id
-#        # print("Loaded: ", flow_widgets[widget_id])
-#        x = m.fire(go())
+    for input_file, step_id, log_file in logs_n_ids:
+        result_list = m.fire(go(input_file, step_id, log_file, complete=True), 'read_file')
+        m.flush()
+        (filename, input_file_id, logfile) = result_list
+        print('ReadFile result: ', filename, '  ', input_file_id, '  ', logfile)
+
+        res = m.fire(go(filename, *config['Variable map file'], logfile, complete=True), 'variable_map')
+        m.flush()
+        (in_csv_filename, out_csv_filename, in_column_map, out_column_map, dest_column_map, logfile) = res
+        print("res: ", res)
+
+        flow_widgets = {}
+        for widget_id, widget_info in config['processes'].items():
+            # print("Loading: ", widget_id)
+            flow_widgets[widget_id] = loader.load(widget_info['component'])
+            flow_widgets[widget_id].channel = widget_id
+            # print("Loaded: ", flow_widgets[widget_id])
+            x = m.fire(go(input_file, widget_info['input columns']))
 
     m.stop()
 
