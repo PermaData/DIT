@@ -9,28 +9,26 @@ class ColumnExtract(Component, FlowWidget):
 
     channel = 'column_extract'
 
-    metadata = {
-        FlowWidget.name_key: 'ColumnExtract', # component name in format that can be used in graphs
-        FlowWidget.description_key: 'Adds constant to all values in infile and writes the result to ' \
-                                    'outfile',
-        FlowWidget.inputs_key: [ # list of input ports
-            ('datafile', PortType.STR),
-            ('datamap', PortType.STR),
-            ('flow_id', PortType.INT),
-            ('step_id', PortType.INT),
-            ('columns', PortType.STR),
-            ('logfile', PortType.STR)
-        ],
-        FlowWidget.outputs_key: [ # list of output ports
-            ('tempin', PortType.STR),
-            ('tempout', PortType.STR),
-            ('datafile_out', PortType.STR),
-            ('datamap_out', PortType.STR),
-            ('flow_id_out', PortType.INT),
-            ('step_id_out', PortType.INT),
-            ('logfile_out', PortType.STR)
-        ]
-    }
+    name = 'ColumnExtract' # component name in format that can be used in graphs
+    description = 'Adds constant to all values in infile and writes the result' \
+            ' to outfile',
+    input_args = [ # list of input ports
+        ('datafile', PortType.STR),
+        ('datamap', PortType.STR),
+        ('flow_id', PortType.INT),
+        ('step_id', PortType.INT),
+        ('columns', PortType.STR),
+        ('logfile', PortType.STR)
+    ]
+    outputs_args = [ # list of output ports
+        ('tempin', PortType.STR),
+        ('tempout', PortType.STR),
+        ('datafile_out', PortType.STR),
+        ('datamap_out', PortType.STR),
+        ('flow_id_out', PortType.INT),
+        ('step_id_out', PortType.INT),
+        ('logfile_out', PortType.STR)
+    ]
 
     def go(self, *args, **kwargs):
         print("Received args: ", args, kwargs)
