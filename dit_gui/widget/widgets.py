@@ -3,8 +3,12 @@ import os
 import glob
 import pydoc
 import sys
+from os.path import dirname as dir
+
+sys.path.append(dir(sys.path[0]))
 
 from circuits.web import Controller
+from widget_loader import WidgetLoader
 
 class Widgets(Controller):
 

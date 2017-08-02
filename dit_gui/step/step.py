@@ -1,6 +1,7 @@
 from mako.template import Template
 from circuits.web import Controller
 from templates import Templates
+import requests
 
 class StepOrder(Controller):
 
@@ -21,6 +22,8 @@ class StepOrder(Controller):
         return Templates.serve_template(self.tpl, **kwargs)
 
     def POST(self, *args, **kwargs):
+        data = self.request.body.read().decode('UTF-8')
+        print(data)
         return "%r %r" % (args, kwargs)
 
     def PUT(self, *args, **kwargs):
@@ -35,6 +38,8 @@ class StepDefinition(Controller):
         return Templates.serve_template(self.tpl, **kwargs)
 
     def POST(self, *args, **kwargs):
+        data = self.request.body.read().decode('UTF-8')
+        print(data)
         return "%r %r" % (args, kwargs)
 
     def PUT(self, *args, **kwargs):

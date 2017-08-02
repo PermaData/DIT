@@ -9,9 +9,11 @@
 % if message:
 	<div id="message">${message}</div>
 % endif
+<div>
+    <%include file='widget/widgets.html'>
+</div>
 <form action="submit" method="POST">
  <table border="0" rules="none">
-  <%include file="steps.html"/>
   <tr>
    <td>Step Definition:</td>
    <td><input type="text" name="stepDefinition"></td>

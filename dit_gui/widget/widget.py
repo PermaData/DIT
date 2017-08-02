@@ -2,6 +2,11 @@ import os
 import glob
 
 from circuits.web import Controller
+from sys import path
+from os.path import dirname as dir
+
+path.append(dir(path[0]))
+from widget_loader import WidgetLoader
 
 class Widget(Controller):
 
