@@ -1,5 +1,5 @@
 from circuits.web import Controller
-from templates import Templates
+from dit_gui.templates import Templates
 
 class Steps(Controller):
 

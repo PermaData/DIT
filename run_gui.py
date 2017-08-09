@@ -3,12 +3,12 @@ import os
 
 from mako.lookup import TemplateLookup
 
-from widget import *
-from step import *
-from flow import *
-from connection import *
+from dit_gui.widget import *
+from dit_gui.step import *
+from dit_gui.flow import *
+from dit_gui.connection import *
 from circuits.web import Controller, Logger, Server, Static
-from templates import Templates
+from dit_gui.templates import Templates
 
 
 class Root(Controller):

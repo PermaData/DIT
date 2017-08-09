@@ -9,31 +9,33 @@
 % if message:
 	<div id="message">${message}</div>
 % endif
-<div>
-    <%include file='widget/widgets.html'>
+<div style="float: left; width: 300;">
+    <%include file='widgets.html' />
 </div>
-<form action="submit" method="POST">
- <table border="0" rules="none">
-  <tr>
-   <td>Step Definition:</td>
-   <td><input type="text" name="stepDefinition"></td>
-  </tr>
-  <tr>
-   <td>Files:</td>
-   <td><input type="text" name="files"></td>
-  </tr>
-  <tr>
-   <td>Variable Map File:</td>
-   <td><input type="text" name="variableMapFile"></td>
-  </tr>
-  <tr>
-   <td>Missing Values:</td>
-   <td><input type="text" name="missingValues"></td>
-  </tr>
-<tr>
- <td colspan=2" align="center">
-  <input type="submit" value="Submit">
-   </td>
-</tr>
- </table>
-</form>
+<div style="float: left;">
+    <form action="submit" method="POST">
+     <table border="0" rules="none">
+      <tr>
+       <td>Step Definition:</td>
+       <td><input type="text" name="stepDefinition"></td>
+      </tr>
+      <tr>
+       <td>Files:</td>
+       <td><input type="text" name="files"></td>
+      </tr>
+      <tr>
+       <td>Variable Map File:</td>
+       <td><input type="text" name="variableMapFile"></td>
+      </tr>
+      <tr>
+       <td>Missing Values:</td>
+       <td><input type="text" name="missingValues"></td>
+      </tr>
+    <tr>
+     <td colspan="2" align="center">
+      <input type="submit" value="Submit">
+       </td>
+    </tr>
+     </table>
+    </form>
+</div>

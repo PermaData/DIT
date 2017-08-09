@@ -1,6 +1,6 @@
 from mako.template import Template
 from circuits.web import Controller
-from templates import Templates
+from dit_gui.templates import Templates
 import requests
 
 class StepOrder(Controller):
