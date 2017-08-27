@@ -17,10 +17,10 @@
       integer ipat      ! path index
       integer idat      ! data file index
       integer ivar      ! variable index
-      Character*45 junk ! garbage variable for reading input descriptors
+      Character*45 Junk ! garbage variable for reading input descriptors
       character*20 typ   ! path type
       logical find ! flag if path is found
-      real test
+      double precision test
 !
 ! read input file
       open(unit=100,file='Dit.in',form='formatted')
@@ -98,9 +98,8 @@
         if(path(ipat)%typ=='outpath') i_pat_out=ipat
       enddo
 !
-! find python script directory
-      do ipat = 1, n_path
-      enddo
+! integer missing value
+      miss_val_int=miss_val_real
 !
 ! standard character string variables
       qd='"'

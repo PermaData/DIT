@@ -17,6 +17,7 @@
     integer ipat ! path index
     logical temp_flag ! generic flag
     Character*20 case ! input/output case
+    Character*200 fmt    ! text string format
 !
 ! print message
     print*, 'Process Data Files'
@@ -24,12 +25,12 @@
 ! read program inputs
     call read_inputs
 !
-! process inpiut data files
+! process input data files
     do ifil=1,n_file
 !
 ! print file name
-      print*, ifil, trim(file(ifil)%path1)
-      open(unit=33, file='./output/'//trim(file(ifil)%path1))
+      fmt='(i3,1x,a30)'
+      print(fmt), ifil, trim(file(ifil)%path1)
       write(unit=33,*) '----------------------------------------'
       write(unit=33,*) ifil, trim(file(ifil)%path1)
       write(unit=33,*) '----------------------------------------'
@@ -38,6 +39,7 @@
       call read_variable_mapping_file(ifil)
 !
 ! read data
+      if(trim(file(ifil)%typ)=='csv') call test_read_csv_file(ifil)
       if(trim(file(ifil)%typ)=='ascii') then
          temp_flag=.false.
 	 call read_ascii_data(ifil,temp_flag)

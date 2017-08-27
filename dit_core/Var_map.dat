@@ -1,12 +1,13 @@
-9
+11
 num  In_var         Out_var     in out  o_in o_out  map_typ    typ         fmt         units           Description                
-1    'Borehole'     'Borehole'  t  t    1    1      'copy'     'integer'   '(i3.3)'    '(-)'           'Station ID'
-2    'mon'          'mon'       t  f    2    0      'copy'     'integer'   '(i2)'      '(mon)'         'month'
-3    'day'          'day'       t  f    3    0      'copy'     'integer'   '(i2)'      '(day)'         'day of month'
-4    'year'         'year'      t  f    4    0      'copy'     'integer'   '(i4)'      '(yr)'          'year'
-5    'Depth'        'Depth'     t  t    5    3      'copy'     'real'      '(f8.3)'    '(m)'           'depth of measurement'
-6    'Temperature'  'Temp'      t  t    6    4      'copy'     'real'      '(f8.3)'    '(deg C)'       'Temperature'
-7    'QC_flag'      'QC_Flag'   t  t    7    5      'copy'     'integer'   '(i2)'      '(-)'           'Quality Control Flag'
-8    'na'           'Date'      f  t    0    2      'calc'     'char'      '(a7)'      '(yyyy-mm-dd)'  'date of measurement'
-9    'na'           'Date_real' f  t    0    6      'calc'     'real'      '(f15.7)'   '(yr)'          'date of measurement'
-
+1    'A_LabID'      'A_LabID'     t  t    1    1      'copy'     'char'   '(a10)'    '(-)'         'Sample ID'
+2    'SiteID'       'SiteID'      t  t    1    1      'copy'     'char'   '(a10)'    '(-)'         'Site ID'
+3    'StateID'      'StateID'     t  t    1    1      'copy'     'char'   '(a10)'    '(-)'         'State'
+4    'Latitude'     'Latitude'    t  t    1    1      'copy'     'char'   '(a10)'    '(deg)'       'Latitude'
+5    'Longitude'    'Longitude'   t  t    1    1      'copy'     'char'   '(a10)'    '(deg)'       'longitude'
+6    'CollDate'     'CollDate'    t  t    1    1      'copy'     'char'   '(a10)'    '(YYMMDD)'    'Collection Date'
+7    'LandCover1'   'LandCover1'  t  t    1    1      'copy'     'char'   '(a10)'    '(-)'         'Landcover Class 1'
+8    'LandCover2'   'LandCover2'  t  t    1    1      'copy'     'char'   '(a10)'    '(-)'         'Landcover Class 2'
+9    'A_Depth'      'A_Depth'     t  t    1    1      'copy'     'char'   '(a10)'    '(cm)'        'Sample depth range'
+10   'A_C_Org'      'A_C_Org'     t  t    1    1      'copy'     'char'   '(a10)'    '(%)'         'Organic Carbon'
+11   'A_Hg'         'A_Hg'        t  t    1    1      'copy'     'char'   '(a10)'    '(mg/kg)'     'Soil Mercury'

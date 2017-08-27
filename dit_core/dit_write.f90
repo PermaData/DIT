@@ -1,5 +1,681 @@
 !
 !===================================================
+  subroutine kml_point(ifil,iman)
+!===================================================
+! Creates a single kml point file containing all files
+!
+    use dit_variables
+!
+    implicit none
+!
+! input variables
+    integer ifil ! data file index
+    integer iman ! manipulation number
+!
+! internal variables
+    integer irec  ! output record index
+    Character*250 text ! text string
+    Character*60 fmt   ! text string format
+    Character*250 kml(100)   ! kml file
+    Character*60 txt_lon ! longitude text version
+    Character*60 txt_lat ! latitude text version
+    Character*60 txt_alt ! alt text version
+!
+! save message
+    write(unit=33,*) '\tCreate output kml line file'
+! ind1 = pathnum reference kml file
+! ind2 = pathnum output kml
+! ind3 = varnum longitude
+! ind4 = varnum latitude
+! ind5 = varnum point label
+!
+! read reference kml file
+    filename=trim(path(man(iman)%ind1)%path1)
+    open(Unit=60, file=trim(filename), form='formatted')
+    do irec=1,10
+        read(unit=60,fmt='(a180)') kml(irec)
+    enddo
+    close(60)
+!
+! open output kml file
+    if(ifil==1) then
+      filename=trim(path(man(iman)%ind2)%path1)
+      open(Unit=611, file=trim(filename), form='formatted')
+      fmt='(a250)'
+      do irec=1,3
+        write(unit=611,fmt) kml(irec)
+      enddo
+    endif
+!
+! write file header
+    text='	<name>'//trim(file(ifil)%path1)//'</name>'
+    fmt='(a250)'
+    write(unit=611,fmt) text
+!
+! write points to kml file
+    fmt='(a250)'
+    do irec=1,out%n_rec
+      write(unit=611,fmt) kml(5)
+
+      text='      <name>'//trim(char_out(man(iman)%ind5,irec))//'</name>'
+      write(unit=611,fmt) text
+
+      write(txt_lon,*) data_out(man(iman)%ind3,irec)
+      write(txt_lat,*) data_out(man(iman)%ind4,irec)
+      txt_lon=adjustl(txt_lon)
+      txt_lat=adjustl(txt_lat)
+      text='      <Point><coordinates>'//trim(txt_lon)//','//trim(txt_lat)//'</coordinates></Point>'
+      write(unit=611,*) trim(text)
+
+      write(unit=611,fmt) kml(8)
+
+    enddo
+!
+! close filename and kml file
+    if (ifil==n_file) then
+      write(unit=611,fmt) kml(9)
+      write(unit=611,fmt) kml(10)
+      close(unit=611)
+    endif
+
+    end subroutine
+!
+!===================================================
+  subroutine kml_sqr(ifil,iman)
+!===================================================
+! Creates a single kml line file containing all files
+!
+    use dit_variables
+!
+    implicit none
+!
+! input variables
+    integer ifil ! data file index
+    integer iman ! manipulation number
+!
+! internal variables
+    integer ilin  ! kml ref line index
+    integer irec  ! output record index
+    integer ipt   ! point index
+    double precision box(2,5)   ! point index
+    Character*250 text ! text string
+    Character*60 fmt   ! text string format
+    Character*250 kml(100)   ! kml file
+    Character*60 txt_lon ! longitude text version
+    Character*60 txt_lat ! latitude text version
+    Character*60 txt_alt ! alt text version
+!
+! save message
+    write(unit=33,*) '\tCreate output kml line file'
+! ind1 = pathnum reference kml file
+! ind2 = pathnum output kml
+! ind3 = varnum longitude
+! ind4 = varnum latitude
+! ind5 = polygon name
+!
+! read reference kml file
+    filename=trim(path(man(iman)%ind1)%path1)
+    open(Unit=60, file=trim(filename), form='formatted')
+    do ilin=1,36
+        read(unit=60,fmt='(a200)') kml(ilin)
+    enddo
+    close(60)
+!
+! open output kml file
+    filename=trim(path(man(iman)%ind2)%path1)
+    print*, '\tfilename: ', trim(filename)
+    open(Unit=611, file=trim(filename), form='formatted')
+    fmt='(a250)'
+    do ilin=1,3
+      write(unit=611,fmt) kml(ilin)
+    enddo
+    text='	<name>'//trim(man(iman)%txt1)//'</name>'
+    write(unit=611,fmt) text
+    do ilin=5,19
+      write(unit=611,fmt) kml(ilin)
+    enddo
+!
+! write polygons
+    fmt='(a250)'
+    do irec=1,out%n_rec
+!
+! write placemark header to kml file
+      write(unit=611,fmt) kml(20)
+      text='               <name>'//trim(char_out(man(iman)%ind5,irec))//'</name>'
+      write(unit=611,fmt) text
+      text='               <description>'//trim(char_out(man(iman)%ind5,irec))//'</description>'
+      write(unit=611,fmt) text
+      do ilin=23,28
+        write(unit=611,fmt) kml(ilin)
+      enddo
+!
+! write line elements(points) to kml file
+! box(1,:) lon
+! box(2,:) lat
+      box(1,1)=data_out(man(iman)%ind3,irec)-man(iman)%val1
+      box(2,1)=data_out(man(iman)%ind4,irec)-man(iman)%val2
+
+      box(1,2)=data_out(man(iman)%ind3,irec)+man(iman)%val1
+      box(2,2)=data_out(man(iman)%ind4,irec)-man(iman)%val2
+
+      box(1,3)=data_out(man(iman)%ind3,irec)+man(iman)%val1
+      box(2,3)=data_out(man(iman)%ind4,irec)+man(iman)%val2
+
+      box(1,4)=data_out(man(iman)%ind3,irec)-man(iman)%val1
+      box(2,4)=data_out(man(iman)%ind4,irec)+man(iman)%val2
+
+      box(1,5)=box(1,1)
+      box(2,5)=box(2,1)
+      
+      do ipt=1,5
+        write(txt_lon,*) box(1,ipt)
+        write(txt_lat,*) box(2,ipt)
+        txt_lon=adjustl(txt_lon)
+        txt_lat=adjustl(txt_lat)
+	
+        text=trim(txt_lon)//','//trim(txt_lat)
+        text=adjustl(text)
+        write(unit=611,*) trim(text)
+      enddo
+!
+! write placemark footer to kml file
+      do ilin=30,34
+        write(unit=611,fmt) kml(ilin)
+      enddo
+    enddo
+!
+! close filename and kml file
+    write(unit=611,fmt) kml(35)
+    write(unit=611,fmt) kml(36)
+    close(unit=611)
+
+    end subroutine
+!
+!===================================================
+  subroutine kml_line(ifil,iman)
+!===================================================
+! Creates a single kml line file containing all files
+!
+    use dit_variables
+!
+    implicit none
+!
+! input variables
+    integer ifil ! data file index
+    integer iman ! manipulation number
+!
+! internal variables
+    integer irec  ! output record index
+    Character*250 text ! text string
+    Character*60 fmt   ! text string format
+    Character*250 kml(100)   ! kml file
+    Character*60 txt_lon ! longitude text version
+    Character*60 txt_lat ! latitude text version
+    Character*60 txt_alt ! alt text version
+!
+! save message
+    write(unit=33,*) '\tCreate output kml line file'
+! ind1 = pathnum reference kml file
+! ind2 = pathnum output kml
+! ind3 = varnum longitude
+! ind4 = varnum latitude
+!
+! read reference kml file
+    filename=trim(path(man(iman)%ind1)%path1)
+    open(Unit=60, file=trim(filename), form='formatted')
+    do irec=1,31
+        read(unit=60,fmt='(a69)') kml(irec)
+    enddo
+    close(60)
+!
+! open output kml file
+    if(ifil==1) then
+      filename=trim(path(man(iman)%ind2)%path1)
+      open(Unit=611, file=trim(filename), form='formatted')
+      fmt='(a250)'
+      do irec=1,3
+        write(unit=611,fmt) kml(irec)
+      enddo
+      text='	<name>'//trim(man(iman)%txt1)//'</name>'
+      write(unit=611,fmt) text
+      do irec=5,15
+        write(unit=611,fmt) kml(irec)
+      enddo
+    endif
+!
+! write placemark header to kml file
+    fmt='(a250)'
+    write(unit=611,fmt) kml(16)
+    text='               <name>'//trim(file(ifil)%path2)//'</name>'
+    write(unit=611,fmt) text
+    do irec=18,24
+      write(unit=611,fmt) kml(irec)
+    enddo
+!
+! write line elements(points) to kml file
+    do irec=1,out%n_rec
+      write(txt_lon,*) data_out(man(iman)%ind3,irec)
+      write(txt_lat,*) data_out(man(iman)%ind4,irec)
+      txt_lon=adjustl(txt_lon)
+      txt_lat=adjustl(txt_lat)
+	
+      text=trim(txt_lon)//','//trim(txt_lat)
+      text=adjustl(text)
+      write(unit=611,*) trim(text)
+    enddo
+!
+! write placemark footer to kml file
+    do irec=27,29
+      write(unit=611,fmt) kml(irec)
+    enddo
+!
+! closedouble precision filename and kml file
+    if (ifil==n_file) then
+      write(unit=611,fmt) kml(30)
+      write(unit=611,fmt) kml(31)
+      close(unit=611)
+    endif
+
+    end subroutine
+!
+!===================================================
+  subroutine kml_wall(ifil,iman)
+!===================================================
+! Creates a single kml wall file containing all files
+!
+    use dit_variables
+!
+    implicit none
+!
+! input variables
+    integer ifil ! data file index
+    integer iman ! manipulation number
+!
+! internal variables
+    integer irec  ! output record index
+    Character*250 text ! text string
+    Character*60 fmt   ! text string format
+    Character*250 kml(100) ! kml file
+    Character*60 txt_lon   ! longitude text version
+    Character*60 txt_lat   ! latitude text version
+    Character*60 txt_alt   ! alt text version
+!
+! save message
+    write(unit=33,*) '\tCreate output kml wall file'
+!
+! ind1 = pathnum reference kml file
+! ind2 = pathnum output kml
+! ind3 = varnum longitude
+! ind4 = varnum latitude
+! ind5 = varnum wall height
+!
+! read reference kml file
+    filename=trim(path(man(iman)%ind1)%path1)
+    open(Unit=60, file=trim(filename), form='formatted')
+    do irec=1,31
+        read(unit=60,fmt='(a69)') kml(irec)
+    enddo
+    close(60)
+!
+! open output kml file
+    if(ifil==1) then
+      filename=trim(path(man(iman)%ind2)%path1)
+      open(Unit=612, file=trim(filename), form='formatted')
+      fmt='(a250)'
+      do irec=1,3
+        write(unit=612,fmt) kml(irec)
+      enddo
+      text='	<name>'//trim(man(iman)%txt1)//'</name>'
+      write(unit=612,fmt) text
+      do irec=5,15
+        write(unit=612,fmt) kml(irec)
+      enddo
+    endif
+!
+! write placemark header to kml file
+    fmt='(a250)'
+    write(unit=612,fmt) kml(16)
+    text='               <name>'//trim(file(ifil)%path2)//'</name>'
+    write(unit=612,fmt) text
+    do irec=18,24
+      write(unit=612,fmt) kml(irec)
+    enddo
+!
+! write line elements(points) to kml file
+    do irec=1,out%n_rec
+      if(data_out(man(iman)%ind5,irec)/=miss_val_real) then
+
+        if(irec>1.and.data_out(man(iman)%ind5,irec-1)==miss_val_real) then
+          write(txt_lon,*) data_out(man(iman)%ind3,irec-1)
+          write(txt_lat,*) data_out(man(iman)%ind4,irec-1)
+          txt_lon=adjustl(txt_lon)
+          txt_lat=adjustl(txt_lat)
+          text=trim(txt_lon)//','//trim(txt_lat)//',0.'
+          text=adjustl(text)
+          write(unit=612,*) trim(text)
+	endif
+
+        write(txt_lon,*) data_out(man(iman)%ind3,irec)
+        write(txt_lat,*) data_out(man(iman)%ind4,irec)
+	write(txt_alt,*) data_out(man(iman)%ind5,irec)
+        txt_lon=adjustl(txt_lon)
+        txt_lat=adjustl(txt_lat)
+        txt_alt=adjustl(txt_alt)
+        text=trim(txt_lon)//','//trim(txt_lat)//','//trim(txt_alt)
+        text=adjustl(text)
+        write(unit=612,*) trim(text)
+
+        if(irec<out%n_rec.and.data_out(man(iman)%ind5,irec+1)==miss_val_real) then
+          write(txt_lon,*) data_out(man(iman)%ind3,irec+1)
+          write(txt_lat,*) data_out(man(iman)%ind4,irec+1)
+          txt_lon=adjustl(txt_lon)
+          txt_lat=adjustl(txt_lat)
+          text=trim(txt_lon)//','//trim(txt_lat)//',0.'
+          text=adjustl(text)
+          write(unit=612,*) trim(text)
+	endif
+      endif
+    enddo
+!
+! write placemark footer to kml file
+    do irec=27,29
+      write(unit=612,fmt) kml(irec)
+    enddo
+!
+! close filename and kml file
+    if (ifil==n_file) then
+      write(unit=612,fmt) kml(30)
+      write(unit=612,fmt) kml(31)
+      close(unit=612)
+    endif
+
+    end subroutine
+!
+!===================================================
+  subroutine make_csv_data_file(ifil,case)
+!===================================================
+! Writes a standard csv file
+!
+    use dit_variables
+!
+    implicit none
+!
+! input variables
+    integer ifil      ! data file index
+    Character*20 case ! what to write out as csv
+!
+! internal variables
+    integer ipat  ! path index
+    integer irec  ! output record index
+    integer ivar  ! output variable index
+    integer imap  ! input variable index
+    integer iout  ! output variable index
+    integer count ! count value
+    integer i_val ! integer value
+    Character*1000 text  ! text string
+    Character*60 temp   ! text string
+    Character*60 fmt    ! write format
+    character*20 typ    ! variable type
+    Character*250 temp_file  ! temporary file name
+    Character*250 path_typ ! path type
+    logical flg_out     ! flag for writing output array
+    double precision, allocatable :: data_wrt(:,:)          ! temp write data array
+    Character*50, allocatable :: char_wrt(:,:) ! temp write character array
+!
+! move what you are writing to local temporary arrays
+    select case(case)
+      case('in_temp') ! write input arrays to temporary file
+        x_dim=in%n_var
+        y_dim=in%n_rec
+        allocate(data_wrt(x_dim,y_dim))
+        allocate(char_wrt(x_dim,y_dim))
+        allocate(head1_tmp(x_dim))
+        allocate(fmt_tmp(x_dim))
+        allocate(typ_tmp(x_dim))
+        data_wrt=temp1_d2
+        char_wrt=temp1_char2
+        head1_tmp=head_in(:,1)
+        fmt_tmp=var_in(:)%fmt1
+        typ_tmp=var_in(:)%typ
+	flg_out=.false.
+        path_typ='temp'
+	temp_file='temp1'
+      case('out_temp') ! write output arrays to temporary file
+        x_dim=out%n_var
+        y_dim=out%n_rec
+        allocate(data_wrt(x_dim,y_dim))
+        allocate(char_wrt(x_dim,y_dim))
+        allocate(head1_tmp(x_dim))
+        allocate(fmt_tmp(x_dim))
+        allocate(typ_tmp(x_dim))
+        data_wrt=temp1_d2
+        char_wrt=temp1_char2
+        head1_tmp=head_out(:,1)
+        fmt_tmp=var_out(:)%fmt1
+        typ_tmp=var_out(:)%typ
+	flg_out=.true.
+        path_typ='temp'
+	temp_file='temp1'
+      case('out') ! write output arrays to output directory file
+        x_dim=out%n_var
+        y_dim=out%n_rec
+        allocate(data_wrt(x_dim,y_dim))
+        allocate(char_wrt(x_dim,y_dim))
+        allocate(head1_tmp(x_dim))
+        allocate(fmt_tmp(x_dim))
+        allocate(typ_tmp(x_dim))
+        data_wrt=data_out
+        char_wrt=char_out
+        head1_tmp=head_out(:,1)
+        fmt_tmp=var_out(:)%fmt1
+        typ_tmp=var_out(:)%typ
+	flg_out=.true.
+        path_typ='outpath'
+	temp_file=trim(file(ifil)%path2)//'.csv'
+      case('shred_tmp') ! write shredded output arrays to temp directory
+        x_dim=tmp%n_var
+        y_dim=tmp%n_rec
+        allocate(data_wrt(x_dim,y_dim))
+        allocate(char_wrt(1,y_dim))
+        allocate(head1_tmp(x_dim))
+        allocate(fmt_tmp(x_dim))
+        allocate(typ_tmp(x_dim))
+        data_wrt=temp1_d2(1:x_dim,1:y_dim)
+        char_wrt(1,:)=temp1_char1(1:y_dim)
+        head1_tmp=head1_tmp(1:x_dim)
+        fmt_tmp=var_shd(:)%fmt1
+        typ_tmp=var_shd(:)%typ
+	flg_out=.true.
+        path_typ='temp'
+	temp_file='temp1'
+      case('shred_out')  ! write shredded output arrays to final directory
+        x_dim=tmp%n_var
+        y_dim=tmp%n_rec
+        allocate(data_wrt(x_dim,y_dim))
+        allocate(char_wrt(x_dim,y_dim))
+        allocate(head1_tmp(x_dim))
+        allocate(fmt_tmp(x_dim))
+        allocate(typ_tmp(x_dim))
+        data_wrt=temp1_d2(1:x_dim,1:y_dim)
+        char_wrt(1,:)=temp1_char1(1:y_dim)
+        head1_tmp=head1_tmp(1:x_dim)
+        fmt_tmp=var_shd(:)%fmt1
+        typ_tmp=var_shd(:)%typ
+	flg_out=.true.
+        path_typ='outpath'
+	temp_file=trim(id)
+    end select
+!
+! find output path
+    do ipat = 1, n_path
+      if(path(ipat)%typ==trim(path_typ)) exit
+    enddo
+!
+! open output csv file
+    filename=trim(path(ipat)%path1)//trim(temp_file)
+    print*, '\t\tout csv file: ', trim(filename)
+    write(unit=33,*) '\t\tout csv file: ', trim(filename)
+    open(unit=70,file=trim(filename),form='formatted')
+!
+! write header
+    text=''
+    do ivar=1,x_dim
+      text=trim(text)//trim(head1_tmp(ivar))
+      if(ivar<x_dim) text=trim(text)//','
+    enddo
+    write(unit=70,*) trim(text)
+!
+! write to csv file
+    do irec=1,y_dim
+      text=''
+      do ivar=1,x_dim
+	fmt=fmt_tmp(ivar)
+	typ=typ_tmp(ivar)
+
+	if(trim(typ)=='integer') then
+	  i_val=data_wrt(ivar,irec)
+	  write(temp,fmt=fmt) i_val
+	  temp=adjustl(temp)
+	endif
+
+        if(trim(typ)=='real') then
+	  write(temp,fmt=fmt) data_wrt(ivar,irec)
+	  temp=adjustl(temp)
+	endif
+
+	if(trim(typ)=='char') then
+	  temp=trim(char_wrt(ivar,irec))
+	  temp=adjustl(temp)
+	endif
+
+	text=trim(text)//trim(temp)
+	if(ivar<x_dim)text=trim(text)//','
+      enddo
+      write(unit=70,*) trim(text)
+    enddo
+    close(unit=70)
+!
+! deallocate temporary variables
+    deallocate(data_wrt)
+    deallocate(char_wrt)
+    deallocate(head1_tmp)
+    deallocate(fmt_tmp)
+    deallocate(typ_tmp)
+!
+    end subroutine
+!
+!===================================================
+  subroutine append_csv_data_file(ifil,iman)
+!===================================================
+! appends to a standard csv file
+!
+    use dit_variables
+!
+    implicit none
+!
+! input variables
+    integer ifil      ! data file index
+    integer iman      ! manipulation number
+    Character*20 case ! what to write out as csv
+!
+! internal variables
+    integer ipat  ! path index
+    integer irec  ! output record index
+    integer ivar  ! output variable index
+    integer imap  ! input variable index
+    integer iout  ! output variable index
+    integer count ! count value
+    integer i_val ! integer value
+    Character*1000 text  ! text string
+    Character*60 temp   ! text string
+    Character*60 fmt    ! write format
+    character*20 typ    ! variable type
+    Character*250 temp_file  ! temporary file name
+    Character*250 path_typ ! path type
+    logical flg_out     ! flag for writing output array
+    double precision, allocatable :: data_wrt(:,:)          ! temp write data array
+    Character*50, allocatable :: char_wrt(:,:) ! temp write character array
+!
+! move what you are writing to local temporary arrays
+    case='out'
+    select case(case)
+      case('out') ! write output arrays to output directory file
+        x_dim=out%n_var
+        y_dim=out%n_rec
+        allocate(data_wrt(x_dim,y_dim))
+        allocate(char_wrt(x_dim,y_dim))
+        allocate(head_tmp(x_dim))
+        allocate(fmt_tmp(x_dim))
+        allocate(typ_tmp(x_dim))
+        data_wrt=data_out
+        char_wrt=char_out
+        head_tmp=head_out(:,1)
+        fmt_tmp=var_out(:)%fmt1
+        typ_tmp=var_out(:)%typ
+	flg_out=.true.
+        path_typ='outpath'
+	temp_file=trim(file(ifil)%path2)//'.csv'
+    end select
+!
+! open output csv file
+    ipat=man(iman)%ind1
+    filename=trim(path(ipat)%path1)
+    print*, '\t\tout csv file: ', trim(filename)
+    write(unit=33,*) '\t\tout csv file: ', trim(filename)
+!
+! set up file
+    if(ifil==1) then ! open and write header
+      open(unit=70,file=trim(filename),form='formatted')
+      text=''
+      do ivar=1,x_dim
+        text=trim(text)//trim(head_tmp(ivar))
+        if(ivar<x_dim) text=trim(text)//','
+      enddo
+      write(unit=70,*) trim(text)
+    else ! just open
+      open(unit=70,file=trim(filename),form='formatted', status='old', Position='append')
+    endif
+!
+! write to csv file
+    do irec=1,y_dim
+      text=''
+      do ivar=1,x_dim
+	fmt=fmt_tmp(ivar)
+	typ=typ_tmp(ivar)
+
+	if(trim(typ)=='integer') then
+	  i_val=data_wrt(ivar,irec)
+	  write(temp,fmt=fmt) i_val
+	  temp=adjustl(temp)
+	endif
+
+        if(trim(typ)=='real') then
+	  write(temp,fmt=fmt) data_wrt(ivar,irec)
+	  temp=adjustl(temp)
+	endif
+
+	if(trim(typ)=='char') then
+	  temp=trim(char_wrt(ivar,irec))
+	  temp=adjustl(temp)
+	endif
+
+	text=trim(text)//trim(temp)
+	if(ivar<x_dim)text=trim(text)//','
+      enddo
+      write(unit=70,*) trim(text)
+    enddo
+    close(unit=70)
+!
+! deallocate temporary variables
+    deallocate(data_wrt)
+    deallocate(char_wrt)
+    deallocate(head_tmp)
+    deallocate(fmt_tmp)
+    deallocate(typ_tmp)
+!
+    end subroutine
+!
+!===================================================
   subroutine shred_reset(irec)
 !===================================================
 ! resets shred counting variables, clears arrays
@@ -299,179 +975,6 @@
     end subroutine
 !
 !===================================================
-  subroutine make_csv_data_file(ifil,case)
-!===================================================
-! Writes a standard csv file
-!
-    use dit_variables
-!
-    implicit none
-!
-! input variables
-    integer ifil      ! data file index
-    Character*20 case ! what to write out as csv
-!
-! internal variables
-    integer ipat  ! path index
-    integer irec  ! output record index
-    integer ivar  ! output variable index
-    integer imap  ! input variable index
-    integer iout  ! output variable index
-    integer count ! count value
-    integer i_val ! integer value
-    Character*1000 text  ! text string
-    Character*60 temp   ! text string
-    Character*60 fmt    ! write format
-    character*20 typ    ! variable type
-    Character*250 temp_file  ! temporary file name
-    Character*250 path_typ ! path type
-    logical flg_out     ! flag for writing output array
-    real, allocatable :: data_wrt(:,:)          ! temp write data array
-    Character*50, allocatable :: char_wrt(:,:) ! temp write character array
-!
-! move what you are writing to local temporary arrays
-    select case(case)
-      case('in_temp') ! write input arrays to temporary file
-        x_dim=in%n_var
-        y_dim=in%n_rec
-        allocate(data_wrt(x_dim,y_dim))
-        allocate(char_wrt(x_dim,y_dim))
-        allocate(head_tmp(x_dim))
-        allocate(fmt_tmp(x_dim))
-        allocate(typ_tmp(x_dim))
-        data_wrt=temp1_d2
-        char_wrt=temp1_char2
-        head_tmp=head_in(:,1)
-        fmt_tmp=var_in(:)%fmt1
-        typ_tmp=var_in(:)%typ
-	flg_out=.false.
-        path_typ='temp'
-	temp_file='temp1'
-      case('out_temp') ! write output arrays to temporary file
-        x_dim=out%n_var
-        y_dim=out%n_rec
-        allocate(data_wrt(x_dim,y_dim))
-        allocate(char_wrt(x_dim,y_dim))
-        allocate(head_tmp(x_dim))
-        allocate(fmt_tmp(x_dim))
-        allocate(typ_tmp(x_dim))
-        data_wrt=temp1_d2
-        char_wrt=temp1_char2
-        head_tmp=head_out(:,1)
-        fmt_tmp=var_out(:)%fmt1
-        typ_tmp=var_out(:)%typ
-	flg_out=.true.
-        path_typ='temp'
-	temp_file='temp1'
-      case('out') ! write output arrays to output directory file
-        x_dim=out%n_var
-        y_dim=out%n_rec
-        allocate(data_wrt(x_dim,y_dim))
-        allocate(char_wrt(x_dim,y_dim))
-        allocate(head_tmp(x_dim))
-        allocate(fmt_tmp(x_dim))
-        allocate(typ_tmp(x_dim))
-        data_wrt=data_out
-        char_wrt=char_out
-        head_tmp=head_out(:,1)
-        fmt_tmp=var_out(:)%fmt1
-        typ_tmp=var_out(:)%typ
-	flg_out=.true.
-        path_typ='outpath'
-	temp_file=trim(file(ifil)%path2)
-      case('shred_tmp') ! write shredded output arrays to temp directory
-        x_dim=tmp%n_var
-        y_dim=tmp%n_rec
-        allocate(data_wrt(x_dim,y_dim))
-        allocate(char_wrt(1,y_dim))
-        allocate(head_tmp(x_dim))
-        allocate(fmt_tmp(x_dim))
-        allocate(typ_tmp(x_dim))
-        data_wrt=temp1_d2(1:x_dim,1:y_dim)
-        char_wrt(1,:)=temp1_char1(1:y_dim)
-        head_tmp=head1_tmp(1:x_dim)
-        fmt_tmp=var_shd(:)%fmt1
-        typ_tmp=var_shd(:)%typ
-	flg_out=.true.
-        path_typ='temp'
-	temp_file='temp1'
-      case('shred_out')  ! write shredded output arrays to final directory
-        x_dim=tmp%n_var
-        y_dim=tmp%n_rec
-        allocate(data_wrt(x_dim,y_dim))
-        allocate(char_wrt(x_dim,y_dim))
-        allocate(head_tmp(x_dim))
-        allocate(fmt_tmp(x_dim))
-        allocate(typ_tmp(x_dim))
-        data_wrt=temp1_d2(1:x_dim,1:y_dim)
-        char_wrt(1,:)=temp1_char1(1:y_dim)
-        head_tmp=head1_tmp(1:x_dim)
-        fmt_tmp=var_shd(:)%fmt1
-        typ_tmp=var_shd(:)%typ
-	flg_out=.true.
-        path_typ='outpath'
-	temp_file=trim(id)
-    end select
-!
-! find output path
-    do ipat = 1, n_path
-      if(path(ipat)%typ==trim(path_typ)) exit
-    enddo
-!
-! open output csv file
-    filename=trim(path(ipat)%path1)//trim(temp_file)
-    !print*, '\t\tout csv file: ', trim(filename)
-    write(unit=33,*) 'out csv file: ', trim(filename)
-    open(unit=70,file=trim(filename),form='formatted')
-!
-! write header
-    text=''
-    do ivar=1,x_dim
-      text=trim(text)//trim(head_tmp(ivar))
-      if(ivar<x_dim) text=trim(text)//','
-    enddo
-    write(unit=70,*) trim(text)
-!
-! write to csv file
-    do irec=1,y_dim
-      text=''
-      do ivar=1,x_dim
-		fmt=fmt_tmp(ivar)
-		typ=typ_tmp(ivar)
-
-		if(trim(typ)=='integer') then
-		  i_val=data_wrt(ivar,irec)
-		  write(temp,fmt=fmt) i_val
-		  temp=adjustl(temp)
-		endif
-
-			if(trim(typ)=='real') then
-		  write(temp,fmt=fmt) data_wrt(ivar,irec)
-		  temp=adjustl(temp)
-		endif
-
-		if(trim(typ)=='char') then
-		  temp=trim(char_wrt(ivar,irec))
-		  temp=adjustl(temp)
-		endif
-
-		text=trim(text)//trim(temp)
-		if(ivar<x_dim)text=trim(text)//','
-      enddo
-      write(unit=70,*) trim(text)
-    enddo
-    close(unit=70)
-!
-! deallocate temporary variables
-    deallocate(data_wrt)
-    deallocate(char_wrt)
-    deallocate(head_tmp)
-    deallocate(fmt_tmp)
-    deallocate(typ_tmp)
-!
-    end subroutine
-!
-!===================================================
   subroutine make_json_metadata_file(idat)
 !===================================================
 ! makes a metadata file in json format
@@ -664,30 +1167,60 @@
 ! internal variables
     Character*20 case ! what to write out as csv
 !
+! print output
+    print*, '\t',trim(man(iman)%typ)
+!
 ! scan through output options
     select case(man(iman)%typ)
+!
+!----------------------------------------------------------
+! kml point file
+!----------------------------------------------------------
+      case('kml_point')
+        call kml_point(ifil,iman)
+!
+!----------------------------------------------------------
+! kml line file
+!----------------------------------------------------------
+      case('kml_line')
+        call kml_line(ifil,iman)
+!
+!----------------------------------------------------------
+! kml polygon file
+!----------------------------------------------------------
+      case('kml_sqr')
+        call kml_sqr(ifil,iman)
+!
+!----------------------------------------------------------
+! kml wall file
+!----------------------------------------------------------
+      case('kml_wall')
+        call kml_wall(ifil,iman)
 !
 !----------------------------------------------------------
 ! shred vector file into multiple square files
 !----------------------------------------------------------
       case('shred')
-        print*, '\tshred files'
         call shred_csv_data_files(ifil,iman)
 !
 !----------------------------------------------------------
-! write csv file
+! write individual csv file
 !----------------------------------------------------------
       case('csv')
-        print*, '\twrite CSV file'
         case='out'
 	call make_csv_data_file(ifil,case)
+!
+!----------------------------------------------------------
+! append to single csv file
+!----------------------------------------------------------
+      case('csv_app')
+	call append_csv_data_file(ifil,iman)
 !
 !----------------------------------------------------------
 ! write json file
 !----------------------------------------------------------
       case('jsn')
-        print*, '\twrite json file'
-	call make_json_metadata_file(ifil)
+ 	call make_json_metadata_file(ifil)
 !
 ! end output options
     end select
