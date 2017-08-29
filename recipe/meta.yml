@@ -1,0 +1,60 @@
+package:
+  name: dit
+  version: "0.0.0.dev1"
+
+channels:
+- https://conda.anaconda.org/conda-forge/channel/main
+
+source:
+  path: ../
+
+build:
+  script: python setup.py install
+#  entry_points:
+#    - pmpipe   pmpipe.cli:main
+
+requirements:
+  build:
+    - python 3.5*
+  run:
+    - python 3.5*
+    - invoke 0.18.1 py36_0
+    - openssl 1.0.2k 1
+    - pip 9.0.1 py36_1
+    - python 3.6.1 0
+    - pyyaml 3.12 py36_0
+    - readline 6.2 2
+    - setuptools 27.2.0 py36_0
+    - sqlite 3.13.0 0
+    - tk 8.5.18 0
+    - wheel 0.29.0 py36_0
+    - xz 5.2.2 1
+    - yaml 0.1.6 0
+    - zlib 1.2.8 3
+    - pip:
+      - circuits  3.2
+      - configparser  3.5.0
+      - coverage  4.3.4
+      - distlib  0.2.4
+      - future  0.16.0
+      - futures  3.0.5
+      - httoop  0.0
+      - invoke  0.18.1
+      - mako  1.0.6
+      - markupsafe  1.0
+      - packaging  16.8
+      - py  1.4.33
+      - pyparsing  2.2.0
+      - pytest  3.0.7
+      - pytest-cov  2.4.0
+      - requests  2.13.0
+      - six  1.10.0
+
+test:
+# commands:
+#    - pmpipe --help
+
+about:
+  home: https://github.com/PermaData/DIT
+  license: GPLv3
+  summary: Data Integration Tool (DIT) for transforming data.

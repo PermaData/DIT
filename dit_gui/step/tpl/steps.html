@@ -1,0 +1,6 @@
+<table>
+context.get('step_list')
+% for step in context.get('step_list'):
+    <%include file="step_order.html" args="step=step" />
+% endfor
+</table>

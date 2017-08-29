@@ -3,18 +3,17 @@
 import csv
 import datetime as dt
 
-import rill
+from circuits import Component
+
+class ReformatDatesToGtnp(Component):
+
+    channel = 'ReformatDatesToGtnp'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
 
 gtnp_date_time_format = '%Y-%m-%d %H:%M'
 
-
-@rill.component
-@rill.inport('INFILE')
-@rill.inport('OUTFILE_IN')
-@rill.inport('LOGFILE_IN')
-@rill.inport('FORMAT')
-@rill.outport('OUTFILE_OUT')
-@rill.outport('LOGFILE_OUT')
 def reformat_dates_to_gtnp(INFILE, OUTFILE_IN, LOGFILE_IN, FORMAT, OUTFILE_OUT,
                            LOGFILE_OUT):
     """

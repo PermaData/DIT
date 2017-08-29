@@ -1,4 +1,42 @@
-## Arithmetic widgets
+# Data Integration Tool (DIT) User's Guide
+Below you will find an introduction to how to use DIT.
+-------
+### Table of Contents
+* [Project overview](#project-overview)
+    * [Important Links](#important-links)
+* [Getting Started](#getting-started)
+    * [Usage Scenarios](#usage-scenarios)
+* [Widget Reference](#widget-reference)
+    * [Arithmetic](#arithmetic-widgets)
+    * [Numeric Replacement](#numeric-replacement-widgets)
+        * [Open Range](#open-range-replacement)
+        * [Single Value](#single-value-replacement)
+        * [Closed Range](#closed-range-replacement)
+        * [Rounding](#rounding)
+    * [Statistical](#statistical-widgets)
+        * [Probability Density Function](#probability-density-function)
+        * [General statistics](#general-statistics)
+    * [Data integrity verification](#data-integrity-verification)
+    * [Data existence verification](#data-existence-verification)
+    * [Data characterization](#data-characterization)
+    * [Date manipulation](#date-manipulation)
+    * [Text manipulation](#text-manipulation)
+        * [Relocation](#relocation)
+        * [Replacement](#replacement)
+        * [Removal](#removal)
+    * [Coordinate manipulation](#coordinate-manipulation)
+## Project Overview
+DIT is an outcome of the PermaData project.
+
+#### Important links
+* [Github Repository](https://github.com/PermaData/DIT) - online repository for DIT code and installation downloads.
+* [Issue Tracking](https://github.com/PermaData/DIT/issues) - file bug and improvement issues for DIT
+
+## Getting Started
+
+
+## Widget Reference
+### Arithmetic widgets
 
 - add_constant
 - subtract_constant
@@ -15,9 +53,9 @@ Inputs:
 *constant*: The number to add/subtract/multiply/divide with every number in the column
 
 
-## Numeric replacement widgets
+### Numeric replacement widgets
 
-### Open range replacement
+#### Open range replacement
 - replace_less_equal
 - replace_less_than
 - replace_greater_equal
@@ -33,7 +71,7 @@ Inputs:
 *threshold*: The boundary beyond which the replacement will take place. It functions as expected, like   
 *value*: The number which will replace each entry selected by the comparison above.
 
-### Single value replacement
+#### Single value replacement
 - replace_equal
 
 Interpretation:  
@@ -45,7 +83,7 @@ Same as above.
 Inputs:  
 *target*: The number that will be replaced within the data.  
 
-### Closed range replacement
+#### Closed range replacement
 - replace_in_range
 
 Interpretation:  
@@ -59,7 +97,7 @@ Inputs:
 *lower*: The lower bound where the replacement will happen. It is inclusive, so instances of this value within the data column will be replaced.  
 *value*: Same as others.
 
-### Rounding
+#### Rounding
 - rounding
 
 Interpretation:  
@@ -73,9 +111,9 @@ Inputs:
 *precision*: If an integer precision is given, instead round to that many digits beyond the decimal point.
 
 
-## Statistical widgets
+### Statistical widgets
 
-### Probability density function
+#### Probability density function
 - pdf
 
 Interpretation:  
@@ -92,7 +130,7 @@ Inputs:
 *outliers*: May be 'exclude' or 'include'. If it is 'exclude', values that fall outside the range of the distribution will be ignored. If it is 'include', these values will be sorted into the tail bins.  
 *norm*: May be 'raw' or 'probability'. If it is 'raw', returns the number of values that fall in each bin. If 'probability', returns the proportion of values that fall in each bin.
 
-### General statistics
+#### General statistics
 - statistics
 
 Interpretation:  
@@ -106,7 +144,7 @@ Inputs:
 None.
 
 
-## Data integrity verification
+### Data integrity verification
 
 - check_int
 
@@ -120,7 +158,7 @@ Inputs:
 None.
 
 
-## Data existence verification
+### Data existence verification
 
 - count_records
 
@@ -160,7 +198,7 @@ Inputs:
 None.
 
 
-## Date manipulation
+### Date manipulation
 
 - reformat_dates_to_gtnp
 
@@ -194,9 +232,9 @@ Inputs:
 | %%        | A literal '%' character.                                                                                                                                                         | %                                                                               |
 
 
-## Text manipulation
+### Text manipulation
 
-### Relocation
+#### Relocation
 - move_text
 
 Interpretation:  
@@ -211,7 +249,7 @@ Inputs:
 *to_regex*: A regular expression that determines which text will be overwritten.
 
 
-### Replacement
+#### Replacement
 - replace_text
 
 Interpretation:  
@@ -224,7 +262,7 @@ Inputs:
 *to_replace*: The regular expression that will be replaced.  
 *with_replace*: The substring to replace the text selected by *to_replace*.  
 
-### Removal
+#### Removal
 - remove_characters
 
 Interpretation:  
@@ -237,7 +275,7 @@ Inputs:
 *characters*: a set of characters to be removed in every entry within the data.
 
 
-## Coordinate manipulation
+### Coordinate manipulation
 
 - minsec_to_decimal
 

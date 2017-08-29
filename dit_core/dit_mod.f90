@@ -1,4 +1,4 @@
-!
+ !
 !===================================================
       module dit_variables
 !===================================================
@@ -16,8 +16,8 @@
       Character*200 filename ! generic file name
 !
 ! data variables
-      real, allocatable :: data_in(:,:)           ! input data
-      real, allocatable :: data_out(:,:)          ! output data
+      double precision, allocatable :: data_in(:,:)           ! input data
+      double precision, allocatable :: data_out(:,:)          ! output data
       Character*200, allocatable :: char_in(:,:)  ! input character data
       Character*200, allocatable :: char_out(:,:) ! output character data
       Character*200, allocatable :: head_in(:,:)  ! header in
@@ -28,8 +28,9 @@
       Character*200, allocatable :: fmt_tmp(:)    ! temporary write format for arrays
       Character*200, allocatable :: typ_tmp(:)    ! temporary variable type for arrays
       integer, allocatable :: indx_map(:,:)       ! var index mapping between input and output data
-      real miss_val_real         ! standard missing value
-      Character*20 miss_val_char ! standard missing value
+      integer miss_val_int               ! var index mapping between input and output data
+      double precision miss_val_real     ! standard missing value
+      Character*20 miss_val_char         ! standard missing value
 !
 ! data dimension variables
       type dimension
@@ -46,15 +47,15 @@
       integer y_dim ! y dimension
 !
 ! temporary variables
-      real, allocatable :: temp1_d1(:)         ! temporary 1D variable #1
-      real, allocatable :: temp2_d1(:)         ! temporary 1D variable #2
-      real, allocatable :: temp3_d1(:)         ! temporary 1D variable #3
-      real, allocatable :: temp1_d2(:,:)       ! temporary 2D variable #1
-      real, allocatable :: temp2_d2(:,:)       ! temporary 2D variable #2
-      real, allocatable :: temp3_d2(:,:)       ! temporary 2D variable #3
-      real, allocatable :: temp1_d3(:,:,:)     ! temporary 3D variable #1
-      real, allocatable :: temp2_d3(:,:,:)     ! temporary 3D variable #2
-      real, allocatable :: temp3_d3(:,:,:)     ! temporary 3D variable #3
+      double precision, allocatable :: temp1_d1(:)         ! temporary 1D variable #1
+      double precision, allocatable :: temp2_d1(:)         ! temporary 1D variable #2
+      double precision, allocatable :: temp3_d1(:)         ! temporary 1D variable #3
+      double precision, allocatable :: temp1_d2(:,:)       ! temporary 2D variable #1
+      double precision, allocatable :: temp2_d2(:,:)       ! temporary 2D variable #2
+      double precision, allocatable :: temp3_d2(:,:)       ! temporary 2D variable #3
+      double precision, allocatable :: temp1_d3(:,:,:)     ! temporary 3D variable #1
+      double precision, allocatable :: temp2_d3(:,:,:)     ! temporary 3D variable #2
+      double precision, allocatable :: temp3_d3(:,:,:)     ! temporary 3D variable #3
       integer, allocatable :: temp_int1(:)     ! temporary 1D integer variable
       integer, allocatable :: temp_int2(:,:)   ! temporary 2D integer variable
       integer, allocatable :: temp_int3(:,:,:) ! temporary 3D integer variable
@@ -71,11 +72,11 @@
       integer day_per_mon_leap(12) ! (day) days per month for leap year
       integer doy1_mon(12)         ! (day) day of year (DOY) for first on month
       integer doy1_mon_leap(12)    ! (day) day of year (DOY) for first on month for leap year
-      real mid_mon_doy(12)         ! (day) mid month day of year real version
-      real mid_mon_doy_leap(12)    ! (day) mid month day of year real version for leap year
+      double precision mid_mon_doy(12)         ! (day) mid month day of year real version
+      double precision mid_mon_doy_leap(12)    ! (day) mid month day of year real version for leap year
       character*20 mid_month(12)   ! (dd hh:mm) mid month day of month character version
-      real day_per_yr              ! (day) number of days per year
-      real day_per_yr_leap         ! (day) number of days per year for leap year
+      double precision day_per_yr              ! (day) number of days per year
+      double precision day_per_yr_leap         ! (day) number of days per year for leap year
 !
 ! Misc character variables
       character*1 qd   ! double quote character string
@@ -113,10 +114,10 @@
         logical flg2        ! logical flag 2
         logical flg3        ! logical flag 3
         logical flg4        ! logical flag 4
-        real val1           ! 1st value
-        real val2           ! 2nd value
-        real val3           ! 3rd value
-        real val4           ! 4th value
+        double precision val1           ! 1st value
+        double precision val2           ! 2nd value
+        double precision val3           ! 3rd value
+        double precision val4           ! 4th value
         integer ind1        ! index value 1
         integer ind2        ! index value 2
         integer ind3        ! index value 3

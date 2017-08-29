@@ -1,3 +1,8 @@
+circuits
+pydot
+pyinotify
+networkx
+pygraphviz
 tzwhere
 pytz
 utm

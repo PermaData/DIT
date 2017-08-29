@@ -1,16 +1,15 @@
 import re
 import csv
 
-import rill
+from circuits import Component
 
+class RemoveCharacters(Component):
 
-@rill.component
-@rill.inport('INFILE')
-@rill.inport('OUTFILE_IN')
-@rill.inport('CHARACTERS')
-@rill.inport('LOGFILE_IN')
-@rill.outport('OUTFILE_OUT')
-@rill.outport('LOGFILE_OUT')
+    channel = 'RemoveCharacters'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
+
 def remove_characters(INFILE, OUTFILE_IN, CHARACTERS, LOGFILE_IN, OUTFILE_OUT, LOGFILE_OUT):
     """Remove all from a set of characters from a column.
 

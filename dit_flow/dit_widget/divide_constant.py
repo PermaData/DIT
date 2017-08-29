@@ -3,18 +3,16 @@
 import csv
 import shutil
 
-import rill
+from circuits import Component
 
-from .common import definitions as d
+class DivideConstant(Component):
+
+    channel = 'DivideConstant'
+
+    def go(self, event):
+        print(self.channel, ' received go event')
 
 
-@rill.component
-@rill.inport('INFILE')
-@rill.inport('OUTFILE_IN')
-@rill.inport('LOGFILE_IN')
-@rill.inport('CONSTANT')
-@rill.outport('OUTFILE_OUT')
-@rill.outport('LOGFILE_OUT')
 def divide_constant(INFILE, OUTFILE_IN, LOGFILE_IN, CONSTANT, OUTFILE_OUT, LOGFILE_OUT):
     # Adds constant to all values in infile and writes the result to
     # outfile.
