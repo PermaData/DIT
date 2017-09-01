@@ -6,7 +6,7 @@ from mako.lookup import TemplateLookup
 from dit_gui.widget import *
 from dit_gui.step import *
 from dit_gui.flow import *
-from dit_gui.connection import *
+# from dit_gui.connection import *
 from circuits.web import Controller, Logger, Server, Static
 from dit_gui.templates import Templates
 

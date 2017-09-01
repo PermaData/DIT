@@ -6,8 +6,7 @@ from mako.lookup import TemplateLookup
 template_dirs = [os.path.join(os.path.dirname(__file__), "tpl"),
     os.path.join(os.path.dirname(__file__), "flow", "tpl"),
     os.path.join(os.path.dirname(__file__), "step", "tpl"),
-    os.path.join(os.path.dirname(__file__), "widget", "tpl"),
-    os.path.join(os.path.dirname(__file__), "connection", "tpl")]
+    os.path.join(os.path.dirname(__file__), "widget", "tpl")]
 
 class Templates():
     print('template dirs: ', template_dirs)

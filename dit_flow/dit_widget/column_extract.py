@@ -1,41 +1,6 @@
 import csv
 import os
 
-from circuits import Component
-from dit_flow.dit_widget.flow_widget import FlowWidget
-from dit_flow.dit_widget.port import PortType
-
-class ColumnExtract(Component, FlowWidget):
-
-    channel = 'column_extract'
-
-    name = 'ColumnExtract' # component name in format that can be used in graphs
-    description = 'Adds constant to all values in infile and writes the result' \
-            ' to outfile',
-    input_args = [ # list of input ports
-        ('datafile', PortType.STR),
-        ('datamap', PortType.STR),
-        ('flow_id', PortType.INT),
-        ('step_id', PortType.INT),
-        ('columns', PortType.STR),
-        ('logfile', PortType.STR)
-    ]
-    outputs_args = [ # list of output ports
-        ('tempin', PortType.STR),
-        ('tempout', PortType.STR),
-        ('datafile_out', PortType.STR),
-        ('datamap_out', PortType.STR),
-        ('flow_id_out', PortType.INT),
-        ('step_id_out', PortType.INT),
-        ('logfile_out', PortType.STR)
-    ]
-
-    def go(self, *args, **kwargs):
-        print("Received args: ", args, kwargs)
-        result = column_extract(*args)
-        print('result: ', result)
-        return result
-
 def column_extract(datafile, datamap, step_id, file_id, columns, logfile, tempin,
                    tempout, datafile_out, datamapout, fid_out, sid_out,
                    logfile_out):

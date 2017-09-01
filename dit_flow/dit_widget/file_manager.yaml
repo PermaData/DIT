@@ -1,0 +1,7 @@
+type: manipulation_widget
+description: Loops through input files and creates flow unique filenames for each step in the flow.
+input_1: filename
+input_1_type: array
+# ('CURRENT', PortType.ARRAY),
+# ('FID', PortType.INT),
+# ('LOGFILE', PortType.STR)

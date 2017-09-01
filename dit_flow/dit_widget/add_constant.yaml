@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Adds constant to all values in infile and writes the result to outfile.
+input_1: constant
+input_1_type: integer

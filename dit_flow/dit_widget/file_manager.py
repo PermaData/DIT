@@ -1,33 +1,5 @@
 import os
 
-from circuits import Component
-from dit_flow.dit_widget.flow_widget import FlowWidget
-from dit_flow.dit_widget.port import PortType
-
-
-class FileManager(Component, FlowWidget):
-
-    channel = 'file_manager'
-
-    metadata = {
-        FlowWidget.name_key: 'FileManager', # component name in format that can be used in graphs
-        FlowWidget.description_key: 'Loops through input files and creates flow unique filenames for each ' \
-                       'step in the flow', # (optional) textual description on what the component does
-        # icon: (optional): visual icon for the component, matching icon names in Font Awesome
-        FlowWidget.inputs_key: [ # list of input ports
-            ('FILENAMES', PortType.ARRAY)
-            ],
-        FlowWidget.outputs_key: [ # list of output ports
-                ('CURRENT', PortType.ARRAY),
-                ('FID', PortType.INT),
-                ('LOGFILE', PortType.STR)
-            ]
-    }
-
-    def go(self, *args, **kwargs):
-        result = file_manager(*args)
-        return result
-
 def file_manager(FILENAMES):
     """
     FILENAMES: a sequence of paths to data files

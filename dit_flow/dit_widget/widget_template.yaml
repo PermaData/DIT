@@ -1,0 +1,24 @@
+# The name of this file, the widget method file, and the widget method must
+# match in order for the widget to be used.
+#
+# This is the type of widget this is, choices are:
+#   reader_widget, manipulation_widget, writer_widget
+#
+# Reader widgets are the required start of processing that know how to
+# gather and ready the data to be processed before any manipulations are
+# applied. e.g. csv data in utf_16_le can be read and written out as utf
+# or data files named *.txt can be pulled from an FTP site and written
+# out as .csv files
+#
+# Manipulation widgets know how to do something with the data.
+#
+# Writer widgets know how to write the data in a particular format.
+type: manipulation_widget
+description: This is a template widget designed as an example of implementing a DIT widget.
+
+# Only include the widget specific arguments here. The three required DIT
+# arguments are documented as part of the widget type classes.
+input_1: method_arg_1
+input_1_type: string
+input_2: method_arg_2
+input_2_type: integer

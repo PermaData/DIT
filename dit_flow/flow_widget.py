@@ -1,25 +1,25 @@
-from abc import ABCMeta, abstractmethod
+import yaml
+import sys
 
-class FlowWidget(metaclass=ABCMeta):
-    name_key = 'widget_name'
-    description_key = 'description'
-    icon_key = 'icon'
-    inputs_key = 'inargs'
-    outputs_key = 'outargs'
+from circuits import Component
 
-    _metadata = {
-            self.name_key}
+class FlowWidget(object, Component):
 
-    def init(self, name, ):
-        self._metadata = None
-        self._name = None
-        self._description = None
-        self._input_args = None
-        self._output_args = None
-        self._input_arg_names = None
-        self._input_arg_values = None
-        self._output_arg_names = None
-        self._output_arg_values = None
+    channel = 'flow_widget'
+
+    def speak(self):
+        print("I say: ", self.channel)
+
+
+    def read_config(self, config_file):
+        override_yaml = yaml.load(open(config_file, 'r'))
+        this_module = sys.modules[__name__]
+        for name, value in override_yaml.items():
+            # log.info('overriding nasateam constant:{}:{}=>{}'.format(
+            print('overriding nasateam constant:{}:{}=>{}'.format(
+                name, self.getattr(this_module, name), value))
+            self.setattr(this_module, name, value)
+
 
     @property
     def metadata(self):
@@ -89,6 +89,7 @@ class FlowWidget(metaclass=ABCMeta):
     def are_output_args_full(self):
         return reduce((lambda arg: arg is None), self.output_arg_values)
 
-    @abstractmethod
     def go(self, *args, **kwargs):
-        pass
+        print(self.channel, ' received go event')
+        result = read_file(*args)
+        return result

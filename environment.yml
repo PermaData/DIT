@@ -2,7 +2,8 @@ name: dit
 channels:
 - https://conda.anaconda.org/conda-forge/channel/main
 dependencies:
-- conda-forge/channel/main::invoke=0.18.1=py36_0
+- flake8==3.3.0=py36_0
+- mako==1.0.6=py36_0
 - openssl=1.0.2k=1
 - pip=9.0.1=py36_1
 - python=3.6.1=0
@@ -17,15 +18,12 @@ dependencies:
 - zlib=1.2.8=3
 - pip:
   - circuits==3.2
-  - circuits.http (/Users/hwilcox/Workspace/dit-3.0/dit_gui/circuits.http)==0
   - configparser==3.5.0
   - coverage==4.3.4
   - distlib==0.2.4
   - future==0.16.0
   - futures==3.0.5
-  - httoop==0.0
   - invoke==0.18.1
-  - mako==1.0.6
   - markupsafe==1.0
   - packaging==16.8
   - py==1.4.33

@@ -1,33 +1,4 @@
 import csv
-import os
-
-from circuits import Component
-from dit_flow.dit_widget.flow_widget import FlowWidget
-from dit_flow.dit_widget.port import PortType
-
-class ReadFile(Component, FlowWidget):
-
-    channel = 'read_file'
-
-    metadata = {
-            FlowWidget.name_key: 'read_file',
-            FlowWidget.description_key: 'Provides input/output CSV file mapping.',
-            FlowWidget.inputs_key: [
-                ('name', PortType.STR),
-                ('ID', PortType.INT),
-                ('logfile', PortType.STR)
-            ],
-            FlowWidget.outputs_key: [
-                ('main_name', PortType.STR),
-                ('ID', PortType.STR),
-                ('logfile', PortType.STR),
-            ]
-        }
-
-    def go(self, *args, **kwargs):
-        print(self.channel, ' received go event')
-        result = read_file(*args)
-        return result
 
 def read_file(name, ID, logfile):
     print("args: ", name, "  ", ID, "  ", logfile)
