@@ -5,6 +5,23 @@ from circuits import Loader
 from dit_flow.widget_factory import WidgetFactory
 
 class WidgetLoader(Loader):
+    def init(self, channel=Loader.channel):
+        base_dir = os.getcwd() # dirname(__file__)
+        flow_dir = os.path.join(base_dir, 'dit_flow')
+        self._widget_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget')
+        common_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget', 'common')
+        print('directory: ', base_dir)
+        print('widget directory: ', self.widget_dir)
+        print('flow dir: ', flow_dir)
+        self._loader = Loader(paths=[base_dir, flow_dir, self.widget_dir, common_dir])
+
+    @property
+    def loader(self):
+        return self._loader
+
+    @property
+    def widget_dir(self):
+        return self._widget_dir
 
     def find_widget(self, widget_name):
         config_file = widget_name + ".yaml"
@@ -30,16 +47,3 @@ class WidgetLoader(Loader):
         widget = WidgetFactory.createWidget(widget_name)
         widget.speak()
 
-    def init(self, channel=Loader.channel):
-        self.base_dir = os.getcwd() # dirname(__file__)
-        self.flow_dir = os.path.join(base_dir, 'dit_flow')
-        self.widget_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget')
-        self.common_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget', 'common')
-        print('directory: ', base_dir)
-        print('widget directory: ', widget_dir)
-        print('flow dir: ', flow_dir)
-        self._loader = Loader(paths=[base_dir, flow_dir, widget_dir, common_dir])
-
-    @property
-    def loader(self):
-        return self._loader

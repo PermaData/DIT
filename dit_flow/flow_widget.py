@@ -1,9 +1,7 @@
 import yaml
 import sys
 
-from circuits import Component
-
-class FlowWidget(object, Component):
+class FlowWidget(object):
 
     channel = 'flow_widget'
 
@@ -38,17 +36,13 @@ class FlowWidget(object, Component):
     @property
     def input_args(self):
         if type(self._input_args) is not list:
-            print('Please set the input_args of class {} to a list of the
-                input arguments for the function called in the form:
-                [(arg_1, PortType), (arg_2, PortType), etc.]').format(self.name)
+            print('Please set the input_args of class {} to a list of the input arguments for the function called in the form: [(arg_1, PortType), (arg_2, PortType), etc.]').format(self.name)
         return self._input_args
 
     @property
     def output_args(self):
         if type(self._output_args) is not list:
-            print('Please set the output_args of class {} to a list of the
-                return arguments for the function called in the form:
-                [(arg_1, PortType), (arg_2, PortType), etc.]').format(self.name)
+            print('Please set the output_args of class {} to a list of the return arguments for the function called in the form: [(arg_1, PortType), (arg_2, PortType), etc.]').format(self.name)
         return self._output_args
 
     @property

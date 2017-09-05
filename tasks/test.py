@@ -3,7 +3,7 @@ from invoke import task
 
 @task
 def unit(ctx, debug=False):
-        options = ['-vv', '--ignore=systemtests']
+    options = ['-vv', '--ignore=systemtests', '--ignore=dit_flow/tests/test_widgets.py']
     if debug:
         options += ['--pdb']
 
@@ -13,9 +13,9 @@ def unit(ctx, debug=False):
 
 @task
 def integration(ctx, debug=False):
-        options = ['-vv', 'systemtests']
+    options = ['-vv', 'systemtests']
     if debug:
-                options += ['--pdb']
+        options += ['--pdb']
 
     options = ' '.join(options)
     ctx.run('python -m pytest {options}'.format(options=options), pty=True)
@@ -23,9 +23,9 @@ def integration(ctx, debug=False):
 
 @task
 def lint(ctx):
-        ctx.run('flake8 .')
+    ctx.run('flake8 .')
 
 
 @task(lint, default=True)
 def all(ctx):
-        unit(ctx)
+    unit(ctx)
