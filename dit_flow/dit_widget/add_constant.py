@@ -2,7 +2,7 @@
 """Adds a constant to all numeric values in a column file."""
 import csv
 
-def add_constant(infile, outfile, constant, logfile):
+def add_constant(constant, missing_value, infile, outfile, logfile):
     # Adds constant to all values in infile and writes the result to
     # outfile.
     with open(infile, newline='') as _in, \

@@ -1,17 +1,17 @@
 import pytest
+import os
 
-from dit_flow.widget_factory import WidgetFactory
+from widget_factory import WidgetFactory
 from dit_flow.dit_widget.widget_template import widget_template
 from dit_flow.manipulation_widget import ManipulationWidget
 
-
-def test_add_factory():
-    factory = WidgetFactory()
-    factory.addFactory('widget_template', )
-
 def test_create_valid_widget():
     factory = WidgetFactory()
-    actual = factory.createWidget('ManipulationWidget')
+    actual = factory.create_widget('widget_template')
     expected = ManipulationWidget()
     print(expected)
     assert isinstance(actual, expected)
+
+def test_add_factory():
+    factory = WidgetFactory()
+    factory.add_factory('widget_template', )

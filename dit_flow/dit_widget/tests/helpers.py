@@ -1,6 +1,6 @@
 import os
 
-from context import *
+from dit_flow.tests.context import *
 
 MISSING = -999.
 

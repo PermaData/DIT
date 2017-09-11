@@ -1,8 +1,6 @@
 import os
-import imp
 
 from circuits import Loader
-from dit_flow.widget_factory import WidgetFactory
 
 class WidgetLoader(Loader):
     def init(self, channel=Loader.channel):
@@ -40,10 +38,3 @@ class WidgetLoader(Loader):
                 widget_files = (config_path, method_path)
                 break
         return widget_files
-
-
-    def load_widget(self, widget_name):
-
-        widget = WidgetFactory.createWidget(widget_name)
-        widget.speak()
-

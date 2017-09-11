@@ -1,7 +1,6 @@
-from dit_flow.reader_widget import ReaderWidget
-from dit_flow.flow_widget import FlowWidget
-from dit_flow.manipulation_widget import ManipulationWidget
-from stringcase import pascalcase
+from widget_loader import WidgetLoader
+from dit_flow.config_translator import ConfigTranslator
+from dit_flow.flow_widget import create_widget_class
 
 class WidgetFactory:
     '''
@@ -9,6 +8,13 @@ class WidgetFactory:
     '''
 
     factories = {}
+    loader = WidgetLoader()
+    config_loader = ConfigTranslator()
+
+
+    @staticmethod
+    def set_config_file(config_file):
+        WidgetFactory.config_loader.set_config_file(config_file)
 
     @staticmethod
     def add_factory(id, widgetFactory):
@@ -21,6 +27,6 @@ class WidgetFactory:
     @staticmethod
     def create_widget(id):
         if not WidgetFactory.has_factory(id):
-            WidgetFactory.add_factory(id, type(pascalcase(id), (BaseClass,), {"__init__": __init__}))
+            widget_class = create_widget_class(id, WidgetFactory.loader)
+            WidgetFactory.add_factory(id, widget_class)
         return WidgetFactory.factories[id].create()
-
