@@ -1,8 +1,8 @@
 import re
 import itertools
 
-from setups import *
-from helpers import *
+from dit_flow.tests.setups import *
+from dit_flow.tests.helpers import *
 """
 
 ARITHMETIC OPERATIONS

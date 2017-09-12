@@ -1,43 +1,5 @@
-import itertools
 import csv
 import re
-
-from circuits import Component
-from dit_flow.dit_widget.flow_widget import FlowWidget
-from dit_flow.dit_widget.port import PortType
-
-class VariableMap(Component, FlowWidget):
-
-    channel = 'variable_map'
-
-    metadata = {
-            FlowWidget.name_key: 'variable_map',
-            FlowWidget.description_key: 'Provides input/output CSV file mapping.',
-            FlowWidget.inputs_key: [
-                    ('filename', PortType.STR),
-                    ('mapfile', PortType.STR),
-                    ('logfile', PortType.STR)
-                ],
-            FlowWidget.outputs_key: [
-                #   - the name of the input csv.
-                #   - the name of the output csv.
-                #   - a dictionary of column name -> index for the input csv
-                #   - a dictionary of column name -> index for the output csv
-                #   - a dictionary of data column name -> destination column name
-                ('IN', PortType.STR),
-                ('OUT', PortType.STR),
-                ('STEP', PortType.STR),
-                ('INMAP', PortType.STR),
-                ('OUTMAP', PortType.STR),
-                ('CROSSMAP', PortType.DICT),
-                ('LOGFILE_OUT', PortType.STR)
-            ]
-        }
-
-    def go(self, *args, **kwargs):
-        print(self.channel, ' received go event')
-        result = variable_map(*args)
-        return result
 
 def variable_map(filename, mapfile, logfile):
     # Columns are separated by whitespace

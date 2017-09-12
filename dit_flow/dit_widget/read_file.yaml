@@ -1,0 +1,9 @@
+type: manipulation_widget
+description: Provides input/output CSV file mapping.
+input_1: name
+input_1_type: string
+input_2: id
+input_2_type: integer
+# ('main_name', PortType.STR),
+# ('ID', PortType.STR),
+# ('logfile', PortType.STR),
