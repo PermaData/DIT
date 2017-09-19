@@ -3,7 +3,9 @@ import os
 from circuits import Loader
 
 class WidgetLoader(Loader):
-    def init(self, channel=Loader.channel):
+
+    def __init__(self, channel=Loader.channel):
+        super(WidgetLoader, self).__init__(channel)
         base_dir = os.getcwd() # dirname(__file__)
         flow_dir = os.path.join(base_dir, 'dit_flow')
         self._widget_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget')

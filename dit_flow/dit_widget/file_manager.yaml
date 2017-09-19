@@ -1,6 +1,6 @@
-type: manipulation_widget
+type: utility_widget
 description: Loops through input files and creates flow unique filenames for each step in the flow.
-input_1: filename
+input_1: filenames
 input_1_type: array
 # ('CURRENT', PortType.ARRAY),
 # ('FID', PortType.INT),

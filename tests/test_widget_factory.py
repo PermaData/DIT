@@ -4,12 +4,21 @@ import os
 from widget_factory import WidgetFactory, WidgetCreateException, inputs_from_config, type_from_config, description_from_config, create_widget_class
 from widget_loader import WidgetLoader
 from dit_flow.manipulation_widget import ManipulationWidget
+from dit_flow.utility_widget import UtilityWidget
 
 
-def test_create_valid_widget():
+def test_create_manipulation_widget():
     factory = WidgetFactory()
     actual = factory.create_widget('widget_template')
     expected = ManipulationWidget
+    print(expected)
+    assert isinstance(actual, expected)
+
+
+def test_create_utility_widget():
+    factory = WidgetFactory()
+    actual = factory.create_widget('config_translator')
+    expected = UtilityWidget
     print(expected)
     assert isinstance(actual, expected)
 
