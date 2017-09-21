@@ -16,6 +16,7 @@ input:
 
 output:
   data_directory: './output'
+  writer: ''
   manipulations:
   -
     widget: 'widget_template'

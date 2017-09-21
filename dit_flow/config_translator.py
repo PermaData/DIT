@@ -17,12 +17,13 @@ class ConfigTranslator(UtilityWidget):
         with open(self.config_file) as open_config:
             self.config = yaml.safe_load(open_config)
 
-        print('Read in file ', self.config_file)
-        print(self.config)
         return self.config
 
     def get_reader_widget(self):
         return self.config['input']['reader']
+
+    def get_writer_widget(self):
+        return self.config['output']['writer']
 
     def get_input_files(self):
         input_dir = self.config['input']['data_directory']

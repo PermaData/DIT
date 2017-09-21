@@ -32,7 +32,7 @@ class RunFlow():
         self.file_manager = self.widget_factory.create_widget('file_manager')
         self.file_reader = self.widget_factory.create_widget(self.config_translator.get_reader_widget())
         self.variable_mapper = self.widget_factory.create_widget('variable_map')
-        self.writer = self.widget_factory.create_widget(self.config_translator.get_reader_widget())
+#        self.writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget())
 
 
     def setup_widget_list(self, widget_defns):
@@ -59,9 +59,8 @@ class RunFlow():
         self.output_manipulations = self.setup_widget_list(widget_defns)
 
 
-    def read_input_data(self, input_file):
-        print('In read_input_data')
-        data = self.file_reader.go([input_file])
+    def read_input_data(self, input_file, id):
+        data = self.file_reader.go(input_file, id)
         return data
 
     def do_input_manipulations(self):
@@ -83,7 +82,7 @@ class RunFlow():
         self.input_files = self.config_translator.get_input_files()
         logs_n_ids = self.file_manager.go(self.input_files)
         for input_file, step_id, log_file in logs_n_ids:
-            data = self.read_input_data(input_file)
+            data = self.read_input_data(input_file, step_id)
 
 
 def parse_arguments():

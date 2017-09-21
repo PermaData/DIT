@@ -30,11 +30,13 @@ class WidgetFactory:
 
     @staticmethod
     def create_widget(id):
-        print('create_widget: ', id)
         if not WidgetFactory.has_factory(id):
             widget_class = create_widget_class(id, WidgetFactory.loader)
             WidgetFactory.add_factory(id, widget_class)
-        return WidgetFactory.factories[id]()
+        new_widget = WidgetFactory.factories[id]()
+        if not isinstance(new_widget, UtilityWidget):
+            new_widget.widget_method = method_from_config(id, new_widget.method_path)
+        return new_widget
 
 def __init__(self, *args, **kwargs):
     super(self.__class__, self).__init__(*args, **kwargs)
@@ -96,13 +98,12 @@ def create_widget_class(id, loader):
     else:
         description = description_from_config(config_path)
         inputs = inputs_from_config(config_path)
-        widget_method = method_from_config(id, method_path)
-        print('widget_method: ', widget_method)
         typing = type(pascalcase(id),
                       (base_class,),
                       {
                           "__init__": __init__,
                           "description": description,
                           "inputs": inputs,
-                          "widget_method": widget_method})
+                          "method_path": method_path
+                      })
     return typing

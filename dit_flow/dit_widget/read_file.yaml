@@ -1,6 +1,6 @@
 type: reader_widget
 description: Provides input/output CSV file mapping.
-input_1: name
+input_1: file_name
 input_1_type: string
 input_2: id
 input_2_type: integer

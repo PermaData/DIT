@@ -23,7 +23,8 @@ def test_read_input_data(tmpdir):
     datafile.write("1.00, 2.13, na, -999.99\n")
     flow = RunFlow(config_path)
     flow.setup_utilities()
-    actual = flow.read_input_data(datafile)
+    actual = flow.read_input_data(str(datafile), 2)
+    # actual = flow.read_input_data('fake.csv', 2)
     print(actual)
 
 
@@ -38,6 +39,7 @@ def test_setup_input_manipulations():
     assert len(actual.input_manipulations) == 1
     actual_widget = actual.input_manipulations[0]
     assert actual_widget.__class__.__name__ == 'WidgetTemplate'
+    assert actual_widget.widget_method.__name__ == 'widget_template'
     assert actual_widget.input_args == expected_args
     assert actual_widget.do_it == True
 
@@ -60,16 +62,19 @@ def test_setup_output_manipulations():
     assert len(actual.output_manipulations) == 3
     actual_widget_1 = actual.output_manipulations[0]
     assert actual_widget_1.__class__.__name__ == 'WidgetTemplate'
+    assert actual_widget_1.widget_method.__name__ == 'widget_template'
     assert actual_widget_1.input_args == expected_args_1
     assert actual_widget_1.do_it == True
 
     actual_widget_2 = actual.output_manipulations[1]
     assert actual_widget_2.__class__.__name__ == 'AddConstant'
+    assert actual_widget_2.widget_method.__name__ == 'add_constant'
     assert actual_widget_2.input_args == expected_args_2
     assert actual_widget_2.do_it == False
 
     actual_widget_3 = actual.output_manipulations[2]
     assert actual_widget_3.__class__.__name__ == 'WidgetTemplate'
+    assert actual_widget_3.widget_method.__name__ == 'widget_template'
     assert actual_widget_3.input_args == expected_args_3
     assert actual_widget_3.do_it == True
 

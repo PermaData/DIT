@@ -1,15 +1,17 @@
 import csv
+import os
 
 from dit_flow.dit_widget.common.setup_logger import setup_logger
 
-def read_file(name, id, log_file=None):
-    logger = setup_logger(self.__name__, log_file)
-    logger.info("args: ", name, "  ", id, "  ", log_file)
-    path, base = name.rsplit('/', 1)
-    main_name = '{pth}/{id}_In_{base}.csv'.format(pth=path, id=id,
+def read_file(file_name, id, log_file=None):
+    logger = setup_logger(__name__, log_file)
+    print('args: {}  {}  {}'.format(file_name, id, log_file))
+    logger.info('args: {}  {}  {}'.format(file_name, id, log_file))
+    (path, base) = os.path.split(file_name)
+    main_file_name = '{pth}/{id}_In_{base}.csv'.format(pth=path, id=id,
                                                   base=base)
-    with open(name, newline='') as _from, \
-         open(main_name, 'w', 0o666, newline='') as _to:
+    with open(file_name, newline='') as _from, \
+         open(main_file_name, 'w', 0o666, newline='') as _to:
         data = csv.reader(_from, quoting=csv.QUOTE_NONNUMERIC,
                           quotechar="'")
         try:
@@ -52,18 +54,16 @@ def column_check(data):
         return True
 
     def parse_arguments():
-        parser = ap.ArgumentParser(description="Adds constant to all values in " \
-                                               "input_data_file and writes the result to " \
-                                               "output_data_file.")
+        parser = ap.ArgumentParser(description="Reads input CSV file and returns data matrix.")
 
-        parser.add_argument('name', help='Input data file.')
+        parser.add_argument('file_name', help='Input data file.')
         parser.add_argument('id', type=int, help='Step ID.')
 
         parser.add_argument('-l', '--log_file', help='Step file to collect log information.')
 
         return parser.parse_args()
 
-    if __name__ == '__main__':
+    if __file_name__ == '__main__':
         args = parse_arguments()
 
-        read_file(args.name, args.id, args.log_file)
+        read_file(args.file_name, args.id, args.log_file)

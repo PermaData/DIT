@@ -16,6 +16,5 @@ class UtilityWidget(Component):
         event.stop()
         print(self.channel, ' received go event')
         print('go arguments: ', *args, '  kwargs: ', **kwargs)
-        # result = self.widget_method(*self.input_args, **self.required_args)
         result = self.widget_method(*args, **kwargs)
         return result

@@ -7,13 +7,11 @@ class FlowWidget(Component):
     def __init__(self, *args, **kwargs):
         super(FlowWidget, self).__init__(*args, **kwargs)
         self.channel = 'flow_widget'
-        self.description = None
-        self.logger = None
+        self.description = ''
         self.required_args = {}
         self.required_arg_types = {}
         self.input_args = OrderedDict()
         self.input_arg_types = OrderedDict()
-        self.widget_method = None
 
 
     def set_input_arg(self, arg_name, arg_value):
