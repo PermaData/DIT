@@ -12,7 +12,9 @@ class ConfigTranslator(UtilityWidget):
         super(ConfigTranslator, self).__init__(*args, **kwargs)
         self.config_file = None
         self.config = None
-        self.logger = setup_logger(__name__, kwargs.log_file)
+        if 'log_file' not in kwargs.keys():
+            kwargs['log_file'] = None
+        self.logger = setup_logger(__name__, kwargs['log_file'])
 
 
     def read_config(self, config_file):
@@ -73,6 +75,10 @@ class ConfigTranslator(UtilityWidget):
 
     def get_widget_name_from_widget_config(self, widget_config):
         return self.get_info_from_widget_config(widget_config, 'widget', 'name')
+
+
+    def get_input_args_from_widget_config(self, widget_config):
+        return self.get_info_from_widget_config(widget_config, 'inputs', 'input arguments')
 
 
     def get_do_it_from_widget_config(self, widget_config):

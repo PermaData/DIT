@@ -9,7 +9,7 @@ def read_csv_file(file_name, log_file=None):
     data = []
     with open(file_name, newline='') as _from:
         count = []
-        data_reader = csv.reader(_from, quoting=csv.QUOTE_NONE, quotechar="'")
+        data_reader = csv.reader(_from, quoting=csv.QUOTE_ALL, skipinitialspace=True, quotechar="'")
         for line in data_reader:
             data.append(line)
             count.append(len(line))

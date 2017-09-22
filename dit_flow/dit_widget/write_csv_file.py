@@ -6,9 +6,17 @@ from dit_flow.dit_widget.common.setup_logger import setup_logger
 def write_csv_file(output_file, output_data, log_file=None):
     logger = setup_logger(__name__, log_file)
     logger.info('Writing data to file: {}'.format(output_file))
-    with open(output_file, newline='') as _to:
+    with open(output_file, 'w', newline='\n') as _to:
         for line in output_data:
-            _to.writerow(line.join(','))
+            for cnt, elem in enumerate(line):
+                if isinstance(elem, str):
+                    _to.write("'{}'".format(elem))
+                else:
+                    _to.write(str(elem))
+                if cnt < len(line) - 1:
+                    _to.write(',')
+                if cnt == len(line) - 1:
+                    _to.write('\n')
 
 def parse_arguments():
     parser = ap.ArgumentParser(description="Writes CSV data matrix to a file.")

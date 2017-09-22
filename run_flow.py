@@ -30,21 +30,28 @@ class RunFlow():
 
 
     def setup_utilities(self):
+        self.logger.info('Setting up file manager widget')
         self.file_manager = self.widget_factory.create_widget('file_manager')
-        self.file_reader = self.widget_factory.create_widget(self.config_translator.get_reader_widget())
+        reader_name = self.config_translator.get_reader_widget()
+        self.logger.info('Setting up reader widget: {}'.format(reader_name))
+        self.file_reader = self.widget_factory.create_widget(reader_name)
+        self.logger.info('Setting up variable mapper widget')
         self.variable_mapper = self.widget_factory.create_widget('variable_map')
+        writer_name = self.config_translator.get_writer_widget()
+        self.logger.info('Setting up writer widget: {}'.format(writer_name))
         self.file_writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget())
 
 
     def setup_widget_list(self, widget_defns):
         widget_list = []
         for widget in widget_defns:
-            a_widget = self.widget_factory.create_widget(widget['widget'])
-            a_widget.do_it = widget['do_it']
-            a_widget.input_columns = widget['input_columns']
-            a_widget.output_columns = widget['output_columns']
-            a_widget.with_header = widget['with_header']
-            for (input_arg_name, input_arg_value) in widget['inputs'].items():
+            a_widget = self.widget_factory.create_widget(self.config_translator.get_widget_name_from_widget_config(widget))
+            a_widget.do_it = self.config_translator.get_do_it_from_widget_config(widget)
+            a_widget.input_columns = self.config_translator.get_input_columns_from_widget_config(widget)
+            a_widget.output_columns = self.config_translator.get_output_columns_from_widget_config(widget)
+            a_widget.with_header = self.config_translator.get_with_header_from_widget_config(widget)
+            for (input_arg_name, input_arg_value) in \
+                    self.config_translator.get_input_args_from_widget_config(widget).items():
                 a_widget.set_input_arg(input_arg_name, input_arg_value)
             widget_list.append(a_widget)
         return widget_list
@@ -60,8 +67,8 @@ class RunFlow():
         self.output_manipulations = self.setup_widget_list(widget_defns)
 
 
-    def read_input_data(self, input_file, id, log_file):
-        data = self.file_reader.go(input_file, id, log_file=log_file)
+    def read_input_data(self, input_file, log_file):
+        data = self.file_reader.go(input_file, log_file=log_file)
         return np.array(data, dtype=object)
 
     def subset_data(self, np_data, columns, with_header=False):
@@ -107,7 +114,7 @@ class RunFlow():
 
 
     def write_output_file(self, output_file, np_data, log_file):
-        self.file_writer.go(output_file, np_data.tolist(), log_file=log_file)
+        self.file_writer.go(output_file, np_data, log_file=log_file)
 
 
     def run(self):

@@ -7,6 +7,7 @@ from dit_flow.reader_widget import ReaderWidget
 from dit_flow.manipulation_widget import ManipulationWidget
 from dit_flow.writer_widget import WriterWidget
 from dit_flow.utility_widget import UtilityWidget
+from dit_flow.dit_widget.common.setup_logger import setup_logger
 
 class WidgetCreateException(Exception):
     pass

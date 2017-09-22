@@ -37,7 +37,7 @@ def test_get_reader_widget():
     config_trans = ConfigTranslator()
     config_trans.read_config(config_file)
     actual = config_trans.get_reader_widget()
-    expected = 'read_file'
+    expected = 'read_csv_file'
     assert actual == expected
 
 def test_get_missing_values():

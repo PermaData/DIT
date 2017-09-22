@@ -15,8 +15,10 @@ class FlowWidget(Component):
         self.input_arg_types = OrderedDict()
 
 
-    def setup_logger(self, log_file):
-        self.logger = setup_logger(self.channel, log_file)
+    def setup_logger(self, name, log_file):
+        if name is None:
+            name = self.channel
+        self.logger = setup_logger(name, log_file)
 
 
     def set_input_arg(self, arg_name, arg_value):
