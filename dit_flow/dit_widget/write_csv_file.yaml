@@ -1,0 +1,6 @@
+type: writer_widget
+description: Writes data matrix to a file in csv format.
+input_1: output_file
+input_1_type: string
+input_2: output_data
+input_2_type: array

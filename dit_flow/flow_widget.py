@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from circuits import Component
+from dit_flow.dit_widget.common.setup_logger import setup_logger
 
 class FlowWidget(Component):
 
@@ -12,6 +13,10 @@ class FlowWidget(Component):
         self.required_arg_types = {}
         self.input_args = OrderedDict()
         self.input_arg_types = OrderedDict()
+
+
+    def setup_logger(self, log_file):
+        self.logger = setup_logger(self.channel, log_file)
 
 
     def set_input_arg(self, arg_name, arg_value):

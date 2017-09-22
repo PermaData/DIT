@@ -1,5 +1,6 @@
-import os
+from pathlib import Path
 from dit_flow.utility_widget import UtilityWidget
+from dit_flow.dit_widget.common import setup_logger
 
 
 class FileManager(UtilityWidget):
@@ -8,29 +9,27 @@ class FileManager(UtilityWidget):
         super(FileManager, self).__init__()
         self.widget_method = self.file_manager
 
-    def file_manager(self, filenames):
+    def file_manager(self, filenames, log_file=None):
         """
         filenames: a sequence of paths to data files
         CURRENT: sends out a sequence of filenames after confirming they exist
         FID: a sequential numeric identifier for each file
         LOGFILE: sends out a sequence of log filenames that correspond to a data file
         """
+        self.logger = setup_logger(__name__, log_file)
         print("inside file_manager, filenames: ", filenames)
         step_files = []
-        for identifier, name in enumerate(filenames):
-            path, fname = name.rsplit('/', 1)
-            log_name = '{pth}/{name}.log'.format(pth=path, name=fname)
+        for identifier, name in enumerate(filenames, start=1):
+            name_path = Path(name)
+            log_path = name_path.with_suffix('.log')
             try:
                 # Open the file. If the file doesn't exist, the error will be
                 # caught.
-                f = open(name, 'r')
-                f.close()
-                # Create/clear the log file
-                open(log_name, 'w').close()
-                os.chmod(log_name, 0o666)
-                step_files.append((name, identifier + 1, log_name))
+                if log_path.exists():
+                    log_path.write_bytes(b'')
+                else:
+                    log_path.touch(mode=0o666)
+                step_files.append((name, identifier, str(log_path)))
             except FileNotFoundError:
-                with open(log_name, 'w') as log:
-                    print('The file {f} was not found.'.format(f=name), file=log)
-                    os.chmod(log_name, 0o666)
+                self.logger.error('The log file {f} does not exist and cannot be created.'.format(f=str(log_path)))
         return step_files

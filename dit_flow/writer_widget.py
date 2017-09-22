@@ -6,10 +6,9 @@ class WriterWidget(FlowWidget):
 
     def __init__(self, *args, **kwargs):
         super(WriterWidget, self).__init__(*args, **kwargs)
-        self.channel = 'WriterWidget'
+        self.channel = 'writer_widget'
 
-    def go(self):
-        print(self.channel, ' received go event')
+    def go(self, *args, **kwargs):
         # Write out input and output columns to log file.
-        result = self.widget_method(*self.input_args, **self.required_args)
+        result = self.widget_method(*args, **kwargs)
         return result

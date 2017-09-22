@@ -1,5 +1,6 @@
 import pytest
 import os
+import numpy as np
 
 from collections import OrderedDict
 from run_flow import RunFlow
@@ -18,14 +19,17 @@ def test_setup_utilities():
 
 def test_read_input_data(tmpdir):
     datafile = tmpdir.mkdir('input').join('data_file')
-    datafile.write('column 1,column_2,Column3, Column  4\n')
-    datafile.write("'fred', 'ginger', 'elf', 'santa'\n")
-    datafile.write("1.00, 2.13, na, -999.99\n")
+    line_1 = 'column 1,column_2,Column3, Column  4\n'
+    line_2 = "'fred', 'ginger', 'elf', 'santa'\n"
+    line_3 = "1.00, 2.13, na, -999.99\n"
+    datafile.write("{}{}{}".format(line_1, line_2, line_3))
     flow = RunFlow(config_path)
     flow.setup_utilities()
     actual = flow.read_input_data(str(datafile), 2)
-    # actual = flow.read_input_data('fake.csv', 2)
-    print(actual)
+    assert len(actual) == 3
+    assert actual[0] == line_1.replace('\n', '').split(',')
+    assert actual[1] == line_2.replace('\n', '').split(',')
+    assert actual[2] == line_3.replace('\n', '').split(',')
 
 
 def test_setup_input_manipulations():
@@ -89,5 +93,18 @@ def test_do_output_manipulations():
     pass
 
 
-def test_write_output_file():
+def test_write_output_file(tmpdir):
+    datafile = tmpdir.mkdir('output').join('data_file')
+    line_1 = ['column 1', 'column_2', 'Column3', 'Column  4']
+    line_2 = ['fred', 'ginger', 'elf', 'santa']
+    line_3 = [1.00, 2.13, 'na', -999.99]
+    input_data = [line_1, line_2, line_3]
     flow = RunFlow(config_path)
+    flow.setup_utilities()
+    flow.write_output_file(str(datafile), input_data, 'test.log')
+    actual = datafile.read()
+    print(actual)
+    assert len(actual) == 3
+    assert actual[0] == line_1.replace('\n', '').split(',')
+    assert actual[1] == line_2.replace('\n', '').split(',')
+    assert actual[2] == line_3.replace('\n', '').split(',')

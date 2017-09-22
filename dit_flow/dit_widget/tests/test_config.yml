@@ -1,5 +1,5 @@
 input:
-  reader: read_file
+  reader: read_csv_file
   data_directory: 'change_me'
   variable_map: './example_data/variable_map.dat'
   missing_values: [-999.99, -999.0]
@@ -16,11 +16,12 @@ input:
 
 output:
   data_directory: './output'
-  writer: ''
+  writer: 'write_csv_file'
   manipulations:
   -
     widget: 'widget_template'
     do_it: true
+    with_header: False
     input_columns: []
     inputs:
       method_arg_1: 'fred'
@@ -29,6 +30,7 @@ output:
   -
     widget: 'add_constant'
     do_it: False
+    with_header: True
     input_columns: []
     inputs:
       constant: 1.0

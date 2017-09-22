@@ -6,7 +6,7 @@ class ManipulationWidget(FlowWidget):
 
     def __init__(self, *args, **kwargs):
         super(ManipulationWidget, self).__init__(*args, **kwargs)
-        self.channel = 'ManipulationWidget'
+        self.channel = 'manipulation_widget'
 
         self.do_it = True
         self.required_args = {'input_data_file': '', 'output_data_file': '', 'log_file': ''}
@@ -15,11 +15,11 @@ class ManipulationWidget(FlowWidget):
                               'log_file': PortType.STR}
         self.input_columns = []
         self.output_columns = []
-        self.logger = None
+        self.with_header = False
+        self.logger = self.setup_logger(__name__, self.channel + '.log')
 
     def go(self):
-        print(self.channel, ' received go event')
-        self.logger.info('Running ', self.channel, ' on input columns: ', self.input_columns, '  to output columns: ', self.output_columns)
         # Write out input and output columns to log file.
+        self.logger.info('Running ', self.channel, ' on input columns: ', self.input_columns, '  to output columns: ', self.output_columns)
         result = self.widget_method(*self.input_args, **self.required_args)
         return result
