@@ -115,12 +115,14 @@ class RunFlow():
         self.setup_input_manipulations()
         self.setup_output_manipulations()
         self.input_files = self.config_translator.get_input_files()
-        logs_n_ids = self.file_manager.go(self.input_files)
-        for input_file, output_file, step_id, log_file in logs_n_ids:
+        files_n_ids = self.file_manager.go(self.input_files)
+        for input_file, output_file, step_id, log_file in files_n_ids:
             input_data = self.read_input_data(input_file, step_id, log_file)
             self.do_manipulations(self.input_manipulations, input_data, output_file, step_id, log_file)
+
             output_data = self.format_to_output_data(output_data, log_file)
             self.do_manipulations(self.output_manipulations, output_file, output_data, log_file)
+
             self.write_output_file(output_file, output_data, log_file)
 
 
