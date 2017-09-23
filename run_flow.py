@@ -72,8 +72,10 @@ class RunFlow():
         return np.array(data, dtype=object)
 
     def subset_data(self, np_data, columns, with_header=False):
-
-        subset_data = np_data[:, columns]
+        if columns == ['all']:
+            columns = list(range(1, np_data.shape[1] + 1))
+        zero_based_columns = [column - 1 for column in columns]
+        subset_data = np_data[:, zero_based_columns]
         if with_header:
             self.logger.info('Subsetting columns with headers: {}'.format(columns))
         else:
@@ -84,7 +86,14 @@ class RunFlow():
 
 
     def replace_data(self, np_data, manipulated_data, columns, with_header=False):
-        pass
+        if columns == ['all']:
+            columns = list(range(1, np_data.shape[0] + 1))
+        zero_based_columns = [column - 1 for column in columns]
+        row_start = int(not with_header)
+        for row_cnt, row in enumerate(manipulated_data):
+            for col_cnt, col in enumerate(zero_based_columns):
+                np_data[row_start + row_cnt, col] = row[col_cnt]
+        return np_data
 
     def set_widget_required_args(self, widget, widget_data_in_file, widget_data_out_file, log_file):
         widget.set_required_arg('input_data_file', widget_data_in_file)

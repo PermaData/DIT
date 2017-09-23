@@ -108,14 +108,79 @@ def test_setup_output_manipulations():
     assert actual_widget_3.do_it == True
 
 
-def test_subset_data():
+def test_subset_data_with_header():
+    expected = np.array([['column 1', 'Column3'], ['fred', 'elf'], [1.00, 'na']], dtype=object)
+
     flow = RunFlow(config_path)
-    pass
+    input_data = create_input_data()
+
+    actual = flow.subset_data(np.array(input_data, dtype=object), [1, 3], with_header=True)
+
+    np.testing.assert_array_equal(actual, expected)
 
 
-def test_replace_data():
+def test_subset_data_without_header():
+    expected = np.array([['fred', 'elf'], [1.00, 'na']], dtype=object)
+
     flow = RunFlow(config_path)
-    pass
+    input_data = create_input_data()
+
+    actual = flow.subset_data(np.array(input_data, dtype=object), [1, 3])
+
+    np.testing.assert_array_equal(actual, expected)
+
+
+def test_subset_all_data_with_header():
+    expected = np.array([['column 1', 'column_2', 'Column3', 'Column 4'],
+                         ['fred', 'ginger', 'elf', 'santa'],
+                         [1.00, 2.13, 'na', -999.99]], dtype=object)
+
+    flow = RunFlow(config_path)
+    input_data = create_input_data()
+
+    actual = flow.subset_data(np.array(input_data, dtype=object), ['all'], with_header=True)
+
+    np.testing.assert_array_equal(actual, expected)
+
+
+def test_subset_all_data_without_header():
+    expected = np.array([['fred', 'ginger', 'elf', 'santa'],
+                         [1.00, 2.13, 'na', -999.99]], dtype=object)
+
+    flow = RunFlow(config_path)
+    input_data = create_input_data()
+
+    actual = flow.subset_data(np.array(input_data, dtype=object), ['all'])
+
+    np.testing.assert_array_equal(actual, expected)
+
+
+def test_replace_data_with_header():
+    expected = np.array([['new col 1', 'column_2', 'NewColumn3', 'Column 4'],
+                         ['ethel', 'ginger', 'reindeer', 'santa'],
+                         [0.000003, 2.13, 5055.3042, -999.99]], dtype=object)
+    new_columns = np.array([['new col 1', 'NewColumn3'], ['ethel', 'reindeer'], [0.000003, 5055.3042]], dtype=object)
+
+    flow = RunFlow(config_path)
+    input_data = create_input_data()
+
+    actual = flow.replace_data(np.array(input_data, dtype=object), new_columns, [1, 3], True)
+
+    np.testing.assert_array_equal(actual, expected)
+
+
+def test_replace_data_without_header():
+    expected = np.array([['column 1', 'column_2', 'Column3', 'Column 4'],
+                         ['ethel', 'ginger', 'reindeer', 'santa'],
+                         [0.000003, 2.13, 5055.3042, -999.99]], dtype=object)
+    new_columns = np.array([['ethel', 'reindeer'], [0.000003, 5055.3042]], dtype=object)
+
+    flow = RunFlow(config_path)
+    input_data = create_input_data()
+
+    actual = flow.replace_data(np.array(input_data, dtype=object), new_columns, [1, 3])
+
+    np.testing.assert_array_equal(actual, expected)
 
 
 def test_do_input_manipulations():
