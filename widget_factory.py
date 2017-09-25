@@ -30,11 +30,11 @@ class WidgetFactory:
         return id in WidgetFactory.factories.keys()
 
     @staticmethod
-    def create_widget(id):
+    def create_widget(id, log_file=None):
         if not WidgetFactory.has_factory(id):
             widget_class = create_widget_class(id, WidgetFactory.loader)
             WidgetFactory.add_factory(id, widget_class)
-        new_widget = WidgetFactory.factories[id]()
+        new_widget = WidgetFactory.factories[id](log_file=log_file)
         if not isinstance(new_widget, UtilityWidget):
             new_widget.widget_method = method_from_config(id, new_widget.method_path)
         return new_widget

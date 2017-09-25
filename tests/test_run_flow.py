@@ -7,7 +7,9 @@ from collections import OrderedDict
 from pathlib import Path
 from run_flow import RunFlow
 
-config_path = os.path.join(os.getcwd(), 'dit_flow', 'dit_widget', 'tests', 'test_config.yml')
+config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                           '../dit_flow', 'dit_widget', 'tests',
+                           'test_config.yml')
 
 
 def create_input_data():

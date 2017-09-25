@@ -1,5 +1,6 @@
 import argparse as ap
 import numpy as np
+import os
 
 from dit_flow.dit_widget.config_translator import ConfigTranslator
 from dit_flow.dit_widget.common.setup_logger import setup_logger
@@ -8,11 +9,15 @@ from widget_factory import WidgetFactory
 
 class RunFlow():
 
-    def __init__(self, flow_name):
+    def __init__(self, flow_name, log_file=None):
         # Flow level information and utilities
         self.flow_name = flow_name
-        self.log_file = self.flow_name.split('.')[0] + '.log'
+        if log_file is None:
+            self.log_file = os.path.join(os.getcwd(), self.flow_name.split('.')[0] + '.log')
+        else:
+            self.log_file = log_file
         self.logger = setup_logger(__name__, self.log_file)
+        self.logger.info('Setup logging into: {}'.format(self.log_file))
 
         self.config_translator = ConfigTranslator()
         self.config_translator.read_config(self.flow_name)
@@ -31,21 +36,26 @@ class RunFlow():
 
     def setup_utilities(self):
         self.logger.info('Setting up file manager widget')
-        self.file_manager = self.widget_factory.create_widget('file_manager')
+        self.file_manager = self.widget_factory.create_widget('file_manager',
+                log_file=self.log_file)
         reader_name = self.config_translator.get_reader_widget()
         self.logger.info('Setting up reader widget: {}'.format(reader_name))
-        self.file_reader = self.widget_factory.create_widget(reader_name)
+        self.file_reader = self.widget_factory.create_widget(reader_name,
+                log_file=self.log_file)
         self.logger.info('Setting up variable mapper widget')
-        self.variable_mapper = self.widget_factory.create_widget('variable_map')
+        self.variable_mapper = self.widget_factory.create_widget('variable_map',
+                log_file=self.log_file)
         writer_name = self.config_translator.get_writer_widget()
         self.logger.info('Setting up writer widget: {}'.format(writer_name))
-        self.file_writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget())
+        self.file_writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget(),
+                log_file=self.log_file)
 
 
     def setup_widget_list(self, widget_defns):
         widget_list = []
         for widget in widget_defns:
-            a_widget = self.widget_factory.create_widget(self.config_translator.get_widget_name_from_widget_config(widget))
+            a_widget = self.widget_factory.create_widget(self.config_translator.get_widget_name_from_widget_config(widget),
+                log_file=self.log_file)
             a_widget.do_it = self.config_translator.get_do_it_from_widget_config(widget)
             a_widget.input_columns = self.config_translator.get_input_columns_from_widget_config(widget)
             a_widget.output_columns = self.config_translator.get_output_columns_from_widget_config(widget)
@@ -131,6 +141,7 @@ class RunFlow():
         self.setup_input_manipulations()
         self.setup_output_manipulations()
         self.input_files = self.config_translator.get_input_files()
+        print('input_files: ', self.input_files)
         files_n_ids = self.file_manager.go(self.input_files)
         for input_file, output_file, step_id, log_file in files_n_ids:
             input_data = self.read_input_data(input_file, step_id, log_file)
@@ -146,6 +157,7 @@ def parse_arguments():
     parser = ap.ArgumentParser(description='Runs a DIT widget flow.')
 
     parser.add_argument('flowname', help='Flow configuration filename.')
+    parser.add_argument('-l', '--log_file', default='./run_flow.log', help='Path to log file.')
     parser.add_argument('-m', '--mode', default='cli', help='Flow configuration filename.')
 
     return parser.parse_args()
@@ -153,5 +165,5 @@ def parse_arguments():
 if __name__ == '__main__':
     args = parse_arguments()
 
-    runner = RunFlow(args.flowname)
+    runner = RunFlow(args.flowname, args.log_file)
     runner.run()

@@ -16,7 +16,10 @@ class ManipulationWidget(FlowWidget):
         self.input_columns = []
         self.output_columns = []
         self.with_header = False
-        self.logger = self.setup_logger(__name__, self.channel + '.log')
+        if 'log_file' in kwargs.keys():
+            self.logger = self.setup_logger(self.channel, kwargs['log_file'])
+        else:
+            self.logger = self.setup_logger(self.channel, self.channel + '.log')
 
     def go(self):
         # Write out input and output columns to log file.

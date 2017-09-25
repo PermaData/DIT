@@ -1,12 +1,12 @@
 from pathlib import Path
 from dit_flow.utility_widget import UtilityWidget
-from dit_flow.dit_widget.common import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger
 
 
 class FileManager(UtilityWidget):
 
-    def __init__(self):
-        super(FileManager, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(FileManager, self).__init__(*args, **kwargs)
         self.widget_method = self.file_manager
 
     def file_manager(self, filenames, log_file=None):

@@ -12,7 +12,6 @@ class ReaderWidget(FlowWidget):
         self.logger = None
 
     def go(self, *args, **kwargs):
-        print(self.channel, ' received go event')
         print(self.channel, ' args: ', args, '  kwargs:', kwargs)
         # Write out input and output columns to log file.
         result = self.widget_method(*args, **kwargs)
