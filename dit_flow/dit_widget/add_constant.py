@@ -15,8 +15,8 @@ def add_constant(constant, missing_value, input_data_file=None, output_data_file
     with open(input_data_file, newline='') as _in, \
          open(output_data_file, 'w', newline='') as _out:
         logger.info('Adding {} to the column'.format(constant))
-        output = csv.writer(_out)
-        reader = csv.reader(_in)
+        output = csv.writer(_out, quotechar="'", quoting=csv.QUOTE_ALL)
+        reader = csv.reader(_in, quotechar="'")
         for line in reader:
             new_line = array('f')
             for item in line:

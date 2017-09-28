@@ -1,26 +1,40 @@
 from collections import OrderedDict
-from dit_flow.dit_widget.port import PortType
+from circuits import Component
+from dit_flow.dit_widget.common.setup_logger import setup_logger
 
-class FlowWidget(object):
+class FlowWidget(Component):
 
-    channel = 'flow_widget'
-    description = None
-    required_args = {'input_data_file': '', 'output_data_file': '', 'log_file': ''}
-    required_arg_types = {'input_data_file': PortType.STR,
-                          'output_data_file': PortType.STR,
-                          'log_file': PortType.STR}
-    input_args = OrderedDict()
-    input_arg_types = OrderedDict()
-    widget_method = None
 
-    def __init__(self):
-        print('in flow_widget.__init__')
+    def __init__(self, *args, **kwargs):
+        super(FlowWidget, self).__init__(*args, **kwargs)
+        self.channel = 'flow_widget'
+        self.description = ''
+        self.required_args = {}
+        self.required_arg_types = {}
+        self.input_args = OrderedDict()
+        self.input_arg_types = OrderedDict()
 
-    def speak(self):
-        print("I say: ", self.channel)
 
-    def go(self):
-        print(self.channel, ' received go event')
-        result = self.widget_method(*self.input_args, **self.required_args)
-        return result
+    def setup_logger(self, name, log_file):
+        if name is None:
+            name = self.channel
+        self.logger = setup_logger(name, log_file)
 
+
+    def go(self, *args, **kwargs):
+        log_file = None
+        if 'log_file' in kwargs.keys():
+            log_file = kwargs['log_file']
+        self.setup_logger(self.channel, log_file)
+
+
+    def set_input_arg(self, arg_name, arg_value):
+        self.input_args[arg_name] = arg_value
+
+
+    def set_required_arg(self, arg_name, arg_value):
+        if arg_name not in self.required_args.keys():
+            message = '{} is not a required argument of {}'.format(arg_name, self.__class__)
+            raise Exception(message)
+        else:
+            self.required_args[arg_name] = arg_value

@@ -1,252 +1,198 @@
-import sys
-import itertools
-
-import json
-# import ruamel.yaml as yaml
-import yaml
-
+import argparse as ap
+import numpy as np
 import os
-from os.path import dirname
 
-from widget_loader import WidgetLoader
-from circuits import Worker, task, Event, Loader, Manager, handler
+from dit_flow.dit_widget.config_translator import ConfigTranslator
+from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.manipulation_widget import ManipulationWidget
+from pathlib import Path
+from widget_factory import WidgetFactory
 
 
-class go(Event):
+class RunFlow():
 
-    """test Event"""
-    success = True
+    def __init__(self, flow_name, log_file=None):
+        # Flow level information and utilities
+        self.flow_name = flow_name
+        if log_file is None:
+            self.log_file = os.path.join(os.getcwd(), self.flow_name.split('.')[0] + '.log')
+        else:
+            self.log_file = log_file
+        self.logger = setup_logger('', self.log_file)
+        self.logger.info('Setup logging into: {}'.format(self.log_file))
 
-class la(Event):
-    """test Event"""
-    success = True
+        self.config_translator = ConfigTranslator()
+        self.config_translator.read_config(self.flow_name)
+        self.widget_factory = WidgetFactory()
+        self.file_manager = None
+        self.variable_mapper = None
 
-@handler("go_value_changed", channel="*")
-def on_go_value_changed(component, value):
-    print('made it to go success: {}  kwargs: {}'.format(component, value))
+        self.file_reader = None
+        self.input_files = None
+        self.input_manipulations = []
 
-@handler("la_success", channel="*")
-def la_success(*args, **kwargs):
-    print('made it to la success: {}  kwargs: {}'.format(*args, **kwargs))
+        self.file_writer = None
+        self.output_directory = None
+        self.output_manipulations = []
 
-def worker(request, manager, watcher):
-    worker = Worker().register(manager)
-    assert watcher.wait("registered")
 
-    def finalizer():
-        worker.unregister()
-        assert watcher.wait("unregistered")
+    def setup_utilities(self):
+        self.logger.info('Setting up file manager widget')
+        self.file_manager = self.widget_factory.create_widget('file_manager',
+                log_file=self.log_file)
+        reader_name = self.config_translator.get_reader_widget()
+        self.logger.info('Setting up reader widget: {}'.format(reader_name))
+        self.file_reader = self.widget_factory.create_widget(reader_name,
+                log_file=self.log_file)
+        self.logger.info('Setting up variable mapper widget')
+        self.variable_mapper = self.widget_factory.create_widget('variable_map',
+                log_file=self.log_file)
+        writer_name = self.config_translator.get_writer_widget()
+        self.logger.info('Setting up writer widget: {}'.format(writer_name))
+        self.file_writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget(),
+                log_file=self.log_file)
 
-    request.addfinalizer(finalizer)
 
-    return worker
+    def setup_widget_list(self, widget_defns):
+        widget_list = []
+        for widget in widget_defns:
+            a_widget = self.widget_factory.create_widget(self.config_translator.get_widget_name_from_widget_config(widget),
+                log_file=self.log_file)
+            a_widget.channel = self.config_translator.get_widget_name_from_widget_config(widget)
+            a_widget.do_it = self.config_translator.get_do_it_from_widget_config(widget)
+            a_widget.input_columns = self.config_translator.get_input_columns_from_widget_config(widget)
+            a_widget.output_columns = self.config_translator.get_output_columns_from_widget_config(widget)
+            a_widget.with_header = self.config_translator.get_with_header_from_widget_config(widget)
+            for (input_arg_name, input_arg_value) in \
+                    self.config_translator.get_input_args_from_widget_config(widget).items():
+                a_widget.set_input_arg(input_arg_name, input_arg_value)
+            widget_list.append(a_widget)
+        return widget_list
 
-def run_flow(flowname):
-    m = Manager()
-    loader = WidgetLoader()
-    loader.register(m)
-    m.addHandler(on_go_value_changed)
-    m.addHandler(la_success)
-    m.start()
 
-    config = read_config(flowname)
+    def setup_input_manipulations(self):
+        widget_defns = self.config_translator.get_input_manipulations()
+        self.input_manipulations = self.setup_widget_list(widget_defns)
 
-    # Setup log files and step ID #s.
-    file_manager = loader.load('file_manager')
-    file_manager.channel = 'file_manager'
-    logs_n_ids = m.fire(go(config['Files'], complete=True), 'file_manager')
-    m.flush()
-    print("res: ", logs_n_ids)
 
-    # Setup step input CSVs and logfiles.
-    file_reader = loader.load('read_file')
-    file_reader.channel = 'read_file'
-    in_csvs_n_logs = []
+    def setup_output_manipulations(self):
+        widget_defns = self.config_translator.get_output_manipulations()
+        self.output_manipulations = self.setup_widget_list(widget_defns)
 
-    # Setup variable mapper
-    variable_map = loader.load('variable_map')
-    variable_map.channel = 'variable_map'
 
-    for input_file, step_id, log_file in logs_n_ids:
-        result_list = m.fire(go(input_file, step_id, log_file, complete=True), 'read_file')
-        m.flush()
-        (filename, input_file_id, logfile) = result_list
-        print('ReadFile result: ', filename, '  ', input_file_id, '  ', logfile)
+    def can_do_subset_replace(self, np_data, input_columns, output_columns):
+        can_do_subset_replace = True
+        if np_data.size == 0:
+            self.logger.warn('Cannot subset or replace, data is empty.')
+            can_do_subset_replace = False
+        if not ManipulationWidget.input_and_output_columns_exist(input_columns, output_columns):
+            self.logger.warn('Cannot subset or replace, widget input and/or output columns missing.')
+            can_do_subset_replace = False
 
-        res = m.fire(go(filename, *config['Variable map file'], logfile, complete=True), 'variable_map')
-        m.flush()
-        (in_csv_filename, out_csv_filename, in_column_map, out_column_map, dest_column_map, logfile) = res
-        print("res: ", res)
+        return can_do_subset_replace
 
-        flow_widgets = {}
-        for widget_id, widget_info in config['processes'].items():
-            # print("Loading: ", widget_id)
-            flow_widgets[widget_id] = loader.load(widget_info['component'])
-            flow_widgets[widget_id].channel = widget_id
-            # print("Loaded: ", flow_widgets[widget_id])
-            x = m.fire(go(input_file, widget_info['input columns']))
 
-    m.stop()
+    def read_input_data(self, input_file, log_file):
+        data = self.file_reader.go(input_file, log_file=log_file)
+        return np.array(data, dtype=object)
 
-def read_config(flowname):
-    with open(flowname) as f:
-        # Read the config file
-        data = yaml.load(f)
-    widgets = ['file_manager', 'read_file', 'variable_map']
-    print('config file: ', data)
-    return data
 
-def translate(flowname):
-    template = """{
-                    "processes": {},
-                    "connections": [],
-                    "inports": {},
-                    "outports": {}
-                    }"""
-    output = json.loads(template)
-    filemanager = 'filemanager'
-    output['processes'].update({filemanager: {'component': 'file_manager', 'metadata': {}}})
-    readfile = 'readfile'
-    output['processes'].update({readfile: {'component': 'read_file', 'metadata': {}}})
-    variablemap = 'variablemap'
-    output['processes'].update({variablemap: {'component': 'variable_map', 'metadata': {}}})
-    with open(flowname) as f:
-        # Read the config file
-        data = yaml.load(f)
-        print(data)
-        # Set up the component lists
-        initializations = []
-        connections = []
-        extracters = []
-        replacers = []
-        # Find how many repetitions need to be passed to each step
-        num = len(data['Files'])
-        step_widgets = []
-        for sid, step, defn in zip(itertools.count(1), data['Step Order'],
-                                   data['Step Definitions']):
-            # Add to the component registry
-            widget, widget_init = process_entry(step, sid)
-            output['processes'].update(widget_init)
-            # Create its column extracter
-            extracter, extract_init, extract_defn = make_extracter(sid, defn['input columns'], num)
-            extracters.append(extracter)
-            output['processes'].update(extract_init)
-            initializations.append(extract_defn)
-            # Create its column replacer
+    def subset_data(self, np_data, columns, with_header=False):
+        if columns == ['all']:
+            columns = list(range(1, np_data.shape[1] + 1))
+        zero_based_columns = [column - 1 for column in columns]
+        subset_data = np_data[:, zero_based_columns]
+        if with_header:
+            self.logger.info('Subsetting columns with headers: {}'.format(columns))
+        else:
+            self.logger.info('Subsetting columns without headers: {}'.format(columns))
+            subset_data = np.delete(subset_data, (0), axis=0)
+
+        return subset_data
+
+
+    def replace_data(self, np_data, manipulated_data, columns, with_header=False):
+        if columns == ['all']:
+            columns = list(range(1, np_data.shape[0] + 1))
+        zero_based_columns = [column - 1 for column in columns]
+        row_start = int(not with_header)
+        for row_cnt, row in enumerate(manipulated_data):
+            for col_cnt, col in enumerate(zero_based_columns):
+                np_data[row_start + row_cnt, col] = row[col_cnt]
+        return np_data
+
+
+    def set_widget_required_args(self, widget, widget_data_in_file, widget_data_out_file, log_file):
+        widget.set_required_arg('input_data_file', widget_data_in_file)
+        widget.set_required_arg('output_data_file', widget_data_out_file)
+        widget.set_required_arg('log_file', log_file)
+        return widget
+
+
+    def format_to_output_data(self, input_data, variable_map, log_file):
+        output_data = self.variable_mapper.go(input_data.tolist(), variable_map, log_file)
+        return np.array(output_data, dtype=object)
+
+
+    def do_manipulations(self, manipulations, np_data, output_dir, step_id, log_file):
+        for widget in manipulations:
             try:
-                # If specific output columns are given, use those
-                replacer, replace_init, replace_defn = make_replacer(sid, defn['output columns'], num)
-            except KeyError:
-                # Else use the input columns again
-                replacer, replace_init, replace_defn = make_replacer(sid, defn['input columns'], num)
-            replacers.append(replacer)
-            output['processes'].update(replace_init)
-            initializations.append(replace_defn)
-            # Assign inputs
-            for item in defn['inputs']:
-                name, val = tuple(item.items())[0]
-                new = data_connection('{}-{}'.format(step, sid), name.upper(), [val]*num)
-                initializations.append(new)
-            # Connect the elements of the step together
-            connections.extend(link_step_internal(extracter, widget, replacer))
-        # Give filemanager a list of files
-        initializations.append(data_connection(filemanager, 'FILENAMES', data['Files']))
-        # Link filemanager to readfile
-        connections.append(connect(filemanager, 'CURRENT', readfile, 'FILENAME'))
-        connections.append(connect(filemanager, 'FID', readfile, 'FID'))
-        connections.append(connect(filemanager, 'LOGFILE', readfile, 'LOGFILE'))
-        # Link readfile to variablemap
-        connections.append(connect(readfile, 'DESTFILE', variablemap, 'FILENAME'))
-        connections.append(connect(readfile, 'LOGFILE_OUT', variablemap, 'LOGFILE'))
-        # Give variable_map the variables file
-        initializations.append(data_connection(variablemap, 'MAPFILE', data['Variable map file']))
-        # Link readfile and variablemap to the first step in the sequence
-        connections.append(connect(readfile, 'FID_OUT', extracters[0], 'FID'))
-        connections.append(connect(variablemap, 'STEP', extracters[0], 'SID'))
-        connections.append(connect(variablemap, 'IN', extracters[0], 'DATAFILE'))
-        connections.append(connect(variablemap, 'INMAP', extracters[0], 'DATAMAP'))
-        connections.append(connect(variablemap, 'LOGFILE_OUT', extracters[0], 'LOGFILE'))
-        connections.append(connect(variablemap, 'OUT', replacers[0], 'DESTFILE'))
-        connections.append(connect(variablemap, 'OUTMAP', replacers[0], 'DESTMAP'))
-        connections.append(connect(variablemap, 'CROSSMAP', replacers[0], 'CROSSMAP'))
-        # Link variablemap to each step
-        # for e, r in zip(extracters, replacers):
-        #     connections.append(connect(variablemap, 'IN', e, 'DATAFILE'))
-        #     connections.append(connect(variablemap, 'INMAP', e, 'DATAMAP'))
-        #     connections.append(connect(variablemap, 'OUT', r, 'DESTFILE'))
-        #     connections.append(connect(variablemap, 'OUTMAP', r, 'DESTMAP'))
-        # Link steps in sequence
-        for from_, to_e, to_r in zip(replacers[:-1], extracters[1:], replacers[1:]):
-            connections.append(connect(from_, 'DATAFILE_OUT', to_e, 'DATAFILE'))
-            connections.append(connect(from_, 'DATAMAP_OUT', to_e, 'DATAMAP'))
-            connections.append(connect(from_, 'DESTFILE_OUT', to_r, 'DESTFILE'))
-            connections.append(connect(from_, 'DESTMAP_OUT', to_r, 'DESTMAP'))
-            connections.append(connect(from_, 'FID_OUT', to_e, 'FID'))
-            connections.append(connect(from_, 'SID_OUT', to_e, 'SID'))
-            connections.append(connect(from_, 'CROSSMAP_OUT', to_r, 'CROSSMAP'))
-            connections.append(connect(from_, 'LOGFILE_OUT', to_e, 'LOGFILE'))
-        # Put connections into output json
-        initializations.extend(connections)
-        output['connections'] = initializations
-    return output
+                widget.channel = widget.channel + '_' + str(step_id)
+                widget_data_in_file = Path(output_dir).joinpath(widget.channel + '.in')
+                widget_data_out_file = Path(output_dir).joinpath(widget.channel + '.out')
+                widget = self.set_widget_required_args(widget, widget_data_in_file, widget_data_out_file, log_file)
+
+                if self.can_do_subset_replace(np_data, widget.input_columns, widget.output_columns):
+                    # Setup subsetted data for widget manipulation
+                    widget_data = self.subset_data(np_data, widget.input_columns, widget.with_header)
+                    self.write_output_file(widget_data_in_file, widget_data, log_file=log_file)
+
+                # Do manipulation
+                widget.go()
+
+                if self.can_do_subset_replace(np_data, widget.input_columns, widget.output_columns):
+                    # Reintegrate manipulated data
+                    manipulated_data = self.read_input_data(widget_data_out_file, log_file)
+                    np_data = self.replace_data(np_data, manipulated_data, widget.output_columns, widget.with_header)
+            except Exception as ex:
+                self.logger.error('{}'.format(ex))
 
 
-def dump_to_json(flowname, output):
-    with open(flowname.replace('.yml', '.json'), 'w') as destination:
-        json.dump(output, destination, indent=2, sort_keys=True)
+    def write_output_file(self, output_file, np_data, log_file):
+        self.file_writer.go(output_file, np_data, log_file=log_file)
 
 
-def process_entry(widget, step):
-    name = '{name}-{num}'.format(name=widget, num=step)
-    return (name, widget)
+    def run(self):
+        self.setup_utilities()
+        self.setup_input_manipulations()
+        self.setup_output_manipulations()
+        self.input_files = self.config_translator.get_input_files()
+        output_dir = self.config_translator.get_output_directory()
+        files_n_ids = self.file_manager.go(self.input_files, output_dir)
+        for input_file, output_file, step_id, log_file in files_n_ids:
+            input_data = self.read_input_data(input_file, log_file)
+            self.do_manipulations(self.input_manipulations, input_data, output_dir, step_id, log_file)
+
+            mapper_vals = self.format_to_output_data(input_data,
+                    self.config_translator.get_variable_map(),
+                    log_file)
+            output_data = np.array(mapper_vals[0], dtype=object)
+            self.do_manipulations(self.output_manipulations, output_data, output_dir, step_id, log_file)
+
+            self.write_output_file(output_file, output_data, log_file)
 
 
-def make_extracter(sid, cols, num):
-    name = 'extracter-{num}'.format(num=sid)
-    path = 'column_extract'
-    init = {name: {'component': path, 'metadata': {}}}
-    connect = {'src': {'data': [cols]*num}, 'tgt': {'process': name, 'port': 'COLUMNS'}}
-    return (name, init, connect)
+def parse_arguments():
+    parser = ap.ArgumentParser(description='Runs a DIT widget flow.')
 
+    parser.add_argument('flowname', help='Flow configuration filename.')
+    parser.add_argument('-l', '--log_file', default='./run_flow.log', help='Path to log file.')
+    parser.add_argument('-m', '--mode', default='cli', help='Flow configuration filename.')
 
-def make_replacer(sid, cols, num):
-    name = 'replacer-{num}'.format(num=sid)
-    path = 'column_replace'
-    init = {name: {'component': path, 'metadata': {}}}
-    tempmap = [{n: i for i, n in enumerate(cols)}]*num
-    connect = {'src': {'data': tempmap}, 'tgt': {'process': name, 'port': 'TEMPMAP'}}
-    return (name, init, connect)
-
-
-def link_step_internal(extracter, widget, replacer):
-    out = []
-    out.append(connect(extracter, 'TEMPIN', widget, 'INFILE'))
-    out.append(connect(extracter, 'TEMPOUT', widget, 'OUTFILE_IN'))
-    out.append(connect(extracter, 'LOGFILE_OUT', widget, 'LOGFILE_IN'))
-
-    out.append(connect(extracter, 'DATAFILE_OUT', replacer, 'DATAFILE'))
-    out.append(connect(extracter, 'DATAMAP_OUT', replacer, 'DATAMAP'))
-    out.append(connect(extracter, 'FID_OUT', replacer, 'FID'))
-    out.append(connect(extracter, 'SID_OUT', replacer, 'SID'))
-
-    out.append(connect(widget, 'OUTFILE_OUT', replacer, 'TEMPFILE'))
-
-    out.append(connect(widget, 'LOGFILE_OUT', replacer, 'LOGFILE'))
-
-    return out
-
-
-def data_connection(component, port, data):
-    portID = port.upper()
-    return {'src': {'data': data}, 'tgt': {'process': component, 'port': portID}}
-
-
-def connect(sender, sport, receiver, rport):
-    src = {'process': sender, 'port': sport}
-    tgt = {'process': receiver, 'port': rport}
-    return {'src': src, 'tgt': tgt}
-
+    return parser.parse_args()
 
 if __name__ == '__main__':
-    flowname = sys.argv[1]
-    run_flow(flowname)
+    args = parse_arguments()
+
+    runner = RunFlow(args.flowname, args.log_file)
+    runner.run()
