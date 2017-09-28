@@ -4,6 +4,8 @@ import os
 
 from dit_flow.dit_widget.config_translator import ConfigTranslator
 from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.manipulation_widget import ManipulationWidget
+from pathlib import Path
 from widget_factory import WidgetFactory
 
 
@@ -16,7 +18,7 @@ class RunFlow():
             self.log_file = os.path.join(os.getcwd(), self.flow_name.split('.')[0] + '.log')
         else:
             self.log_file = log_file
-        self.logger = setup_logger(__name__, self.log_file)
+        self.logger = setup_logger('', self.log_file)
         self.logger.info('Setup logging into: {}'.format(self.log_file))
 
         self.config_translator = ConfigTranslator()
@@ -56,6 +58,7 @@ class RunFlow():
         for widget in widget_defns:
             a_widget = self.widget_factory.create_widget(self.config_translator.get_widget_name_from_widget_config(widget),
                 log_file=self.log_file)
+            a_widget.channel = self.config_translator.get_widget_name_from_widget_config(widget)
             a_widget.do_it = self.config_translator.get_do_it_from_widget_config(widget)
             a_widget.input_columns = self.config_translator.get_input_columns_from_widget_config(widget)
             a_widget.output_columns = self.config_translator.get_output_columns_from_widget_config(widget)
@@ -77,9 +80,22 @@ class RunFlow():
         self.output_manipulations = self.setup_widget_list(widget_defns)
 
 
+    def can_do_subset_replace(self, np_data, input_columns, output_columns):
+        can_do_subset_replace = True
+        if np_data.size == 0:
+            self.logger.warn('Cannot subset or replace, data is empty.')
+            can_do_subset_replace = False
+        if not ManipulationWidget.input_and_output_columns_exist(input_columns, output_columns):
+            self.logger.warn('Cannot subset or replace, widget input and/or output columns missing.')
+            can_do_subset_replace = False
+
+        return can_do_subset_replace
+
+
     def read_input_data(self, input_file, log_file):
         data = self.file_reader.go(input_file, log_file=log_file)
         return np.array(data, dtype=object)
+
 
     def subset_data(self, np_data, columns, with_header=False):
         if columns == ['all']:
@@ -90,7 +106,7 @@ class RunFlow():
             self.logger.info('Subsetting columns with headers: {}'.format(columns))
         else:
             self.logger.info('Subsetting columns without headers: {}'.format(columns))
-            subset_data = subset_data[[1, -1], :]
+            subset_data = np.delete(subset_data, (0), axis=0)
 
         return subset_data
 
@@ -105,6 +121,7 @@ class RunFlow():
                 np_data[row_start + row_cnt, col] = row[col_cnt]
         return np_data
 
+
     def set_widget_required_args(self, widget, widget_data_in_file, widget_data_out_file, log_file):
         widget.set_required_arg('input_data_file', widget_data_in_file)
         widget.set_required_arg('output_data_file', widget_data_out_file)
@@ -112,24 +129,33 @@ class RunFlow():
         return widget
 
 
-    def do_manipulations(self, manipulations, np_data, output_file, step_id, log_file):
+    def format_to_output_data(self, input_data, variable_map, log_file):
+        output_data = self.variable_mapper.go(input_data.tolist(), variable_map, log_file)
+        return np.array(output_data, dtype=object)
+
+
+    def do_manipulations(self, manipulations, np_data, output_dir, step_id, log_file):
         for widget in manipulations:
-            widget.channel = widget.channel + '_' + step_id
-            widget.setup_logger(self.log_file)
-            widget_data_in_file = Path(output_file).joinpath(widget.channel, '.in')
-            widget_data_out_file = Path(output_file).joinpath(widget.channel, '.out')
-            widget = self.set_widget_required_args(widget, widget_data_in_file, widget_data_out_file, log_file)
+            try:
+                widget.channel = widget.channel + '_' + str(step_id)
+                widget_data_in_file = Path(output_dir).joinpath(widget.channel + '.in')
+                widget_data_out_file = Path(output_dir).joinpath(widget.channel + '.out')
+                widget = self.set_widget_required_args(widget, widget_data_in_file, widget_data_out_file, log_file)
 
-            # Setup subsetted data for widget manipulation
-            widget_data = self.subset_data(np_data, widget.input_columns, widget.with_header)
-            self.write_output_file(widget_data_in_file, widget_data, log_file=log_file)
+                if self.can_do_subset_replace(np_data, widget.input_columns, widget.output_columns):
+                    # Setup subsetted data for widget manipulation
+                    widget_data = self.subset_data(np_data, widget.input_columns, widget.with_header)
+                    self.write_output_file(widget_data_in_file, widget_data, log_file=log_file)
 
-            # Do manipulation
-            widget.go()
+                # Do manipulation
+                widget.go()
 
-            # Reintegrate manipulated data
-            manipulated_data = self.file_reader.read_input_data(widget_data_out_file, log_file)
-            self.replace_data(manipulated_data, widget.output_columns, widget.with_header)
+                if self.can_do_subset_replace(np_data, widget.input_columns, widget.output_columns):
+                    # Reintegrate manipulated data
+                    manipulated_data = self.read_input_data(widget_data_out_file, log_file)
+                    np_data = self.replace_data(np_data, manipulated_data, widget.output_columns, widget.with_header)
+            except Exception as ex:
+                self.logger.error('{}'.format(ex))
 
 
     def write_output_file(self, output_file, np_data, log_file):
@@ -141,14 +167,17 @@ class RunFlow():
         self.setup_input_manipulations()
         self.setup_output_manipulations()
         self.input_files = self.config_translator.get_input_files()
-        print('input_files: ', self.input_files)
-        files_n_ids = self.file_manager.go(self.input_files)
+        output_dir = self.config_translator.get_output_directory()
+        files_n_ids = self.file_manager.go(self.input_files, output_dir)
         for input_file, output_file, step_id, log_file in files_n_ids:
-            input_data = self.read_input_data(input_file, step_id, log_file)
-            self.do_manipulations(self.input_manipulations, input_data, output_file, step_id, log_file)
+            input_data = self.read_input_data(input_file, log_file)
+            self.do_manipulations(self.input_manipulations, input_data, output_dir, step_id, log_file)
 
-            output_data = self.format_to_output_data(output_data, log_file)
-            self.do_manipulations(self.output_manipulations, output_file, output_data, log_file)
+            mapper_vals = self.format_to_output_data(input_data,
+                    self.config_translator.get_variable_map(),
+                    log_file)
+            output_data = np.array(mapper_vals[0], dtype=object)
+            self.do_manipulations(self.output_manipulations, output_data, output_dir, step_id, log_file)
 
             self.write_output_file(output_file, output_data, log_file)
 

@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from circuits import Component
 
+from dit_flow.dit_widget.common.setup_logger import setup_logger
+
 class UtilityWidget(Component):
 
 
@@ -15,10 +17,13 @@ class UtilityWidget(Component):
     def setup_logger(self, name, log_file):
         if name is None:
             name = self.channel
-        self.logger = self.setup_logger(name, log_file)
+        self.logger = setup_logger(name, log_file)
 
 
     def go(self, *args, **kwargs):
-        print('go arguments: ', args, '  kwargs: ', kwargs)
+        log_file = None
+        if 'log_file' in kwargs.keys():
+            log_file = kwargs['log_file']
+        self.setup_logger(self.channel, log_file)
         result = self.widget_method(*args, **kwargs)
         return result

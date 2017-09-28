@@ -1,13 +1,8 @@
-type: manipulation_widget
+type: utility_widget
 description: Provides input/output CSV file mapping.
-input_1: filename
-input_1_type: string
-input_2: mapfile
-input_2_type: integer
-# ('IN', PortType.STR),
-# ('OUT', PortType.STR),
-# ('STEP', PortType.STR),
-# ('INMAP', PortType.STR),
-# ('OUTMAP', PortType.STR),
-# ('CROSSMAP', PortType.DICT),
-# ('LOGFILE_OUT', PortType.STR)
+input_1: input_data
+input_1_type: list
+input_2: map_file
+input_2_type: string
+input_3: log_file
+input_3_type: string

@@ -1,0 +1,5 @@
+input name        operation       output name       input column    output column   units         description
+'column 1'         'copy'          'Station'         1               3               ''            'Station identifier'
+'column_2'         'modify'        'Date/Time'       2               2               'Y/M/D'       'Date and time of measurement'
+'Column3'          'remove'        ''                3               0               ''            'Indicates missing values'
+'Column 4'         'copy'          'Depth'           4               1               'm'           'Depth of measurement'

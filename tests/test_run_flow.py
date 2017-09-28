@@ -131,6 +131,23 @@ def test_subset_data_without_header():
 
     np.testing.assert_array_equal(actual, expected)
 
+def test_subset_one_column():
+    input_data = [['column 1', 'column_2', 'Column3', 'Column 4'],
+                  ['fred', 'ginger', 'elf', 'santa'],
+                  [1.00, 2.13, 'na', -999.99],
+                  [3.00,4.0005,5,6]]
+    expected = np.array([['column 1'],
+                         ['fred'],
+                         [1.00],
+                         [3.00]], dtype=object)
+
+    flow = RunFlow(config_path)
+
+    actual = flow.subset_data(np.array(input_data, dtype=object), [1], with_header=True)
+
+    np.testing.assert_array_equal(actual, expected)
+
+
 
 def test_subset_all_data_with_header():
     expected = np.array([['column 1', 'column_2', 'Column3', 'Column 4'],

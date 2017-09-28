@@ -67,7 +67,7 @@ class ConfigTranslator(UtilityWidget):
         if key in widget_config:
             return widget_config[key]
         else:
-            self.logger.warning(
+            self.logger.warn(
                 'No {} specified for widget: {}'.format(log_key_name,
                     self.get_widget_name_from_widget_config(widget_config)))
             return None

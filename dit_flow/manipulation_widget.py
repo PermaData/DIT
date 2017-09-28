@@ -16,13 +16,28 @@ class ManipulationWidget(FlowWidget):
         self.input_columns = []
         self.output_columns = []
         self.with_header = False
-        if 'log_file' in kwargs.keys():
-            self.logger = self.setup_logger(self.channel, kwargs['log_file'])
-        else:
-            self.logger = self.setup_logger(self.channel, self.channel + '.log')
 
-    def go(self):
+
+    @staticmethod
+    def input_and_output_columns_exist(input_columns, output_columns):
+        columns_exist = True
+        if input_columns is None:
+            columns_exist = False
+        elif len(input_columns) == 0:
+            columns_exist = False
+        elif output_columns is None:
+            columns_exist = False
+        elif len(output_columns) == 0:
+            columns_exist = False
+        return columns_exist
+
+
+    def go(self, *args, **kwargs):
+        super().go(*args, **kwargs)
         # Write out input and output columns to log file.
-        self.logger.info('Running ', self.channel, ' on input columns: ', self.input_columns, '  to output columns: ', self.output_columns)
-        result = self.widget_method(*self.input_args, **self.required_args)
+        if not ManipulationWidget.input_and_output_columns_exist(self.input_columns, self.output_columns):
+            self.logger.info('Running ' + self.channel + ' without input and output data.')
+        else:
+            self.logger.info('Running ' + self.channel + ' on input columns: ' + str(self.input_columns) + '  to output columns: ' + str(self.output_columns))
+        result = self.widget_method(*self.input_args.values(), **self.required_args)
         return result

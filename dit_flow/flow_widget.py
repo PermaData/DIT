@@ -21,6 +21,13 @@ class FlowWidget(Component):
         self.logger = setup_logger(name, log_file)
 
 
+    def go(self, *args, **kwargs):
+        log_file = None
+        if 'log_file' in kwargs.keys():
+            log_file = kwargs['log_file']
+        self.setup_logger(self.channel, log_file)
+
+
     def set_input_arg(self, arg_name, arg_value):
         self.input_args[arg_name] = arg_value
 
@@ -28,7 +35,6 @@ class FlowWidget(Component):
     def set_required_arg(self, arg_name, arg_value):
         if arg_name not in self.required_args.keys():
             message = '{} is not a required argument of {}'.format(arg_name, self.__class__)
-            self.logger.error(message)
             raise Exception(message)
         else:
             self.required_args[arg_name] = arg_value

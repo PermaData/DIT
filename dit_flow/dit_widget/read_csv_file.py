@@ -9,20 +9,21 @@ def read_csv_file(file_name, log_file=None):
     data = []
     with open(file_name, newline='') as _from:
         count = []
+        data = []
         data_reader = csv.reader(_from, quoting=csv.QUOTE_ALL, skipinitialspace=True, quotechar="'")
         for line in data_reader:
             data.append(line)
             count.append(len(line))
         try:
-            isOK = column_check(count, logger)
+            if len(data) == 0:
+                logger.warn('Data file is empty.')
+            else:
+                isOK = column_check(count, logger)
         except IOError as e:
             logger.error(e)
             isOK = False
 
-    if (isOK):
-        return data
-    else:
-        return None
+    return data
 
 
 def column_check(count, logger):

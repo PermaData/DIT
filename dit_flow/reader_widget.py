@@ -9,10 +9,10 @@ class ReaderWidget(FlowWidget):
         self.do_it = True
         self.required_args = {'log_file': ''}
         self.required_arg_types = {'log_file': PortType.STR}
-        self.logger = None
 
     def go(self, *args, **kwargs):
-        print(self.channel, ' args: ', args, '  kwargs:', kwargs)
+        super().go(*args, **kwargs)
         # Write out input and output columns to log file.
+        self.logger.info('{} reading input file.'.format(self.channel))
         result = self.widget_method(*args, **kwargs)
         return result
