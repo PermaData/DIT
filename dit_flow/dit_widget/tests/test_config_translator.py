@@ -23,7 +23,7 @@ def test_get_input_files():
             file_path = os.path.join(data_dir, 'two', 'multi', file_name)
         expected.append(file_path)
     actual = config_trans.get_input_files()
-    assert set(actual) == set(expected)
+    assert actual.sort() == expected.sort()
 
 
 def test_get_variable_map():
