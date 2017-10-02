@@ -2,9 +2,7 @@ import pytest
 import os
 import numpy as np
 
-from numpy import array
 from collections import OrderedDict
-from pathlib import Path
 from run_flow import RunFlow
 
 config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
@@ -68,7 +66,7 @@ def test_setup_input_manipulations():
     assert actual_widget.__class__.__name__ == 'WidgetTemplate'
     assert actual_widget.widget_method.__name__ == 'widget_template'
     assert actual_widget.input_args == expected_args
-    assert actual_widget.do_it == True
+    assert actual_widget.do_it
 
 
 def test_setup_output_manipulations():
@@ -95,19 +93,19 @@ def test_setup_output_manipulations():
     assert actual_widget_1.__class__.__name__ == 'WidgetTemplate'
     assert actual_widget_1.widget_method.__name__ == 'widget_template'
     assert actual_widget_1.input_args == expected_args_1
-    assert actual_widget_1.do_it == True
+    assert actual_widget_1.do_it
 
     actual_widget_2 = actual.output_manipulations[1]
-    assert actual_widget_2.__class__.__name__ == 'AddConstant'
-    assert actual_widget_2.widget_method.__name__ == 'add_constant'
+    assert actual_widget_2.__class__.__name__ == 'MathAddConstant'
+    assert actual_widget_2.widget_method.__name__ == 'math_add_constant'
     assert actual_widget_2.input_args == expected_args_2
-    assert actual_widget_2.do_it == False
+    assert not actual_widget_2.do_it
 
     actual_widget_3 = actual.output_manipulations[2]
     assert actual_widget_3.__class__.__name__ == 'WidgetTemplate'
     assert actual_widget_3.widget_method.__name__ == 'widget_template'
     assert actual_widget_3.input_args == expected_args_3
-    assert actual_widget_3.do_it == True
+    assert actual_widget_3.do_it
 
 
 def test_subset_data_with_header():
@@ -131,6 +129,7 @@ def test_subset_data_without_header():
 
     np.testing.assert_array_equal(actual, expected)
 
+
 def test_subset_one_column():
     input_data = [['column 1', 'column_2', 'Column3', 'Column 4'],
                   ['fred', 'ginger', 'elf', 'santa'],
@@ -146,7 +145,6 @@ def test_subset_one_column():
     actual = flow.subset_data(np.array(input_data, dtype=object), [1], with_header=True)
 
     np.testing.assert_array_equal(actual, expected)
-
 
 
 def test_subset_all_data_with_header():

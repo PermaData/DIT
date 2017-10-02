@@ -28,7 +28,7 @@ output:
       method_arg_2: 'ginger'
     output_columns: []
   -
-    widget: 'add_constant'
+    widget: 'math_add_constant'
     do_it: False
     with_header: True
     input_columns: []
