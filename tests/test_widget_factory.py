@@ -11,7 +11,6 @@ def test_create_manipulation_widget():
     factory = WidgetFactory()
     actual = factory.create_widget('widget_template')
     expected = ManipulationWidget
-    print(expected)
     assert isinstance(actual, expected)
 
 
@@ -19,7 +18,6 @@ def test_create_utility_widget():
     factory = WidgetFactory()
     actual = factory.create_widget('config_translator')
     expected = UtilityWidget
-    print(expected)
     assert isinstance(actual, expected)
 
 def test_type_from_config():
@@ -46,7 +44,6 @@ def test_description_from_config():
 def test_create_widget_class():
     loader = WidgetLoader()
     actual = create_widget_class('widget_template', loader)
-    print(actual)
     assert actual().__class__.__name__ == 'WidgetTemplate'
 
 def test_create_nonexistent_widget_class():
