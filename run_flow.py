@@ -35,7 +35,6 @@ class RunFlow():
         self.output_directory = None
         self.output_manipulations = []
 
-
     def setup_utilities(self):
         self.logger.info('Setting up file manager widget')
         self.file_manager = self.widget_factory.create_widget('file_manager',
@@ -51,7 +50,6 @@ class RunFlow():
         self.logger.info('Setting up writer widget: {}'.format(writer_name))
         self.file_writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget(),
                 log_file=self.log_file)
-
 
     def setup_widget_list(self, widget_defns):
         widget_list = []
@@ -69,16 +67,13 @@ class RunFlow():
             widget_list.append(a_widget)
         return widget_list
 
-
     def setup_input_manipulations(self):
         widget_defns = self.config_translator.get_input_manipulations()
         self.input_manipulations = self.setup_widget_list(widget_defns)
 
-
     def setup_output_manipulations(self):
         widget_defns = self.config_translator.get_output_manipulations()
         self.output_manipulations = self.setup_widget_list(widget_defns)
-
 
     def can_do_subset_replace(self, np_data, input_columns, output_columns):
         can_do_subset_replace = True
@@ -91,11 +86,9 @@ class RunFlow():
 
         return can_do_subset_replace
 
-
     def read_input_data(self, input_file, log_file):
         data = self.file_reader.go(input_file, log_file=log_file)
         return np.array(data, dtype=object)
-
 
     def subset_data(self, np_data, columns, with_header=False):
         if columns == ['all']:
@@ -110,7 +103,6 @@ class RunFlow():
 
         return subset_data
 
-
     def replace_data(self, np_data, manipulated_data, columns, with_header=False):
         if columns == ['all']:
             columns = list(range(1, np_data.shape[0] + 1))
@@ -121,18 +113,15 @@ class RunFlow():
                 np_data[row_start + row_cnt, col] = row[col_cnt]
         return np_data
 
-
     def set_widget_required_args(self, widget, widget_data_in_file, widget_data_out_file, log_file):
         widget.set_required_arg('input_data_file', widget_data_in_file)
         widget.set_required_arg('output_data_file', widget_data_out_file)
         widget.set_required_arg('log_file', log_file)
         return widget
 
-
     def format_to_output_data(self, input_data, variable_map, log_file):
         output_data = self.variable_mapper.go(input_data.tolist(), variable_map, log_file)
         return np.array(output_data, dtype=object)
-
 
     def do_manipulations(self, manipulations, np_data, output_dir, step_id, log_file):
         for widget in manipulations:
@@ -157,28 +146,34 @@ class RunFlow():
             except Exception as ex:
                 self.logger.error('{}'.format(ex))
 
-
     def write_output_file(self, output_file, np_data, log_file):
         self.file_writer.go(output_file, np_data, log_file=log_file)
-
 
     def run(self):
         self.setup_utilities()
         self.setup_input_manipulations()
         self.setup_output_manipulations()
         self.input_files = self.config_translator.get_input_files()
+        self.logger.debug('Input file list:')
+        for i_file in self.input_files:
+            self.logger.debug('\t' + i_file)
         output_dir = self.config_translator.get_output_directory()
         files_n_ids = self.file_manager.go(self.input_files, output_dir)
         for input_file, output_file, step_id, log_file in files_n_ids:
+            self.logger.debug('Reading input data from: ' + input_file)
             input_data = self.read_input_data(input_file, log_file)
+            self.logger.debug('Doing input manipulations')
             self.do_manipulations(self.input_manipulations, input_data, output_dir, step_id, log_file)
 
+            self.logger.debug('Translating input to output CSV.')
             mapper_vals = self.format_to_output_data(input_data,
-                    self.config_translator.get_variable_map(),
-                    log_file)
+                                                     self.config_translator.get_variable_map(),
+                                                     log_file)
             output_data = np.array(mapper_vals[0], dtype=object)
+            self.logger.debug('Doing output manipulations.')
             self.do_manipulations(self.output_manipulations, output_data, output_dir, step_id, log_file)
 
+            self.logger.debug('Writing output file.')
             self.write_output_file(output_file, output_data, log_file)
 
 

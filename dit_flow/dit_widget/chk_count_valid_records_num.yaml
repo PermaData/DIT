@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Counts number of valid numerical values in infile
+input_1: missing_value
+input_1_type: float

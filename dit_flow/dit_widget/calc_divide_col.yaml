@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Divide two columns (out = column_a / column_b)
+input_1: missing_value
+input_1_type: float

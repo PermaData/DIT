@@ -1,7 +1,7 @@
 input:
   reader: read_csv_file
-  data_directory: '/Users/hwilcox/Workspace/dit-master/example/input'
-  variable_map: '/Users/hwilcox/Workspace/dit-master/example/variable_map.dat'
+  data_directory: './example/input'
+  variable_map: './example/variable_map.dat'
   missing_values: [-999.99, -999.0]
   missing_characters: ['na']
   manipulations:
@@ -13,7 +13,7 @@ input:
       method_arg_2: 'green'
 
 output:
-  data_directory: '/Users/hwilcox/Workspace/dit-master/example/output'
+  data_directory: './example/output'
   writer: 'write_csv_file'
   manipulations:
   -

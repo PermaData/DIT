@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: "Removes all text to left of text string in infile and writes result to outfile.
+input_1: target
+input_1_type: str

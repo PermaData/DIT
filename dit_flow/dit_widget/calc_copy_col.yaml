@@ -1,0 +1,2 @@
+type: manipulation_widget
+description: Adds two columns (out = column_a +column_b)

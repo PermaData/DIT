@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Fills input_data_file with text string and writes result to output_data_file.
+input_1: fill
+input_1_type: str

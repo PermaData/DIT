@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Prints values = criteria for name in infile to logfile
+input_1: missing_value
+input_1_type: string

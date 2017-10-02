@@ -3,14 +3,14 @@ import pytest
 
 from dit_flow.dit_widget.config_translator import ConfigTranslator
 
-base_dir = os.path.join(os.getcwd(), 'dit_flow', 'dit_widget', 'tests')
+base_dir = os.path.dirname(os.path.realpath(__file__))
 config_file = os.path.join(base_dir, 'test_config.yml')
 
 
 def test_get_input_files():
     config_trans = ConfigTranslator()
     config_trans.read_config(config_file)
-    data_dir = os.path.join(os.getcwd(), 'dit_flow', 'dit_widget', 'tests', 'test_data_files')
+    data_dir = os.path.join(base_dir, 'test_data_files')
     config_trans.config['input']['data_directory'] = data_dir
     expected = []
     for cnt in range(1, 7):

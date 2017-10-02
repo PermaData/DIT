@@ -1,0 +1,8 @@
+type: manipulation_widget
+description: Replaces values < startval or > endval with constant in infile and writes result to outfile.
+input_1: startval
+input_1_type: float
+input_2: endval
+input_2_type: float
+input_3: constant
+input_3_type: float

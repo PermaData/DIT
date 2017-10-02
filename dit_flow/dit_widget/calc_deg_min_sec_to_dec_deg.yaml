@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Convert degrees minutes seconds to decimal degrees
+input_1: missing_value
+input_1_type: float
