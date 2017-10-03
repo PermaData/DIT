@@ -1,10 +1,11 @@
 """ Does multi column sort of CSV file. """
 
+import argparse as ap
 import ast
 import csv
 import datetime as dt
-import getopt
-import sys
+
+from dit_flow.dit_widget.common.setup_logger import setup_logger
 
 gtnp_date_time_format1 = '%Y-%m-%d %H:%M'
 gtnp_date_time_format2 = '%Y-%m-%d %H:%M:%S'
@@ -12,7 +13,7 @@ gtnp_date_time_format = gtnp_date_time_format1
 date_time_index = None
 
 
-def cast_to_datetime(dt_str):
+def cast_to_datetime(dt_str, logger=None):
     """
     Convert string to a datetime object.
     :param int_str: string to convert to a datetime object
@@ -28,8 +29,8 @@ def cast_to_datetime(dt_str):
             gtnp_date_time_format = gtnp_date_time_format2
             date_time = dt.datetime.strptime(dt_str, gtnp_date_time_format)
         except ValueError as error:
-            print('"', error, '"')
-            print('Column cannot be converted to date/time. Sorting will be by string.')
+            logger.error('"', error, '"')
+            logger.error('Column cannot be converted to date/time. Sorting will be by string.')
     return date_time
 
 
@@ -75,7 +76,7 @@ def cast_data_value(col_str):
     return col_str
 
 
-def create_typed_row(row, column_list):
+def create_typed_row(row, column_list, logger):
     """
     Make sure rows to be sorted by are in sortable form.
     :param row: CSV row
@@ -87,7 +88,7 @@ def create_typed_row(row, column_list):
     for index, type in column_list:
         if type == 'dt':
             date_time_index = index
-            row_list[index] = cast_to_datetime(row_list[index])
+            row_list[index] = cast_to_datetime(row_list[index], logger)
         elif type == 'integer':
             row_list[index] = cast_to_integer(row_list[index])
         elif type == 'real':
@@ -95,24 +96,29 @@ def create_typed_row(row, column_list):
     return tuple(row_list)
 
 
-def sort_by_columns(in_file, out_file, column_list):
+def sort_by_columns(column_list, input_data_file=None, output_data_file=None, log_file=None):
     """
     Takes a list of columns to sort by in ascending order.
-    :param in_file: CSV file to sort
-    :param out_file: sorted CSV file
+    :param input_data_file: CSV file to sort
+    :param output_data_file: sorted CSV file
     :param column_list: list of tuples (index, type) describing sort columns
     """
-    sorted_writer = csv.writer(open(out_file, 'w'), quotechar="'", quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
+    logger = setup_logger(__name__, log_file)
+    logger.info('Sorting input file by columns:')
+    for column in column_list:
+        logger.info('\t' + str(column))
+    sorted_writer = csv.writer(open(output_data_file, 'w'), quotechar="'", quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
     header_row = None
     sorted_data = []
-    with open(in_file, 'rb') as csvfile:
+    with open(input_data_file, 'r') as csvfile:
         unsorted_reader = csv.reader(csvfile, delimiter=',')
         csv_data = []
         ind = 0
         for row in unsorted_reader:
             row = [cast_data_value(col_val.strip()) for col_val in row]
+            print('row: ', row)
             if ind > 0:
-                typed_row = create_typed_row(row, column_list)
+                typed_row = create_typed_row(row, column_list, logger)
                 csv_data.append(typed_row)
             else:
                 header_row = row
@@ -130,45 +136,34 @@ def sort_by_columns(in_file, out_file, column_list):
         sorted_writer.writerow(sorted_row)
 
 
-def parse_arguments(argv):
-    """ Parse the command line arguments and return them. """
-    in_file = None
-    out_file = None
-    column_list = None
+def tuple_list(tuple_string):
     try:
-        opts, args = getopt.getopt(argv, "hi:o:l:", ["in_file=", "out_file=", "column_list="])
-    except getopt.GetoptError:
-        print('sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>')
-        sys.exit(2)
+        print('argument: ', tuple_string)
+        data = ast.literal_eval(tuple_string)
+    except:
+        raise ap.ArgumentTypeError("Tuple list must be in form: '[(<index>, <type>), (<index>, <type>)]'.")
+    return data
 
-    found_in_file = False
-    found_out_file = False
-    found_column_list = False
-    for opt, arg in opts:
-        if opt == '-h':
-            print('sort_by_columns.py -i <CSV input file> -o <CSV output file> -l <list of columns to sort by>')
-            sys.exit()
-        elif opt in ("-i", "--in_file"):
-            found_in_file = True
-            in_file = arg
-        elif opt in ("-o", "--out_file"):
-            found_out_file = True
-            out_file = arg
-        elif opt in ("-l", "--column_list"):
-            found_column_list = True
-            column_list = ast.literal_eval(arg)
-    if not found_in_file:
-        print("Input file '-i' argument required.")
-        sys.exit(2)
-    if not found_out_file:
-        print("Output file '-o' argument required.")
-        sys.exit(2)
-    if not found_column_list:
-        print("Ordered list of columns to sort by '-l' argument required.")
-        sys.exit(2)
-    return in_file, out_file, column_list
+
+def parse_arguments():
+    """ Parse the command line arguments and return them. """
+    parser = ap.ArgumentParser(description='Sorts 2D data in order of columns in the column list.')
+    parser.add_argument('column_list', type=tuple_list, help='Ordered list of columns to sort by.\n'
+                        'Format of list: "[(<col num>, \'<type>\'), (<col num>, \'<type>\')]"\n'
+                        '<type> is the type of values of a column and can be:\n'
+                        '\t\'real\'\n'
+                        '\t\'int\'\n'
+                        '\t\'dt\'\n'
+                        '\t\'string\'\n')
+
+    parser.add_argument('-i', '--input_data_file', help='Step file containing input data to manipulate.')
+    parser.add_argument('-o', '--output_data_file', help='Step file to store output data.')
+    parser.add_argument('-l', '--log_file', help='Step file to collect log information.')
+
+    return parser.parse_args()
 
 if __name__ == '__main__':
-    (in_file, out_file, column_list) = parse_arguments(sys.argv[1:])
+    args = parse_arguments()
 
-    sort_by_columns(in_file, out_file, column_list)
+    sort_by_columns(args.column_list, input_data_file=args.input_data_file,
+                    output_data_file=args.output_data_file, log_file=args.log_file)
