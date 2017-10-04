@@ -141,6 +141,8 @@ class RunFlow():
 
     def do_manipulations(self, manipulations, np_data, output_dir, step_id, log_file):
         for widget in manipulations:
+            if not widget.do_it:
+                return
             try:
                 widget.channel = widget.channel + '_' + str(step_id)
                 widget_data_in_file = Path(output_dir).joinpath(widget.channel + '.in')
