@@ -5,7 +5,9 @@ Below you will find an introduction to how to use DIT.
 * [Project overview](#project-overview)
     * [Important Links](#important-links)
 * [Getting Started](#getting-started)
-    * [Usage Scenarios](#usage-scenarios)
+    * [DIT Installation](#dit-installation)
+    * [Running DIT Command Line Interface](#running-dit-command-line-interface)
+    * [DIT Flow Project Structure](#dit-flow-project-structure)
 * [Widget Reference](#widget-reference)
     * [Arithmetic](#arithmetic-widgets)
     * [Numeric Replacement](#numeric-replacement-widgets)
@@ -33,6 +35,80 @@ DIT is an outcome of the PermaData project.
 * [Issue Tracking](https://github.com/PermaData/DIT/issues) - file bug and improvement issues for DIT
 
 ## Getting Started
+### DIT Installation
+DIT assumes it is being installed within a directory where you have read, write, and execute permissions.
+
+#### On Linux
+- The following system tools are required to run the automatic
+  installation script:
+  - curl
+  - unzip
+- Run the installation script:
+  `$ curl -L
+https://raw.githubusercontent.com/PermaData/DIT/widget_work/install_linux.sh
+|bash`
+  The result of this step should be a 'DIT-widget-work' directory
+containing DIT.
+- To test the installation:
+  - `$ cd DIT-widget-work`
+  - `$ source env.sh`
+  - `$ inv test`
+
+All of the tests run should pass.
+
+### Running DIT Command Line Interface
+To run DIT from the command line:
+- `$ source env.sh` -> activates the conda python environment
+- `$ python run_flow.py <path to flow configuration file>` -> a log file path can be passed in from the command line with the `-l` option. e.g. `python run_flow.py example/example_config.yml` runs the example project flow.
+
+### DIT Flow Project Structure
+An small example project is provided in the 'example' subdirectory.
+Important structural elements of a project:
+1. Separate input and output directories. This is needed as the list of
+   input files is created from scanning the input directory.
+2. A YAML configuration file. The configuration file is read by DIT to
+   construct the workflow. This file can have either a '.yml' or a
+'.yaml' extension. Important structural elements of a configuration
+file:
+  - It is divided into an 'input' and an 'output' section under those
+    labels.
+  - Input section required elements:
+    - `reader` -> the name of the widget that can read the input
+      files and return a 2D matrix of the data.
+    - `data_directory` -> the path to the subdirectory to be scanned for
+      input data files.
+    - `variable_map` -> a file describing the column mapping between the
+      input data matrix and the output data matrix.
+    - `manipulations` -> an ordered list of manipulation widgets to run on the
+      input data.
+  - Input section optional elements:
+    - `missing_values` -> a list of missing value constants. This list can be
+      used as inputs to widgets in the configuration file by marking the list with an "anchor" (e.g. &ms) and then used with an "alias" (e.g. *ms) where the list should be as demonstrated in the example configuration file.
+    - `missing_characters` -> a list of strings that represent missing
+      characters in the data.
+  - Output section required elements:
+    - `data_directory` -> the path to the directory to be used to store
+      the output files including the widget input and output files.
+    - `writer`-> the name of the widget that can take a 2D matrix of
+      data and write it to an output file.
+    - `manipulations` -> an ordered list of manipulation widgets to run on the 2D
+      data matrix after the variable map has been applied so the data is
+in 'output' format.
+  - Widget entry required elements:
+    - `widget` -> the name of the widget to be run.
+    - `do_it` -> a boolean flag to indicate whether or not this widget
+      will be run. This can be used in iterative debugging to only run a
+widget during certain runs without having to remove it from the flow.
+    - `with_header` -> a boolean flag indicating whether the subsetted
+      data used by the widget will include the first (header) row.
+  - Widget entry optional elements:
+    - `inputs` -> a list of name, value pairs of method arguments to be
+      passed to the widget.
+    - `input_columns` -> a list of columns to be added to the subset of
+      data used by the widget from the full 2D data matrix. Use `['all']` to indicate the inclusion of the entire matrix.
+    - `output_columns` -> a list of columns referencing the columns to
+      be replaced in the full 2D data matrix by the widget's output
+data. Use `['all']` to indicate the replacement of the entire matrix.
 
 
 ## Widget Reference

@@ -2,14 +2,14 @@ input:
   reader: read_csv_file
   data_directory: './example/input'
   variable_map: './example/variable_map.dat'
-  missing_values: [-999.99, -999.0]
+  missing_values: &ms [-999.99, -999.0]
   missing_characters: ['na']
   manipulations:
   -
     widget: 'widget_template'
     do_it: true
     inputs:
-      method_arg_1: 'blue'
+      method_arg_1: *ms
       method_arg_2: 'green'
 
 output:

@@ -38,23 +38,25 @@ class RunFlow():
     def setup_utilities(self):
         self.logger.info('Setting up file manager widget')
         self.file_manager = self.widget_factory.create_widget('file_manager',
-                log_file=self.log_file)
+                                                              log_file=self.log_file)
         reader_name = self.config_translator.get_reader_widget()
         self.logger.info('Setting up reader widget: {}'.format(reader_name))
         self.file_reader = self.widget_factory.create_widget(reader_name,
-                log_file=self.log_file)
+                                                             log_file=self.log_file)
         self.logger.info('Setting up variable mapper widget')
         self.variable_mapper = self.widget_factory.create_widget('variable_map',
-                log_file=self.log_file)
+                                                                 log_file=self.log_file)
         writer_name = self.config_translator.get_writer_widget()
         self.logger.info('Setting up writer widget: {}'.format(writer_name))
-        self.file_writer = self.widget_factory.create_widget(self.config_translator.get_writer_widget(),
-                log_file=self.log_file)
+        self.file_writer = self.widget_factory.create_widget(
+            self.config_translator.get_writer_widget(),
+            log_file=self.log_file)
 
     def setup_widget_list(self, widget_defns):
         widget_list = []
         for widget in widget_defns:
-            a_widget = self.widget_factory.create_widget(self.config_translator.get_widget_name_from_widget_config(widget),
+            a_widget = self.widget_factory.create_widget(
+                self.config_translator.get_widget_name_from_widget_config(widget),
                 log_file=self.log_file)
             a_widget.channel = self.config_translator.get_widget_name_from_widget_config(widget)
             a_widget.do_it = self.config_translator.get_do_it_from_widget_config(widget)
@@ -75,13 +77,23 @@ class RunFlow():
         widget_defns = self.config_translator.get_output_manipulations()
         self.output_manipulations = self.setup_widget_list(widget_defns)
 
-    def can_do_subset_replace(self, np_data, input_columns, output_columns):
+    def can_do_subset(self, np_data, input_columns):
         can_do_subset_replace = True
         if np_data.size == 0:
             self.logger.warn('Cannot subset or replace, data is empty.')
             can_do_subset_replace = False
-        if not ManipulationWidget.input_and_output_columns_exist(input_columns, output_columns):
-            self.logger.warn('Cannot subset or replace, widget input and/or output columns missing.')
+        if not ManipulationWidget.columns_exist(input_columns):
+            self.logger.warn('Cannot subset, widget input columns missing.')
+            can_do_subset_replace = False
+        return can_do_subset_replace
+
+    def can_do_replace(self, np_data, output_columns):
+        can_do_subset_replace = True
+        if np_data.size == 0:
+            self.logger.warn('Cannot subset or replace, data is empty.')
+            can_do_subset_replace = False
+        if not ManipulationWidget.columns_exist(output_columns):
+            self.logger.warn('Cannot replace, widget output columns missing.')
             can_do_subset_replace = False
 
         return can_do_subset_replace
@@ -104,6 +116,10 @@ class RunFlow():
         return subset_data
 
     def replace_data(self, np_data, manipulated_data, columns, with_header=False):
+        if columns is None:
+            return
+        elif len(columns) == 0:
+            return
         if columns == ['all']:
             columns = list(range(1, np_data.shape[0] + 1))
         zero_based_columns = [column - 1 for column in columns]
@@ -131,7 +147,7 @@ class RunFlow():
                 widget_data_out_file = Path(output_dir).joinpath(widget.channel + '.out')
                 widget = self.set_widget_required_args(widget, widget_data_in_file, widget_data_out_file, log_file)
 
-                if self.can_do_subset_replace(np_data, widget.input_columns, widget.output_columns):
+                if self.can_do_subset(np_data, widget.input_columns):
                     # Setup subsetted data for widget manipulation
                     widget_data = self.subset_data(np_data, widget.input_columns, widget.with_header)
                     self.write_output_file(widget_data_in_file, widget_data, log_file=log_file)
@@ -139,7 +155,7 @@ class RunFlow():
                 # Do manipulation
                 widget.go()
 
-                if self.can_do_subset_replace(np_data, widget.input_columns, widget.output_columns):
+                if self.can_do_replace(np_data, widget.output_columns):
                     # Reintegrate manipulated data
                     manipulated_data = self.read_input_data(widget_data_out_file, log_file)
                     np_data = self.replace_data(np_data, manipulated_data, widget.output_columns, widget.with_header)
