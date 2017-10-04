@@ -13,7 +13,7 @@ bash miniconda.sh -b -p $CONDA_PATH
 rm miniconda.sh
 
 export PATH=$CONDA_PATH/bin:$PATH
-conda create -f environment.yml
+conda env create -f environment.yml
 source activate dit
 
 echo "Create environment setup script to run before using DIT."
