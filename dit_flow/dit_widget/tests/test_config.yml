@@ -16,6 +16,7 @@ input:
 
 output:
   data_directory: './output'
+  temp_directory: 'temporary/dir'
   writer: 'write_csv_file'
   manipulations:
   -

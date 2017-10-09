@@ -48,9 +48,8 @@ class RunFlow():
                                                                  log_file=self.log_file)
         writer_name = self.config_translator.get_writer_widget()
         self.logger.info('Setting up writer widget: {}'.format(writer_name))
-        self.file_writer = self.widget_factory.create_widget(
-            self.config_translator.get_writer_widget(),
-            log_file=self.log_file)
+        self.file_writer = self.widget_factory.create_widget(writer_name,
+                                                             log_file=self.log_file)
 
     def setup_widget_list(self, widget_defns):
         widget_list = []
@@ -139,12 +138,12 @@ class RunFlow():
         output_data = self.variable_mapper.go(input_data.tolist(), variable_map, log_file)
         return np.array(output_data, dtype=object)
 
-    def do_manipulations(self, manipulations, np_data, output_dir, step_id, log_file):
-        for widget in manipulations:
+    def do_manipulations(self, manipulations, np_data, output_dir, file_id, log_file):
+        for step_id, widget in enumerate(manipulations):
             if not widget.do_it:
                 return
             try:
-                widget.channel = widget.channel + '_' + str(step_id)
+                widget.channel = widget.channel + '_' + str(file_id) + '_' + str(step_id)
                 widget_data_in_file = Path(output_dir).joinpath(widget.channel + '.in')
                 widget_data_out_file = Path(output_dir).joinpath(widget.channel + '.out')
                 widget = self.set_widget_required_args(widget, widget_data_in_file, widget_data_out_file, log_file)
@@ -176,12 +175,13 @@ class RunFlow():
         for i_file in self.input_files:
             self.logger.debug('\t' + i_file)
         output_dir = self.config_translator.get_output_directory()
-        files_n_ids = self.file_manager.go(self.input_files, output_dir)
-        for input_file, output_file, step_id, log_file in files_n_ids:
+        temp_dir = self.config_translator.get_temp_directory()
+        files_n_ids = self.file_manager.go(self.input_files, output_dir, temp_dir)
+        for input_file, output_file, file_id, log_file in files_n_ids:
             self.logger.debug('Reading input data from: ' + input_file)
             input_data = self.read_input_data(input_file, log_file)
             self.logger.debug('Doing input manipulations')
-            self.do_manipulations(self.input_manipulations, input_data, output_dir, step_id, log_file)
+            self.do_manipulations(self.input_manipulations, input_data, temp_dir, file_id, log_file)
 
             self.logger.debug('Translating input to output CSV.')
             mapper_vals = self.format_to_output_data(input_data,
@@ -189,7 +189,7 @@ class RunFlow():
                                                      log_file)
             output_data = np.array(mapper_vals[0], dtype=object)
             self.logger.debug('Doing output manipulations.')
-            self.do_manipulations(self.output_manipulations, output_data, output_dir, step_id, log_file)
+            self.do_manipulations(self.output_manipulations, output_data, temp_dir, file_id, log_file)
 
             self.logger.debug('Writing output file.')
             self.write_output_file(output_file, output_data, log_file)

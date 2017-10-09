@@ -21,24 +21,7 @@ class ConfigTranslator(UtilityWidget):
         self.config_file = config_file
         with open(self.config_file) as open_config:
             self.config = yaml.safe_load(open_config)
-            self.config = self.expand_runtime_variables(self.config)
         return self.config
-
-    def expand_runtime_variables(self, conf):
-        nested_keys = []
-        for key in conf.keys():
-            if isinstance(conf[key], str):
-                conf[key] = conf[key] % conf
-                if '%(' in conf[key]:
-                    nested_keys.append(key)
-
-        # if a key's value has a second level of expansion needed, expand it
-        # As of now, only 2 levels may happen, but if it needs to go further,
-        # refactor
-        for key in nested_keys:
-                    conf[key] = conf[key] % conf
-
-        return conf
 
     def get_reader_widget(self):
         return self.config['input']['reader']
@@ -54,6 +37,15 @@ class ConfigTranslator(UtilityWidget):
                 file_path = os.path.join(root, file)
                 files.append(file_path)
         return files
+
+    def get_temp_directory(self):
+        temp_dir = Path(self.config['output']['temp_directory'])
+        try:
+            temp_dir.mkdir(mode=0o775)
+        except FileExistsError:
+            # Do nothing if the directory already exists.
+            pass
+        return str(temp_dir)
 
     def get_variable_map(self):
         return self.config['input']['variable_map']

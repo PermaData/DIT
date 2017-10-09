@@ -23,6 +23,7 @@ input:
 
 output:
   data_directory: './example/output'
+  temp_directory: './example/temp'
   writer: 'write_csv_file'
   manipulations:
   -
