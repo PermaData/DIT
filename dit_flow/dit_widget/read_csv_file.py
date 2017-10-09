@@ -1,6 +1,8 @@
 import csv
+import argparse as ap
 
 from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.cast_value import cast_to_decimal
 
 
 def read_csv_file(file_name, log_file=None):
@@ -12,16 +14,18 @@ def read_csv_file(file_name, log_file=None):
         data = []
         data_reader = csv.reader(_from, quoting=csv.QUOTE_ALL, skipinitialspace=True, quotechar="'")
         for line in data_reader:
-            data.append(line)
+            new_line = []
+            for elem in line:
+                new_line.append(cast_to_decimal(elem))
+            data.append(new_line)
             count.append(len(line))
         try:
             if len(data) == 0:
                 logger.warn('Data file is empty.')
             else:
-                isOK = column_check(count, logger)
+                column_check(count, logger)
         except IOError as e:
             logger.error(e)
-            isOK = False
 
     return data
 
@@ -38,6 +42,7 @@ def column_check(count, logger):
         raise IOError('One or more of the lines was flawed.')
     else:
         return True
+
 
 def parse_arguments():
     parser = ap.ArgumentParser(description="Reads input CSV file and returns data matrix.")

@@ -1,0 +1,9 @@
+type: manipulation_widget
+description: This is a template widget designed as an example of implementing a DIT widget.
+
+# Valid modes are:
+# 'up', 'ceil', 'ceiling', 'down', 'floor', 'trunc', 'truncate', 'nearest', 'round'
+input_1: mode
+input_1_type: string
+input_2: precision
+input_2_type: integer
