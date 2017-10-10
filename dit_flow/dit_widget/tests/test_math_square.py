@@ -2,7 +2,7 @@ import pytest
 
 from dit_flow.dit_widget.math_square import math_square
 
-def test_square(tmpdir):
+def test_math_square(tmpdir):
     temp_in_file = tmpdir.mkdir("sub").join('input_file.csv')
     temp_in_file.write('1.0\n2.0\n-999.99\n4.0\n')
     temp_out_file = tmpdir.mkdir("out").join('output_file.csv')

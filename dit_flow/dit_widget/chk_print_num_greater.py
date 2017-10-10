@@ -6,15 +6,16 @@ from array import array
 
 from dit_flow.dit_widget.common.logger_message import logger_message
 
+
 def chk_print_num_greater(criteria, input_data_file=None, output_data_file=None, log_file=None):
     # Prints name values > criteria in input_data_file.
     logger = logger_message(__name__, log_file)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
-    count=0
-    record=0
+    count = 0
+    record = 0
     with open(input_data_file, newline='') as _in:
         logger.info('Print values > {}'.format(criteria))
-        logger.info('{:>10} {:>20}'.format('Record','Value'))
+        logger.info('{:>10} {:>20}'.format('Record', 'Value'))
         reader = csv.reader(_in)
         for line in reader:
             new_line = array('f')
@@ -22,14 +23,14 @@ def chk_print_num_greater(criteria, input_data_file=None, output_data_file=None,
                 record = record + 1
                 if float(item) > float(criteria):
                     count = count + 1
-                    logger.info('{:10.0f} {:>20}'.format(float(record),item))
-        logger.info('\n\t Total number >{}: {:10.0f}'.format(criteria,float(count)))
+                    logger.info('{:10.0f} {:>20}'.format(float(record), item))
+        logger.info('\n\t Total number >{}: {:10.0f}'.format(criteria, float(count)))
 
 
 def parse_arguments():
     parser = ap.ArgumentParser(description="Prints values = criteria in input_data_file.")
 
-    parser.add_argument('criteria', type=float,  help='Value to rprint.')
+    parser.add_argument('criteria', type=float,  help='Value to print.')
 
     parser.add_argument('-i', '--input_data_file', help='Step file containing input data.')
     parser.add_argument('-o', '--output_data_file', help='unused')
@@ -37,8 +38,9 @@ def parse_arguments():
 
     return parser.parse_args()
 
+
 if __name__ == '__main__':
     args = parse_arguments()
 
-    chk_print_num_greater(args.criteria,
-                 args.input_data_file, args.output_data_file, args.log_file)
+    chk_print_num_greater(args.criteria, args.input_data_file,
+                          args.output_data_file, args.log_file)

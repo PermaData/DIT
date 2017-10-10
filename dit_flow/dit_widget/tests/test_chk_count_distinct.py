@@ -12,6 +12,7 @@ def test_chk_count_distinct(tmpdir):
 #    chk_count_distinct(log_file=out_log_file,                       input_data_file=in_data_file)
     actual_log = temp_log_file.read()
     expected_log = 'Count distinct values\n'\
+'\tTotal number =20\n'\
 '  Num                           Distinct Value     number    Percent\n'\
 '    1                                     Crap          7     35.000\n'\
 '    2                                  Garbage          6     30.000\n'\

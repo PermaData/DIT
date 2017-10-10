@@ -1,6 +1,8 @@
 type: manipulation_widget
-description: Replaces fields containing a text string in infile and writes result to outfile.
+description: Replaces values != criteria with consant in infile and writes result to outfile.
 input_1: target
-input_1_type: str
+input_1_type: string
 input_2: replace
-input_2_type: str
+input_2_type: string
+input_3: print_flag
+input_3_type: bool

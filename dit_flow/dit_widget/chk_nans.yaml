@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: checks if value is text rather than a number.
+input_1: print_flag
+input_1_type: bool

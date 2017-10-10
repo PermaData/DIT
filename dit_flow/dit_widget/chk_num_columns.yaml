@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Checks that all rows have the same number of columns.
+input_1: print_flag
+input_1_type: bool

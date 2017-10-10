@@ -28,7 +28,7 @@ def chk_count_valid_records_txt(missing_value, input_data_file=None, output_data
 def parse_arguments():
     parser = ap.ArgumentParser(description="Counts number of valid records in input_data_file.")
 
-    parser.add_argument('missing_value', type=string,  help='Value to print.')
+    parser.add_argument('missing_value', type=str,  help='Value to print.')
 
     parser.add_argument('-i', '--input_data_file', help='Step file containing input data to manipulate.')
     parser.add_argument('-o', '--output_data_file', help='unused')

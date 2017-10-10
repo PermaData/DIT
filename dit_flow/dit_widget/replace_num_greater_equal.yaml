@@ -4,5 +4,5 @@ input_1: criteria
 input_1_type: float
 input_2: constant
 input_2_type: float
-input_3: print
+input_3: print_flag
 input_3_type: bool

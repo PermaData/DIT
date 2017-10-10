@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Calculates statistics for each input column
+input_1: missing_value
+input_1_type: float

@@ -1,7 +1,7 @@
-import pytest
 import os
 
 from dit_flow.dit_widget.chk_print_num_less_equal import chk_print_num_less_equal
+
 
 def test_chk_print_num_less_equal(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -11,5 +11,9 @@ def test_chk_print_num_less_equal(tmpdir):
 #    chk_print_num_less_equal(-8.0, log_file=out_log_file, input_data_file=in_data_file)
     chk_print_num_less_equal(-8.0, log_file='{}'.format(temp_log_file.strpath), input_data_file=in_data_file)
     actual_log = temp_log_file.read()
-    expected_log = 'Print values <= -8.0\n    Record                Value\n         1                 -9.0\n         2                -8.00\n\n	 Total number <=-8.0:          2'
+    expected_log = 'Print values <= -8.0\n'\
+                   '    Record                Value\n'\
+                   '         1                 -9.0\n'\
+                   '         2                -8.00\n'\
+                   '\n	 Total number <=-8.0:          2'
     assert expected_log in actual_log

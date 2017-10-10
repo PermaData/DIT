@@ -39,18 +39,19 @@ def sort_by_columns(column_list, input_data_file=None, output_data_file=None, lo
     """
     logger = setup_logger(__name__, log_file)
     logger.info('Sorting input file by columns:')
+    if isinstance(column_list, str):
+        column_list = tuple_list(column_list)
     for column in column_list:
         logger.info('\t' + str(column))
     sorted_writer = csv.writer(open(output_data_file, 'w'), quotechar="'", quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
     header_row = None
     sorted_data = []
     with open(input_data_file, 'r') as csvfile:
-        unsorted_reader = csv.reader(csvfile, delimiter=',')
+        unsorted_reader = csv.reader(csvfile, delimiter=',', quotechar="'")
         csv_data = []
         ind = 0
         for row in unsorted_reader:
             row = [cast_data_value(col_val.strip()) for col_val in row]
-            print('row: ', row)
             if ind > 0:
                 typed_row = create_typed_row(row, column_list, logger)
                 csv_data.append(typed_row)
@@ -72,7 +73,6 @@ def sort_by_columns(column_list, input_data_file=None, output_data_file=None, lo
 
 def tuple_list(tuple_string):
     try:
-        print('argument: ', tuple_string)
         data = ast.literal_eval(tuple_string)
     except:
         raise ap.ArgumentTypeError("Tuple list must be in form: '[(<index>, <type>), (<index>, <type>)]'.")

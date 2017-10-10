@@ -1,4 +1,4 @@
 type: manipulation_widget
-description: Prints values = criteria for name in infile to logfile
+description: Counts number of valid text in infile
 input_1: missing_value
 input_1_type: string

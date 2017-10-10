@@ -13,7 +13,6 @@ def replace_txt_fill(fill, input_data_file=None, output_data_file=None, log_file
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     record = 0
-    count = 0
     with open(input_data_file, newline='') as _in, \
         open(output_data_file, 'w', newline='') as _out:
         logger.info('Filling with {}'.format(fill))

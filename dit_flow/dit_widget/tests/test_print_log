@@ -1,0 +1,5 @@
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2

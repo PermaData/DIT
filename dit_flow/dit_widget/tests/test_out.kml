@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="feat_16">
+        <Placemark id="feat_17">
+            <name>Bonanza Creek</name>
+            <Point id="geom_14">
+                <coordinates>-148.296900,64.704400,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_18">
+            <name>Coldfoot</name>
+            <Point id="geom_15">
+                <coordinates>-150.506900,66.896900,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_19">
+            <name>Deadhorse 1</name>
+            <Point id="geom_16">
+                <coordinates>-148.465020,70.154520,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_20">
+            <name>Deadhorse 1</name>
+            <Point id="geom_17">
+                <coordinates>-148.458000,70.165167,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_21">
+            <name>Deadhorse 2</name>
+            <Point id="geom_18">
+                <coordinates>-148.437583,70.178500,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_22">
+            <name>Eagle</name>
+            <Point id="geom_19">
+                <coordinates>-141.211900,64.793100,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_23">
+            <name>Franklin Bluffs 1</name>
+            <Point id="geom_20">
+                <coordinates>-148.761730,69.936130,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_24">
+            <name>Franklin Bluffs 1</name>
+            <Point id="geom_21">
+                <coordinates>-148.707694,69.674333,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_25">
+            <name>Franklin Bluffs 2</name>
+            <Point id="geom_22">
+                <coordinates>-148.696640,69.650990,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_26">
+            <name>Franklin Bluffs 2</name>
+            <Point id="geom_23">
+                <coordinates>-148.641444,70.032750,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_27">
+            <name>Franklin Bluffs 2a</name>
+            <Point id="geom_24">
+                <coordinates>-148.707694,69.674333,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_28">
+            <name>Happy Valley 1</name>
+            <Point id="geom_25">
+                <coordinates>-148.829083,69.159056,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_29">
+            <name>Happy Valley 2</name>
+            <Point id="geom_26">
+                <coordinates>-148.838222,69.146722,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="feat_30">
+            <name>Happy Valley</name>
+            <Point id="geom_27">
+                <coordinates>-148.823530,69.087650,0.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

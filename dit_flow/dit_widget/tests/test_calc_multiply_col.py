@@ -1,4 +1,3 @@
-import pytest
 import os
 
 from dit_flow.dit_widget.calc_multiply_col import calc_multiply_col
@@ -15,7 +14,12 @@ def test_calc_multiply_col(tmpdir):
 #    calc_multiply_col(-999.,input_data_file=in_data_file, output_data_file=out_file, log_file=out_log_file)
     actual_out = temp_out_file.read()
     actual_log = temp_log_file.read()
-    expected_out = '1.0000000000\n-999.0000000000\n-999.0000000000\n-999.0000000000\n0.0000000000\n0.2345678955\n'
+    expected_out = '1.0000000000\n'\
+                   '-999.0000000000\n'\
+                   '-999.0000000000\n'\
+                   '-999.0000000000\n'\
+                   '0.0000000000\n'\
+                   '0.2345678955\n'
     expected_log = 'Multiply two columns (out = column_a * column_b)\n'
     assert expected_out in actual_out
     assert expected_log in actual_log

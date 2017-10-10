@@ -7,7 +7,7 @@ from array import array
 
 from dit_flow.dit_widget.common.logger_message import logger_message
 
-def replace_txt_remove(target, input_data_file=None, output_data_file=None, log_file=None):
+def replace_txt_remove(target, print_flag, input_data_file=None, output_data_file=None, log_file=None):
     # Removes target text string from input_data_file and writes result to output_data_file.
     logger = logger_message(__name__, log_file)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
@@ -18,6 +18,8 @@ def replace_txt_remove(target, input_data_file=None, output_data_file=None, log_
     with open(input_data_file, newline='') as _in, \
         open(output_data_file, 'w', newline='') as _out:
         logger.info('Removing {}'.format(target))
+        if print_flag:
+            logger.info('{:>10} {:>20} {:>20}'.format('Record', 'Old Value', 'New Value'))
         output = csv.writer(_out)
         reader = csv.reader(_in)
         for line in reader:
@@ -27,7 +29,9 @@ def replace_txt_remove(target, input_data_file=None, output_data_file=None, log_
                 modified_text[i] = item
                 if re.search(target,item):
                     count=count+1
-                    modified_text[i] = re.sub(target, replace, item).strip()
+                    modified_text[i] = re.sub(target, replace, item)
+                    if print_flag:
+                        logger.info('{:10.0f} {:>20} {:>20}'.format(float(record), item, modified_text[i]))
                 else:
                     modified_text[i]=item
             output.writerow(modified_text)
@@ -39,6 +43,7 @@ def parse_arguments():
                                "output_data_file.")
 
     parser.add_argument('target', type=str, help='Text string to remove.')
+    parser.add_argument('print_flag', type=bool, help='Printing option value.')
 
     parser.add_argument('-i', '--input_data_file', help='Step file containing input data to manipulate.')
     parser.add_argument('-o', '--output_data_file', help='Step file to store output data.')
@@ -49,5 +54,5 @@ def parse_arguments():
 if __name__ == '__main__':
     args = parse_arguments()
 
-    replace_txt_remove(args.target, 
+    replace_txt_remove(args.target, args.print_flag,
                  args.input_data_file, args.output_data_file, args.log_file)
