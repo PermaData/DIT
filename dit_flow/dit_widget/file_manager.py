@@ -22,9 +22,13 @@ class FileManager(UtilityWidget):
             name_path = Path(name)
             output_dir_path = Path(output_dir)
             temp_dir_path = Path(temp_dir)
-            output_filename = name_path.name.replace(name_path.suffix, '_out.csv')
+            if name_path.suffix is '':
+                output_filename = name_path.name + '_out.csv'
+                log_filename = name_path.name + '.log'
+            else:
+                output_filename = name_path.name.replace(name_path.suffix, '_out.csv')
+                log_filename = name_path.name.replace(name_path.suffix, '.log')
             output_path = output_dir_path.joinpath(output_filename)
-            log_filename = name_path.name.replace(name_path.suffix, '.log')
             log_path = temp_dir_path.joinpath(log_filename)
             try:
                 # Open the file. If the file doesn't exist, the error will be

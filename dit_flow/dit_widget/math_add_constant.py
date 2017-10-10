@@ -14,9 +14,9 @@ def math_add_constant(constant, missing_value, input_data_file=None, output_data
     assert input_data_file is not None, 'An input CSV file with columns of values to be added to is required.'
     assert output_data_file is not None, 'An output CSV file to write new values to is required.'
     with open(input_data_file, newline='') as _in, \
-         open(output_data_file, 'w', newline='') as _out:
+            open(output_data_file, 'w', newline='') as _out:
         logger.info('Adding {} to the column'.format(constant))
-        output = csv.writer(_out, quotechar="'", quoting=csv.QUOTE_ALL)
+        output = csv.writer(_out, quotechar="'")
         reader = csv.reader(_in, quotechar="'")
         for line in reader:
             new_line = array('f')
@@ -28,9 +28,10 @@ def math_add_constant(constant, missing_value, input_data_file=None, output_data
                 new_line.append(value)
             output.writerow(['{:.2f}'.format(x) for x in new_line])
 
+
 def parse_arguments():
-    parser = ap.ArgumentParser(description="Adds constant to all values in " \
-                               "input_data_file and writes the result to " \
+    parser = ap.ArgumentParser(description="Adds constant to all values in "
+                               "input_data_file and writes the result to "
                                "output_data_file.")
 
     parser.add_argument('constant', type=float, help='Constant to be added to the column values.')
@@ -45,5 +46,5 @@ def parse_arguments():
 if __name__ == '__main__':
     args = parse_arguments()
 
-    add_constant(args.constant, args.missing_value,
-                 args.input_data_file, args.output_data_file, args.log_file)
+    math_add_constant(args.constant, args.missing_value,
+                      args.input_data_file, args.output_data_file, args.log_file)

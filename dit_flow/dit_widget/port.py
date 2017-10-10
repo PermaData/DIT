@@ -1,11 +1,14 @@
 from enum import Enum
 
+
 class PortType(Enum):
     INT = 1
     REAL = 2
     STR = 3
     ARRAY = 4
     DICT = 5
+    BOOL = 6
+
 
 class Port():
     """
@@ -18,9 +21,8 @@ class Port():
     """
 
     def _init(self, port_name, port_type=PortType.STR, addressable=False, required=False,
-            description='Either input or output argument for flow or widget'):
+              description='Either input or output argument for flow or widget'):
         self.port_name = port_name
         self.port_type = port_type
         self.addressable = addressable
         self.required = required
-

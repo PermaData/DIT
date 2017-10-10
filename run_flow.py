@@ -53,11 +53,18 @@ class RunFlow():
 
     def setup_widget_list(self, widget_defns):
         widget_list = []
+        self.logger.info('Widgets to be run:')
+        if widget_defns is None:
+            self.logger.info('\tNo widgets to run.')
+            return widget_list
         for widget in widget_defns:
+            widget_name = self.config_translator.get_widget_name_from_widget_config(widget)
+            self.logger.info('\t' + widget_name)
             a_widget = self.widget_factory.create_widget(
-                self.config_translator.get_widget_name_from_widget_config(widget),
+                widget_name,
                 log_file=self.log_file)
-            a_widget.channel = self.config_translator.get_widget_name_from_widget_config(widget)
+            a_widget.channel = widget_name
+            a_widget.widget_name = widget_name
             a_widget.do_it = self.config_translator.get_do_it_from_widget_config(widget)
             a_widget.input_columns = self.config_translator.get_input_columns_from_widget_config(widget)
             a_widget.output_columns = self.config_translator.get_output_columns_from_widget_config(widget)
@@ -120,7 +127,7 @@ class RunFlow():
         elif len(columns) == 0:
             return
         if columns == ['all']:
-            columns = list(range(1, np_data.shape[0] + 1))
+            columns = list(range(1, np_data.shape[1]))
         zero_based_columns = [column - 1 for column in columns]
         row_start = int(not with_header)
         for row_cnt, row in enumerate(manipulated_data):
@@ -139,11 +146,12 @@ class RunFlow():
         return np.array(output_data, dtype=object)
 
     def do_manipulations(self, manipulations, np_data, output_dir, file_id, log_file):
-        for step_id, widget in enumerate(manipulations):
+        for step_id, widget in enumerate(manipulations, 1):
             if not widget.do_it:
-                return
+                self.logger.info('Not running widget: ' + widget.widget_name)
+                continue
             try:
-                widget.channel = widget.channel + '_' + str(file_id) + '_' + str(step_id)
+                widget.channel = widget.widget_name + '_' + str(file_id) + '_' + str(step_id)
                 widget_data_in_file = Path(output_dir).joinpath(widget.channel + '.in')
                 widget_data_out_file = Path(output_dir).joinpath(widget.channel + '.out')
                 widget = self.set_widget_required_args(widget, widget_data_in_file, widget_data_out_file, log_file)
