@@ -40,6 +40,19 @@ def cast_to_integer(int_str):
         return int_str
 
 
+def cast_float_to_decimal(floatish):
+    if isinstance(floatish, str):
+        decimal_val = cast_to_decimal(floatish)
+    else:
+        decimal_val = cast_number_to_decimal(floatish)
+    return decimal_val
+
+
+def cast_number_to_decimal(float_val):
+    dec_val = Decimal(str(float_val))
+    return dec_val
+
+
 def cast_to_decimal(decimal_str):
     """
     Convert string to a decimal.
