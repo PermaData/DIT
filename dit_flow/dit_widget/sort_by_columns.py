@@ -49,15 +49,13 @@ def sort_by_columns(column_list, input_data_file=None, output_data_file=None, lo
     with open(input_data_file, 'r') as csvfile:
         unsorted_reader = csv.reader(csvfile, delimiter=',', quotechar="'")
         csv_data = []
-        ind = 0
-        for row in unsorted_reader:
+        for ind, row in enumerate(unsorted_reader):
             row = [cast_data_value(col_val.strip()) for col_val in row]
             if ind > 0:
                 typed_row = create_typed_row(row, column_list, logger)
                 csv_data.append(typed_row)
             else:
                 header_row = row
-            ind += 1
         sorted_data = csv_data
         for index, type in reversed(column_list):
             sorted_data = sorted(sorted_data, key=lambda sort_by: sort_by[index])
