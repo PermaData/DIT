@@ -13,7 +13,7 @@ def test_sort_by_columns(tmpdir):
                                              line_4, line_5, line_6))
     temp_out_file = tmpdir.mkdir("out").join('output_file.csv')
     temp_log_file = tmpdir.mkdir("log").join('log_file.txt')
-    sort_by_columns([(0, 'real'), (1, 'real')],
+    sort_by_columns([(1, 'real'), (2, 'real')],
                     log_file=temp_log_file.strpath,
                     output_data_file=temp_out_file.strpath,
                     input_data_file=temp_in_file.strpath)

@@ -5,7 +5,8 @@ import ast
 import csv
 
 from dit_flow.dit_widget.common.setup_logger import setup_logger
-from dit_flow.dit_widget.common.cast_value import cast_to_datetime, cast_to_integer, cast_to_real, cast_data_value, gtnp_date_time_format
+from dit_flow.dit_widget.common.cast_value import cast_to_datetime, \
+    cast_to_integer, cast_to_real, cast_data_value, gtnp_date_time_format
 
 date_time_index = None
 
@@ -41,23 +42,30 @@ def sort_by_columns(column_list, input_data_file=None, output_data_file=None, lo
     logger.info('Sorting input file by columns:')
     if isinstance(column_list, str):
         column_list = tuple_list(column_list)
-    for column in column_list:
-        logger.info('\t' + str(column))
-    sorted_writer = csv.writer(open(output_data_file, 'w'), quotechar="'", quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
+    shifted_list = []
+    for index, ind_type in column_list:
+        index = index - 1
+        new_tuple = (index, ind_type)
+        logger.info('\t' + str(new_tuple))
+        shifted_list.append(new_tuple)
+    sorted_writer = csv.writer(open(output_data_file, 'w'), quotechar="'",
+                               quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
     header_row = None
     sorted_data = []
     with open(input_data_file, 'r') as csvfile:
         unsorted_reader = csv.reader(csvfile, delimiter=',', quotechar="'")
         csv_data = []
-        for ind, row in enumerate(unsorted_reader):
+        ind = 0
+        for row in unsorted_reader:
             row = [cast_data_value(col_val.strip()) for col_val in row]
             if ind > 0:
-                typed_row = create_typed_row(row, column_list, logger)
+                typed_row = create_typed_row(row, shifted_list, logger)
                 csv_data.append(typed_row)
             else:
                 header_row = row
+            ind += 1
         sorted_data = csv_data
-        for index, type in reversed(column_list):
+        for index, type in reversed(shifted_list):
             sorted_data = sorted(sorted_data, key=lambda sort_by: sort_by[index])
 
     sorted_writer.writerow(header_row)
@@ -73,14 +81,15 @@ def tuple_list(tuple_string):
     try:
         data = ast.literal_eval(tuple_string)
     except:
-        raise ap.ArgumentTypeError("Tuple list must be in form: '[(<index>, <type>), (<index>, <type>)]'.")
+        raise ap.ArgumentTypeError("Tuple list must be in form: \
+                                   '[(<index>, <type>), (<index>, <type>)]'.")
     return data
 
 
 def parse_arguments():
     """ Parse the command line arguments and return them. """
     parser = ap.ArgumentParser(description='Sorts 2D data in order of columns in the column list.')
-    parser.add_argument('column_list', type=tuple_list, help='Ordered list of columns to sort by.\n'
+    parser.add_argument('column_list', type=tuple_list, help='Ordered list of one based columns to sort by.\n'
                         'Format of list: "[(<col num>, \'<type>\'), (<col num>, \'<type>\')]"\n'
                         '<type> is the type of values of a column and can be:\n'
                         '\t\'real\'\n'
@@ -88,11 +97,13 @@ def parse_arguments():
                         '\t\'dt\'\n'
                         '\t\'string\'\n')
 
-    parser.add_argument('-i', '--input_data_file', help='Step file containing input data to manipulate.')
+    parser.add_argument('-i', '--input_data_file',
+                        help='Step file containing input data to manipulate.')
     parser.add_argument('-o', '--output_data_file', help='Step file to store output data.')
     parser.add_argument('-l', '--log_file', help='Step file to collect log information.')
 
     return parser.parse_args()
+
 
 if __name__ == '__main__':
     args = parse_arguments()

@@ -19,7 +19,7 @@ input:
     with_header: true
     input_columns: ['all']
     inputs:
-      column_list: "[(1, 'dt'), (2, 'string')]"
+      column_list: "[(2, 'dt'), (3, 'string')]"
     output_columns: ['all']
   -
     widget: 'replace_txt_remove'
