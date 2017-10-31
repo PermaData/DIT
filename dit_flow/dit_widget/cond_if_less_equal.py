@@ -8,26 +8,26 @@ from dit_flow.dit_widget.common.logger_message import logger_message
 
 def cond_if_less_equal(criteria, constant, print_flag, input_data_file=None,
                        output_data_file=None, log_file=None):
-# If column A < criteria in input_data_file column B = constant in output_data_file.
+    # If column A < criteria in input_data_file column B = constant in output_data_file.
     logger = logger_message(__name__, log_file)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     record = 0
     with open(input_data_file, newline='') as _in, \
             open(output_data_file, 'w', newline='') as _out:
-            logger.info('If column A <= {} set column B = {}'.format(criteria, constant))
-            if print_flag:
-                logger.info('{:>10}{:>20}{:>20}{:>20}'.format('Record', 'Col A Value',
-                                                              'Old Col B Value', 'New Col B Value'))
-            output = csv.writer(_out)
-            reader = csv.reader(_in)
-            original_values = []
+        logger.info('If column A <= {} set column B = {}'.format(criteria, constant))
+        if print_flag:
+            logger.info('{:>10}{:>20}{:>20}{:>20}'.format('Record', 'Col A Value',
+                                                          'Old Col B Value', 'New Col B Value'))
+        output = csv.writer(_out)
+        reader = csv.reader(_in)
+        original_values = []
 
 # transfer input values to local array
-    for i, line in enumerate(reader):
-        original_values.append([])
-        for j, item in enumerate(line):
-            original_values[i].append(item)
+        for i, line in enumerate(reader):
+            original_values.append([])
+            for j, item in enumerate(line):
+                original_values[i].append(item)
 
 # perform conditional check
         record = 0
@@ -53,7 +53,8 @@ def cond_if_less_equal(criteria, constant, print_flag, input_data_file=None,
 
 
 def parse_arguments():
-    parser = ap.ArgumentParser(description="If column A <= criteria in input_data_file column B = constant .")
+    parser = ap.ArgumentParser(description="If column A <= criteria in input_data_file'\
+                               ' column B = constant .")
 
     parser.add_argument('criteria', type=float, help='Value to run function on.')
     parser.add_argument('constant', type=float, help='Replacement value.')

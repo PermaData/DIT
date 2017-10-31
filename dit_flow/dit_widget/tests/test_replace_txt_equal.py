@@ -1,8 +1,7 @@
-import pytest
 import os
 
-
 from dit_flow.dit_widget.replace_txt_equal import replace_txt_equal
+
 
 def test_replace_txt_equal(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -18,8 +17,8 @@ def test_replace_txt_equal(tmpdir):
     actual_log = temp_log_file.read()
     expected_out = 'abxyzfg\nload of crap\npile'
     expected_log = 'Replacing cde with xyz\n'\
-    '    Record            Old Value            New Value\n'\
-    '         1              abcdefg                  xyz\n'\
-    '\n\t Total number =1\n'
+                   '    Record            Old Value            New Value\n'\
+                   '         1              abcdefg                  xyz\n'\
+                   '\n\t Total number =1\n'
     assert expected_out in actual_out
     assert expected_log in actual_log

@@ -41,7 +41,8 @@ def replace_num_in_range_equal(startval, endval, constant, print_flag, input_dat
 
 
 def parse_arguments():
-    parser = ap.ArgumentParser(description="Replaces values >=startval and <=endval with constant in "
+    parser = ap.ArgumentParser(description="Replaces values >=startval '\
+                               'and <=endval with constant in "
                                "input_data_file and writes the result to "
                                "output_data_file.")
 

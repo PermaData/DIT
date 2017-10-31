@@ -1,8 +1,7 @@
-import pytest
 import os
 
-
 from dit_flow.dit_widget.replace_txt_exclude import replace_txt_exclude
+
 
 def test_replace_txt_exclude(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))

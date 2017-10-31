@@ -46,7 +46,7 @@ def chk_count_distinct_double(input_data_file=None, output_data_file=None, log_f
         count = 0
         for value in col_a_distinct:
 
-# subset column B array and identify distinct col B values
+            # subset column B array and identify distinct col B values
             col_b_subset = []
             temp_col_b_distinct = set()
             col_b_distinct = []
@@ -70,7 +70,8 @@ def chk_count_distinct_double(input_data_file=None, output_data_file=None, log_f
 
 
 def parse_arguments():
-    parser = ap.ArgumentParser(description="Counts number of distinct values in a col A then corresponing distinct values in col B in input_data_file.")
+    parser = ap.ArgumentParser(description="Counts number of distinct values in a col A'\
+                               ' then corresponing distinct values in col B in input_data_file.")
 
     parser.add_argument('-i', '--input_data_file',
                         help='Step file containing input data to manipulate.')

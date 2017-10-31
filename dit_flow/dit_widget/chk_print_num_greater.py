@@ -2,7 +2,6 @@
 """Prints name values > criteria in infile."""
 import argparse as ap
 import csv
-from array import array
 
 from dit_flow.dit_widget.common.logger_message import logger_message
 
@@ -18,7 +17,6 @@ def chk_print_num_greater(criteria, input_data_file=None, output_data_file=None,
         logger.info('{:>10} {:>20}'.format('Record', 'Value'))
         reader = csv.reader(_in)
         for line in reader:
-            new_line = array('f')
             for item in line:
                 record = record + 1
                 if float(item) > float(criteria):

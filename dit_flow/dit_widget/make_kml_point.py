@@ -8,25 +8,25 @@ from dit_flow.dit_widget.common.logger_message import logger_message
 
 
 def make_kml_point(input_data_file=None, output_data_file=None, log_file=None):
-# Makes a kml point file.
+    # Makes a kml point file.
     logger = logger_message(__name__, log_file)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'A kml point file.'
     with open(input_data_file, newline='') as _in, \
             open(output_data_file, 'w', newline='') as _out:
-            logger.info('Make kml point file: {}'.format(output_data_file))
-            output = csv.writer(_out)
-            reader = csv.reader(_in)
-            original_values = []
+        logger.info('Make kml point file: {}'.format(output_data_file))
+        output = csv.writer(_out)
+        reader = csv.reader(_in)
+        original_values = []
 
 # transfer input values to local array
-    points = 0
-    for i, line in enumerate(reader):
-            points = points + 1
-            original_values.append([])
-            for j, item in enumerate(line):
-                original_values[i].append(item)
-    logger.info('\tNumber points: {}'.format(points))
+        points = 0
+        for i, line in enumerate(reader):
+                points = points + 1
+                original_values.append([])
+                for j, item in enumerate(line):
+                    original_values[i].append(item)
+        logger.info('\tNumber points: {}'.format(points))
 
 # make kml point file
     kml = simplekml.Kml()

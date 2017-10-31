@@ -31,7 +31,8 @@ def utm_to_latlong(input_data_file=None, output_data_file=None, log_file=None):
                 zone = int(row[2])
 
                 latlong = utm.to_latlon(east, north, zone, northern=('N' == row[3]))
-                logger.info('Changed row {} from: {}  to: {}'.format(row_ind, (row[0], row[1]), latlong))
+                logger.info('Changed row {} from: {}  to: {}'.format(row_ind,
+                                                                     (row[0], row[1]), latlong))
 
                 output.writerow(latlong)
         finally:
@@ -43,11 +44,13 @@ def utm_to_latlong(input_data_file=None, output_data_file=None, log_file=None):
 def parse_arguments():
     parser = ap.ArgumentParser(description='Converts UTM coordinates into latitude/longitude.')
 
-    parser.add_argument('-i', '--input_data_file', help='Step file containing input data to manipulate.')
+    parser.add_argument('-i', '--input_data_file',
+                        help='Step file containing input data to manipulate.')
     parser.add_argument('-o', '--output_data_file', help='Step file to store output data.')
     parser.add_argument('-l', '--log_file', help='Step file to collect log information.')
 
     return parser.parse_args()
+
 
 if __name__ == '__main__':
     args = parse_arguments()

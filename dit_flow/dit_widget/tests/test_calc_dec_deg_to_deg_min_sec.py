@@ -1,4 +1,3 @@
-import pytest
 import os
 
 from dit_flow.dit_widget.calc_dec_deg_to_deg_min_sec import calc_dec_deg_to_deg_min_sec

@@ -8,7 +8,7 @@ from dit_flow.dit_widget.common.setup_logger import setup_logger
 
 
 def calc_add_col(missing_value, input_data_file=None, output_data_file=None, log_file=None):
-    #output = in_column_A + in_column_B
+    # output = in_column_A + in_column_B
     logger = setup_logger(__name__, log_file)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'

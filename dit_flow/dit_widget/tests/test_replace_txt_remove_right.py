@@ -1,8 +1,7 @@
-import pytest
 import os
 
-
 from dit_flow.dit_widget.replace_txt_remove_right import replace_txt_remove_right
+
 
 def test_replace_txt_remove_right(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -18,10 +17,10 @@ def test_replace_txt_remove_right(tmpdir):
     actual_log = temp_log_file.read()
     expected_out = 'crap\nload of crap\ncrap'
     expected_log = 'Remove text right of crap\n'\
-    '    Record            Old Value            New Value\n'\
-    '         1              crapola                 crap\n'\
-    '         2         load of crap         load of crap\n'\
-    '         3            crap pile                 crap\n'\
-    '\n\t Total number =3\n'
+                   '    Record            Old Value            New Value\n'\
+                   '         1              crapola                 crap\n'\
+                   '         2         load of crap         load of crap\n'\
+                   '         3            crap pile                 crap\n'\
+                   '\n\t Total number =3\n'
     assert expected_out in actual_out
     assert expected_log in actual_log

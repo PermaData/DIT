@@ -1,5 +1,2 @@
-If column A contains 5 set column B = test
-    Record         Col A Value     Old Col B Value     New Col B Value
-         5                   5                Junk                test
-        11                   5                Junk                test
-	 Total number =2
+Make kml point file: /sharehome/hwilcox/dit/dit_flow/dit_widget/tests/test_out.kml
+	Number points: 14

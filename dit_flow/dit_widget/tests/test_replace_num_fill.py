@@ -1,8 +1,7 @@
-import pytest
 import os
 
-
 from dit_flow.dit_widget.replace_num_fill import replace_num_fill
+
 
 def test_replace_num_fill(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
