@@ -16,6 +16,7 @@ input:
 
 output:
   data_directory: './output'
+  temp_directory: 'temporary/dir'
   writer: 'write_csv_file'
   manipulations:
   -
@@ -28,7 +29,7 @@ output:
       method_arg_2: 'ginger'
     output_columns: []
   -
-    widget: 'add_constant'
+    widget: 'math_add_constant'
     do_it: False
     with_header: True
     input_columns: []

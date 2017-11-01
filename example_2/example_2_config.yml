@@ -1,0 +1,57 @@
+input:
+  reader: read_csv_file
+  data_directory: './example_2/input'
+  variable_map: './example_2/variable_map.dat'
+  missing_values: &ms [-999.99]
+  missing_characters: ['na']
+  manipulations:
+  -
+    widget: 'reformat_dates_to_gtnp'
+    do_it: true
+    with_header: False
+    input_columns: [2]
+    inputs:
+      date_time_format: "'%Y%m%dT%H%M'"
+    output_columns: [2]
+  -
+    widget: 'sort_by_columns'
+    do_it: true
+    with_header: true
+    input_columns: ['all']
+    inputs:
+      column_list: "[(2, 'dt'), (3, 'string')]"
+    output_columns: ['all']
+  -
+    widget: 'replace_txt_remove'
+    do_it: true
+    with_header: False
+    input_columns: [3]
+    inputs:
+      target: '_CMAB'
+      print_flag: True
+    output_columns: [3]
+  -
+    widget: 'math_divide_constant'
+    do_it: true
+    with_header: False
+    input_columns: [3]
+    inputs:
+      constant: 100
+      missing_value: $ms
+    output_columns: [3]
+  -
+    widget: 'replace_num_less'
+    do_it: true
+    with_header: false
+    input_columns: [5]
+    output_columns: [5]
+    inputs:
+      criteria: -200
+      value: -999.0
+      print_flag: true
+
+output:
+  data_directory: './example_2/output'
+  temp_directory: './example_2/temp'
+  writer: 'write_csv_file'
+  manipulations:

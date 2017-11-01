@@ -1,0 +1,2 @@
+type: manipulation_widget
+description: Counts number distinct values in infile to logfile

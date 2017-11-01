@@ -1,0 +1,2 @@
+type: manipulation_widget
+description: Counts number of distinct values in a col A then corresponing distinct values in col B

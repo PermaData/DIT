@@ -1,0 +1,6 @@
+type: manipulation_widget
+description: Subtracts constant to all values in infile and writes the result to outfile.
+input_1: constant
+input_1_type: float
+input_2: missing_value
+input_2_type: float

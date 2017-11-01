@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Add two columns in quadrature (out = sqrt(column_a**2 +column_b**2))
+input_1: missing_value
+input_1_type: float

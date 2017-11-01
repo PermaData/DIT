@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Absolute value of all values in infile and writes result to outfile.
+input_1: missing_value
+input_1_type: float

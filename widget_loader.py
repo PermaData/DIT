@@ -1,19 +1,19 @@
 import os
 
 from circuits import Loader
+from itertools import chain
+
 
 class WidgetLoader(Loader):
 
     def __init__(self, channel=Loader.channel):
         super(WidgetLoader, self).__init__(channel)
-        base_dir = os.getcwd() # dirname(__file__)
+        base_dir = os.path.dirname(os.path.realpath(__file__))
         flow_dir = os.path.join(base_dir, 'dit_flow')
         self._widget_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget')
+        self._widget_dir_2 = os.path.join(base_dir, 'dit_flow', 'done_widget')
         common_dir = os.path.join(base_dir, 'dit_flow', 'dit_widget', 'common')
-        print('directory: ', base_dir)
-        print('widget directory: ', self.widget_dir)
-        print('flow dir: ', flow_dir)
-        self._loader = Loader(paths=[base_dir, flow_dir, self.widget_dir, common_dir])
+        self._loader = Loader(paths=[base_dir, flow_dir, self.widget_dir, self._widget_dir_2, common_dir])
 
     @property
     def loader(self):
@@ -29,7 +29,8 @@ class WidgetLoader(Loader):
         found_config = False
         found_method = False
         widget_files = (None, None)
-        for root, dirs, files in os.walk(self.widget_dir, topdown=False) :
+        paths = (self.widget_dir, self._widget_dir_2)
+        for root, dirs, files in chain.from_iterable(os.walk(path, topdown=False) for path in paths):
             if config_file in files:
                 config_path = os.path.join(root, config_file)
                 found_config = True

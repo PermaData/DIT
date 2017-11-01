@@ -9,7 +9,7 @@ class FileManager(UtilityWidget):
         super(FileManager, self).__init__(*args, **kwargs)
         self.widget_method = self.file_manager
 
-    def file_manager(self, filenames, output_dir, log_file=None):
+    def file_manager(self, filenames, output_dir, temp_dir, log_file=None):
         """
         filenames: a sequence of paths to data files
         CURRENT: sends out a sequence of filenames after confirming they exist
@@ -21,10 +21,15 @@ class FileManager(UtilityWidget):
         for identifier, name in enumerate(filenames, start=1):
             name_path = Path(name)
             output_dir_path = Path(output_dir)
-            output_filename = name_path.name.replace(name_path.suffix, '_out.csv')
+            temp_dir_path = Path(temp_dir)
+            if name_path.suffix is '':
+                output_filename = name_path.name + '_out.csv'
+                log_filename = name_path.name + '.log'
+            else:
+                output_filename = name_path.name.replace(name_path.suffix, '_out.csv')
+                log_filename = name_path.name.replace(name_path.suffix, '.log')
             output_path = output_dir_path.joinpath(output_filename)
-            log_filename = name_path.name.replace(name_path.suffix, '.log')
-            log_path = output_dir_path.joinpath(log_filename)
+            log_path = temp_dir_path.joinpath(log_filename)
             try:
                 # Open the file. If the file doesn't exist, the error will be
                 # caught.

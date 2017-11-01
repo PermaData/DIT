@@ -1,0 +1,8 @@
+type: manipulation_widget
+description: If col A not = criteria, column B = constant.
+input_1: criteria
+input_1_type: float
+input_2: constant
+input_2_type: float
+input_3: print_flag
+input_3_type: bool

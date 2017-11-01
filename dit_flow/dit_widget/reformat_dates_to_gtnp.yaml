@@ -1,0 +1,4 @@
+type: manipulation_widget
+description: Reformats a file of one column of date/times into GTN-P specific date/time format.
+input_1: date_time_format
+input_1_type: string

@@ -1,0 +1,6 @@
+type: manipulation_widget
+description: Prints values <= startval or values >= endval in name to logfile
+input_1: startval
+input_1_type: float
+input_2: endval
+input_2_type: float

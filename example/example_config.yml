@@ -1,19 +1,29 @@
 input:
   reader: read_csv_file
-  data_directory: '/Users/hwilcox/Workspace/dit-master/example/input'
-  variable_map: '/Users/hwilcox/Workspace/dit-master/example/variable_map.dat'
-  missing_values: [-999.99, -999.0]
+  data_directory: './example/input'
+  variable_map: './example/variable_map.dat'
+  missing_values: &ms [-999.99, -999.0]
   missing_characters: ['na']
   manipulations:
   -
     widget: 'widget_template'
     do_it: true
     inputs:
-      method_arg_1: 'blue'
+      method_arg_1: *ms
       method_arg_2: 'green'
+  -
+    widget: 'math_subtract_constant'
+    do_it: true
+    with_header: False
+    input_columns: [4]
+    inputs:
+      constant: 1.0
+      missing_value: -999.99
+    output_columns: [4]
 
 output:
-  data_directory: '/Users/hwilcox/Workspace/dit-master/example/output'
+  data_directory: './example/output'
+  temp_directory: './example/temp'
   writer: 'write_csv_file'
   manipulations:
   -
@@ -26,7 +36,7 @@ output:
       method_arg_2: 'white'
     output_columns: []
   -
-    widget: 'add_constant'
+    widget: 'math_add_constant'
     do_it: true
     with_header: False
     input_columns: [1]
@@ -36,7 +46,7 @@ output:
     output_columns: [2]
   -
     widget: 'widget_template'
-    do_it: true
+    do_it: false
     input_columns: []
     inputs:
       method_arg_1: 'elf'

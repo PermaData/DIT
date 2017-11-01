@@ -12,8 +12,8 @@ All users face the exact same problem: how to process data into a structure and 
 The Data Integration Tool (DIT) consists of:
 
 *   dit_flow is available as a command line tool has 2 main parts:
-   + rill - a fork of the Flow-Based Programming (FBP) python tool rill we are using as a workflow manager
-   + dit_widget - an extendable collection of single operation widgets (rill components) designed to be chained together to create a data manipulation workflow.
+   + a [circuits](http://circuitsframework.com) based workflow manager
+   + dit_widget - an extendable collection of single operation widgets designed to be chained together to create a data manipulation workflow.
 * dit_gui - a graphical user interface that creates dit flows which interact with dit_flow.
 * dit_core - the original Fortran based tool.
 
@@ -30,6 +30,12 @@ From within a writable directory, run the following command:
 curl -L http://bit.ly/2j2SZz3 | bash
 ```
 
+## Testing DIT
+From within the DIT-master directory, run the tests:
+``` html
+$ inv test
+```
+
 ## Running DIT
 ### Example Run on Linux
 From within the DIT-master directory, run the following commands:
@@ -39,24 +45,25 @@ $ source env.sh
 * Should see the following output...
 ``` html
 Adding conda to your path...
-Activating dit_3 conda environment...
+Activating dit conda environment...
 All done. Enjoy!
 ```
 
 ``` html
-$ python RUNNER.py
+$ python run_flow.py example/example_config.yml -l run_flow.log
 ```
 * Should see similar log output to the following:
 ``` html
-DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
-DEBUG : filemanager     Dropping packet: './Example_data/AKUL232'
-DEBUG : filemanager     Creating packet: './Example_data/AKUL232'
-DEBUG : filemanager     Creating packet: 1
-DEBUG : filemanager     Creating packet: './Example_data/AKUL232.log'
-DEBUG : filemanager     Creating packet: './Example_data/AUPA299'
-DEBUG : filemanager     Dropping packet: './Example_data/AUPA299'
-DEBUG : filemanager     Creating packet: './Example_data/AUPA299'
-DEBUG : filemanager     Creating packet: 2
+directory:  /projects/MULTIMOD/PermaData/dit-circuits
+widget directory:  /projects/MULTIMOD/PermaData/dit-circuits/dit_flow/dit_widget
+flow dir:  /projects/MULTIMOD/PermaData/dit-circuits/dit_flow
+2017-10-02 10:31:33,360 : Setup logging into: log.file
+2017-10-02 10:31:33,361 : Loading configuration file: example/example_config.yml
+2017-10-02 10:31:33,361 : Loading configuration file: example/example_config.yml
+2017-10-02 10:31:33,369 : Setting up file manager widget
+2017-10-02 10:31:33,379 : Setting up reader widget: read_csv_file
+2017-10-02 10:31:33,395 : Setting up variable mapper widget
+2017-10-02 10:31:33,405 : Setting up writer widget: write_csv_file
 ```
 
 ___

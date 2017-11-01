@@ -2,9 +2,8 @@ import pytest
 import os
 import numpy as np
 
-from numpy import array
 from collections import OrderedDict
-from pathlib import Path
+from decimal import Decimal
 from run_flow import RunFlow
 
 config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
@@ -15,7 +14,7 @@ config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
 def create_input_data():
     line_1 = ['column 1', 'column_2', 'Column3', 'Column 4']
     line_2 = ['fred', 'ginger', 'elf', 'santa']
-    line_3 = [1.00, 2.13, 'na', -999.99]
+    line_3 = [Decimal('1.00'), Decimal('2.13'), 'na', Decimal('-999.99')]
     input_data = [line_1, line_2, line_3]
     return input_data
 
@@ -33,7 +32,7 @@ def test_setup_utilities():
 def test_read_input_data(tmpdir):
     expected_line_1 = ['column 1', 'column_2', 'Column3', 'Column  4']
     expected_line_2 = ['fred', '"ginger"', 'elf', 'santa']
-    expected_line_3 = ['1.00', '2.13', 'na', '-999.99']
+    expected_line_3 = [Decimal('1.00'), Decimal('2.13'), 'na', Decimal('-999.99')]
 
     datafile = tmpdir.mkdir('input').join('data_file')
     line_1 = 'column 1,column_2,Column3, Column  4\n'
@@ -68,7 +67,7 @@ def test_setup_input_manipulations():
     assert actual_widget.__class__.__name__ == 'WidgetTemplate'
     assert actual_widget.widget_method.__name__ == 'widget_template'
     assert actual_widget.input_args == expected_args
-    assert actual_widget.do_it == True
+    assert actual_widget.do_it
 
 
 def test_setup_output_manipulations():
@@ -95,23 +94,23 @@ def test_setup_output_manipulations():
     assert actual_widget_1.__class__.__name__ == 'WidgetTemplate'
     assert actual_widget_1.widget_method.__name__ == 'widget_template'
     assert actual_widget_1.input_args == expected_args_1
-    assert actual_widget_1.do_it == True
+    assert actual_widget_1.do_it
 
     actual_widget_2 = actual.output_manipulations[1]
-    assert actual_widget_2.__class__.__name__ == 'AddConstant'
-    assert actual_widget_2.widget_method.__name__ == 'add_constant'
+    assert actual_widget_2.__class__.__name__ == 'MathAddConstant'
+    assert actual_widget_2.widget_method.__name__ == 'math_add_constant'
     assert actual_widget_2.input_args == expected_args_2
-    assert actual_widget_2.do_it == False
+    assert not actual_widget_2.do_it
 
     actual_widget_3 = actual.output_manipulations[2]
     assert actual_widget_3.__class__.__name__ == 'WidgetTemplate'
     assert actual_widget_3.widget_method.__name__ == 'widget_template'
     assert actual_widget_3.input_args == expected_args_3
-    assert actual_widget_3.do_it == True
+    assert actual_widget_3.do_it
 
 
 def test_subset_data_with_header():
-    expected = np.array([['column 1', 'Column3'], ['fred', 'elf'], [1.00, 'na']], dtype=object)
+    expected = np.array([['column 1', 'Column3'], ['fred', 'elf'], [Decimal('1.00'), 'na']], dtype=object)
 
     flow = RunFlow(config_path)
     input_data = create_input_data()
@@ -122,7 +121,7 @@ def test_subset_data_with_header():
 
 
 def test_subset_data_without_header():
-    expected = np.array([['fred', 'elf'], [1.00, 'na']], dtype=object)
+    expected = np.array([['fred', 'elf'], [Decimal('1.00'), 'na']], dtype=object)
 
     flow = RunFlow(config_path)
     input_data = create_input_data()
@@ -131,15 +130,16 @@ def test_subset_data_without_header():
 
     np.testing.assert_array_equal(actual, expected)
 
+
 def test_subset_one_column():
     input_data = [['column 1', 'column_2', 'Column3', 'Column 4'],
                   ['fred', 'ginger', 'elf', 'santa'],
                   [1.00, 2.13, 'na', -999.99],
-                  [3.00,4.0005,5,6]]
+                  [Decimal('3.00'), Decimal('4.0005'), Decimal('5'), Decimal('6')]]
     expected = np.array([['column 1'],
                          ['fred'],
-                         [1.00],
-                         [3.00]], dtype=object)
+                         [Decimal('1.00')],
+                         [Decimal('3.00')]], dtype=object)
 
     flow = RunFlow(config_path)
 
@@ -148,23 +148,18 @@ def test_subset_one_column():
     np.testing.assert_array_equal(actual, expected)
 
 
-
 def test_subset_all_data_with_header():
-    expected = np.array([['column 1', 'column_2', 'Column3', 'Column 4'],
-                         ['fred', 'ginger', 'elf', 'santa'],
-                         [1.00, 2.13, 'na', -999.99]], dtype=object)
-
     flow = RunFlow(config_path)
     input_data = create_input_data()
 
     actual = flow.subset_data(np.array(input_data, dtype=object), ['all'], with_header=True)
 
-    np.testing.assert_array_equal(actual, expected)
+    np.testing.assert_array_equal(actual, input_data)
 
 
 def test_subset_all_data_without_header():
     expected = np.array([['fred', 'ginger', 'elf', 'santa'],
-                         [1.00, 2.13, 'na', -999.99]], dtype=object)
+                         [Decimal('1.00'), Decimal('2.13'), 'na', Decimal('-999.99')]], dtype=object)
 
     flow = RunFlow(config_path)
     input_data = create_input_data()
@@ -177,8 +172,8 @@ def test_subset_all_data_without_header():
 def test_replace_data_with_header():
     expected = np.array([['new col 1', 'column_2', 'NewColumn3', 'Column 4'],
                          ['ethel', 'ginger', 'reindeer', 'santa'],
-                         [0.000003, 2.13, 5055.3042, -999.99]], dtype=object)
-    new_columns = np.array([['new col 1', 'NewColumn3'], ['ethel', 'reindeer'], [0.000003, 5055.3042]], dtype=object)
+                         [Decimal('0.000003'), Decimal('2.13'), Decimal('5055.3042'), Decimal('-999.99')]], dtype=object)
+    new_columns = np.array([['new col 1', 'NewColumn3'], ['ethel', 'reindeer'], [Decimal('0.000003'), Decimal('5055.3042')]], dtype=object)
 
     flow = RunFlow(config_path)
     input_data = create_input_data()
@@ -191,8 +186,8 @@ def test_replace_data_with_header():
 def test_replace_data_without_header():
     expected = np.array([['column 1', 'column_2', 'Column3', 'Column 4'],
                          ['ethel', 'ginger', 'reindeer', 'santa'],
-                         [0.000003, 2.13, 5055.3042, -999.99]], dtype=object)
-    new_columns = np.array([['ethel', 'reindeer'], [0.000003, 5055.3042]], dtype=object)
+                         [Decimal('0.000003'), Decimal('2.13'), Decimal('5055.3042'), Decimal('-999.99')]], dtype=object)
+    new_columns = np.array([['ethel', 'reindeer'], [Decimal('0.000003'), Decimal('5055.3042')]], dtype=object)
 
     flow = RunFlow(config_path)
     input_data = create_input_data()
@@ -214,8 +209,8 @@ def test_do_output_manipulations():
 
 def test_write_output_file():
     expected = "'column 1','column_2','Column3','Column 4'\n" \
-    "'fred','ginger','elf','santa'\n" \
-    "1.0,2.13,'na',-999.99\n"
+               "'fred','ginger','elf','santa'\n" \
+               "1.00,2.13,'na',-999.99\n"
 
     output_directory = os.path.dirname(os.path.realpath(__file__))
     datafile = os.path.join(output_directory, 'data_file')

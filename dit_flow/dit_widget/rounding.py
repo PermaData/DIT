@@ -1,15 +1,11 @@
-import math
+import argparse as ap
+import csv
 
-import rill
+from dit_flow.dit_widget.common.round_value import _ceil, _floor, _trunc, _round
+from dit_flow.dit_widget.common.setup_logger import setup_logger
 
 
-@rill.component
-@rill.inport('INFILE')
-@rill.inport('OUTFILE_IN')
-@rill.inport('MODE')
-@rill.inport('PRECISION')
-@rill.outport('OUTFILE_OUT')
-def rounding(INFILE, OUTFILE_IN, MODE, PRECISION, OUTFILE_OUT):
+def rounding(mode, precision=0, input_data_file=None, output_data_file=None, log_file=None):
     """Round values to the nearest integer.
 
     modes:
@@ -20,55 +16,40 @@ def rounding(INFILE, OUTFILE_IN, MODE, PRECISION, OUTFILE_OUT):
             given, instead round to that many digits beyond the decimal
             point.
     """
-    precision_iter = PRECISION.iter_contents()
-    for infile, outfile, mode in zip(INFILE.iter_contents(),
-                                     OUTFILE_IN.iter_contents(),
-                                     MODE.iter_contents()):
-        try:
-            precision = int(next(precision_iter))
-        except StopIteration:
-            precision = 0
-        with open(infile, newline='') as _in, \
-             open(outfile, 'w', newline='') as _out:
-            data = csv.reader(_in)
-            output = csv.reader(_out)
+    with open(input_data_file, newline='') as _in, \
+            open(output_data_file, 'w', newline='') as _out:
+        data = csv.reader(_in, quoting=csv.QUOTE_NONNUMERIC)
+        output = csv.writer(_out)
 
-            input_map = {'up': _ceil, 'ceil': _ceil, 'ceiling': _ceil,
-                         'down': _floor, 'floor': _floor,
-                         'trunc': _trunc, 'truncate': _trunc,
-                         'nearest': _round, 'round': _round,
-                         }
-            conv = input_map[mode.lower()]
+        input_map = {'up': _ceil, 'ceil': _ceil, 'ceiling': _ceil,
+                     'down': _floor, 'floor': _floor,
+                     'trunc': _trunc, 'truncate': _trunc,
+                     'nearest': _round, 'round': _round,
+                     }
+        conv = input_map[mode.lower()]
 
-            for line in data:
-                out = []
-                for item in line:
-                    out.append(conv(item, precision))
-                output.writerow(out)
-
-        OUTFILE_OUT.send(outfile)
+        for line in data:
+            out = []
+            for item in line:
+                out.append(conv(item, precision))
+            output.writerow(out)
 
 
-def _ceil(val, precision):
-    if (precision):
-        return float(math.ceil(val * 10**precision)) / 10**precision
-    else:
-        return float(math.ceil(val))
+def parse_arguments():
+    """ Parse the command line arguments and return them. """
+    parser = ap.ArgumentParser(description="Round values to the nearest integer.")
 
+    parser.add_argument('mode', help='Type of rounding to be done.')
+    parser.add_argument('-p', '--precision', help='Precision of ending values.')
 
-def _floor(val, precision):
-    if (precision):
-        return float(math.floor(val * 10**precision)) / 10**precision
-    else:
-        return float(math.floor(val))
+    parser.add_argument('-i', '--input_data_file', help='Step file containing input data to manipulate.')
+    parser.add_argument('-o', '--output_data_file', help='Step file to store output data.')
+    parser.add_argument('-l', '--log_file', help='Step file to collect log information.')
 
+    return parser.parse_args()
 
-def _trunc(val, precision):
-    if (precision):
-        return int(val * 10**precision) / 10**precision
-    else:
-        return int(val)
+if __name__ == '__main__':
+    args = parse_arguments()
 
-
-def _round(val, precision):
-    return round(val, precision)
+    rounding(args.mode, args.precision,
+             args.input_data_file, args.output_data_file, args.log_file)
