@@ -3,13 +3,13 @@
 import argparse as ap
 import csv
 
-from dit_flow.dit_widget.common.logger_message import logger_message
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
 # If column A = criteria in input_data_file column B = constant in output_data_file.
 def cond_if_equal(criteria, constant, print_flag, input_data_file=None,
-                  output_data_file=None, log_file=None):
-    logger = logger_message(__name__, log_file)
+                  output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     record = 0

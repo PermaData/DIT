@@ -3,12 +3,12 @@
 import argparse as ap
 import csv
 
-from dit_flow.dit_widget.common.logger_message import logger_message
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
-def chk_count_distinct(input_data_file=None, output_data_file=None, log_file=None):
+def chk_count_distinct(input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Counts number of distinct values in input_data_file.
-    logger = logger_message(__name__, log_file)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     record = 0
     with open(input_data_file, newline='') as _in:

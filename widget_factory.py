@@ -1,16 +1,19 @@
 import imp
 import re
 import yaml
+
 from stringcase import pascalcase
 from widget_loader import WidgetLoader
+from dit_flow.dit_widget.common.setup_logger import DEFAULT_LOG_LEVEL
 from dit_flow.reader_widget import ReaderWidget
 from dit_flow.manipulation_widget import ManipulationWidget
 from dit_flow.writer_widget import WriterWidget
 from dit_flow.utility_widget import UtilityWidget
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+
 
 class WidgetCreateException(Exception):
     pass
+
 
 class WidgetFactory:
     '''
@@ -19,7 +22,6 @@ class WidgetFactory:
 
     factories = {}
     loader = WidgetLoader()
-
 
     @staticmethod
     def add_factory(id, widgetFactory):
@@ -30,17 +32,19 @@ class WidgetFactory:
         return id in WidgetFactory.factories.keys()
 
     @staticmethod
-    def create_widget(id, log_file=None):
+    def create_widget(id, log_file=None, log_level=DEFAULT_LOG_LEVEL):
         if not WidgetFactory.has_factory(id):
             widget_class = create_widget_class(id, WidgetFactory.loader)
             WidgetFactory.add_factory(id, widget_class)
-        new_widget = WidgetFactory.factories[id](log_file=log_file)
+        new_widget = WidgetFactory.factories[id](log_file=log_file, log_level=log_level)
         if not isinstance(new_widget, UtilityWidget):
             new_widget.widget_method = method_from_config(id, new_widget.method_path)
         return new_widget
 
+
 def __init__(self, *args, **kwargs):
     super(self.__class__, self).__init__(*args, **kwargs)
+
 
 def inputs_from_config(config_file):
     inputs = []
@@ -51,6 +55,7 @@ def inputs_from_config(config_file):
         if None != input_regex.match(name):
             inputs.append((value, override_yaml[name + '_type']))
     return inputs
+
 
 def type_from_config(config_file):
     base_class = None
@@ -68,10 +73,11 @@ def type_from_config(config_file):
             base_class = UtilityWidget
         else:
             raise WidgetCreateException('Do not know how to make a {} widget'.format(the_type))
-    except TypeError as te:
+    except TypeError:
         raise WidgetCreateException('Cannot open widget config: {}'.format(config_file))
 
     return base_class
+
 
 def description_from_config(config_file):
     with open(config_file, 'r') as cfile:
@@ -79,17 +85,20 @@ def description_from_config(config_file):
         description = override_yaml['description']
     return description
 
+
 def class_from_config(id, method_file):
     modes = imp.get_suffixes()
     with open(method_file) as open_mf:
         the_module = imp.load_module('{}.{}'.format(id, id), open_mf, '{}.py'.format(id), modes[-2])
     return getattr(the_module, pascalcase(id))
 
+
 def method_from_config(id, method_file):
     modes = imp.get_suffixes()
     with open(method_file) as open_mf:
         the_module = imp.load_module('{}.{}'.format(id, id), open_mf, '{}.py'.format(id), modes[-2])
     return getattr(the_module, id)
+
 
 def create_widget_class(id, loader):
     (config_path, method_path) = loader.find_widget(id)

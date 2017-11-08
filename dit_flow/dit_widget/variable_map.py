@@ -1,8 +1,7 @@
-import csv
 import re
 
 from dit_flow.utility_widget import UtilityWidget
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL, DEFAULT_LOG_LEVEL
 
 
 class VariableMap(UtilityWidget):
@@ -11,12 +10,12 @@ class VariableMap(UtilityWidget):
         super(VariableMap, self).__init__(*args, **kwargs)
         self.widget_method = self.variable_map
 
-    def variable_map(self, input_data, map_file, log_file=None):
+    def variable_map(self, input_data, map_file, log_file=None, log_level=DEFAULT_LOG_LEVEL):
         # Columns are separated by whitespace
         sep = '  '
         n_entries = 7
 
-        logger = setup_logger(__name__, log_file)
+        logger = setup_logger(__name__, log_file=log_file, log_level=log_level)
         logger.info('Running variable mapper.')
         # in_map = {column name: column index} of the original data file
         # in_details: {column name: [units, description]} of the original data file
@@ -54,11 +53,11 @@ class VariableMap(UtilityWidget):
                     name_converter[in_header] = out_header
                     if (in_header and in_index > 0):
                         # If the input exists, store data about it
-                        in_map.update({in_header: in_index-1})
+                        in_map.update({in_header: in_index - 1})
                         in_details.update({in_header: [operation, description]})
                     if (out_header and out_index > 0):
                         # If the output exists, store data about it
-                        out_map.update({out_header: out_index-1})
+                        out_map.update({out_header: out_index - 1})
                         out_details.update({out_header: [units, description]})
 
         output_data = []
@@ -102,7 +101,6 @@ class VariableMap(UtilityWidget):
                   {v: k for k, v in name_converter.items()}]
 
         return result
-
 
     def entries_breakout(self, entries):
         quotechar = "'"

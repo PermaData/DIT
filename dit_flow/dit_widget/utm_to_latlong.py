@@ -5,15 +5,15 @@ import csv
 import utm
 import argparse as ap
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 
 
-def utm_to_latlong(input_data_file=None, output_data_file=None, log_file=None):
+def utm_to_latlong(input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     """Converts UTM coordinates into latitude/longitude.
     assumes rows are easting, northing, zone number, either 'N' for northern
     hemisphere or 'S' for southern hemisphere
     """
-    logger = setup_logger(__name__, log_file)
+    logger = setup_logger(__name__, log_file, log_level)
 
     # Check required input and output data file names were given.
     assert input_data_file is not None, 'An input CSV file with columns of values.'

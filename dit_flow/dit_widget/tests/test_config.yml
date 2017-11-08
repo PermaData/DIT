@@ -1,3 +1,7 @@
+execution:
+  log_level: debug
+  delete_temp_files: false
+  delete_output_files: false
 input:
   reader: read_csv_file
   data_directory: 'change_me'

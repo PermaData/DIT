@@ -1,3 +1,4 @@
+import logging
 import os
 import yaml
 
@@ -10,18 +11,47 @@ class ConfigTranslator(UtilityWidget):
 
     def __init__(self, *args, **kwargs):
         super(ConfigTranslator, self).__init__(*args, **kwargs)
-        self.config_file = None
         self.config = None
-        if 'log_file' not in kwargs.keys():
-            kwargs['log_file'] = None
-        self.logger = setup_logger(__name__, kwargs['log_file'])
+        self.config_file = None
+        self.log_file = None
+        self.log_level = None
 
     def read_config(self, config_file):
-        self.logger.info('Loading configuration file: {}'.format(config_file))
         self.config_file = config_file
         with open(self.config_file) as open_config:
             self.config = yaml.safe_load(open_config)
+        self.logger = setup_logger(__name__, log_file=self.get_log_file(), log_level=self.get_log_level())
+        self.logger.debug('Loaded configuration file: {}'.format(config_file))
         return self.config
+
+    def set_log_file(self, value):
+        if self.log_file is None:
+            if value is None:
+                self.log_file = Path.create()
+            else:
+                self.log_file = value
+
+    def get_log_file(self):
+        self.set_log_file(self.config['execution']['log_file'])
+        return self.log_file
+
+    def set_log_level(self, value):
+        if value is None:
+            self.log_level = logging.ERROR
+        elif isinstance(value, str):
+            self.log_level = getattr(logging, value.upper())
+        else:
+            self.log_level = value
+
+    def get_log_level(self):
+        self.set_log_level(self.config['execution']['log_level'])
+        return self.log_level
+
+    def get_delete_temp(self):
+        return self.config['execution']['delete_temp']
+
+    def get_delete_output(self):
+        return self.config['execution']['delete_output']
 
     def get_reader_widget(self):
         return self.config['input']['reader']

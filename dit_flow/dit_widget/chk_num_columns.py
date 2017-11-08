@@ -3,13 +3,13 @@
 import argparse as ap
 import csv
 
-from dit_flow.dit_widget.common.logger_message import logger_message
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
-def chk_num_columns(print_flag, input_data_file=None, output_data_file=None, log_file=None):
+def chk_num_columns(print_flag, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Checks that all rows have the same number of columns.
     # assumes first row has correct number of columns.
-    logger = logger_message(__name__, log_file)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     record = 0

@@ -4,14 +4,14 @@ import argparse as ap
 import csv
 from array import array
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 
 
 def math_divide_constant(constant, missing_value, input_data_file=None,
-                         output_data_file=None, log_file=None):
+                         output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Divides all values in input_data_file by a constant and writes result to
     # output_data_file.
-    logger = setup_logger(__name__, log_file)
+    logger = setup_logger(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     with open(input_data_file, newline='') as _in, \

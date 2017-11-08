@@ -4,19 +4,19 @@ import argparse as ap
 import csv
 import datetime as dt
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 
 gtnp_date_time_format = '%Y-%m-%d %H:%M'
 
 
-def reformat_dates_to_gtnp(date_time_format, input_data_file=None, output_data_file=None, log_file=None):
+def reformat_dates_to_gtnp(date_time_format, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     """
     Reformat the date/times.
     :param column_file: file containing date/time column
     :param out_file: CSV filename for reformatted date/times
     :param in_format: python strptime format string of date/times in column_file
     """
-    logger = setup_logger(__name__, log_file)
+    logger = setup_logger(__name__, log_file, log_level)
     with open(input_data_file, newline='') as _in, \
             open(output_data_file, 'w', newline='') as _out:
         data = csv.reader(_in)

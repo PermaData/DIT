@@ -2,10 +2,10 @@ import argparse as ap
 import csv
 
 from dit_flow.dit_widget.common.round_value import _ceil, _floor, _trunc, _round
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 
 
-def rounding(mode, precision=0, input_data_file=None, output_data_file=None, log_file=None):
+def rounding(mode, precision=0, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     """Round values to the nearest integer.
 
     modes:

@@ -4,12 +4,12 @@ import argparse as ap
 import csv
 import statistics
 
-from dit_flow.dit_widget.common.logger_message import logger_message
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
-def chk_statistics(missing_value, input_data_file=None, output_data_file=None, log_file=None):
+def chk_statistics(missing_value, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Calculates statistics for each input column in input_data_file.
-    logger = logger_message(__name__, log_file)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     with open(input_data_file, newline='') as _in:
         logger.info('Count distinct values')
