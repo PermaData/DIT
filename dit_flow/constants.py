@@ -1,6 +1,11 @@
 from enum import Enum
 
-WIDGET_TYPES = ['WriterWidget', 'ReaderWidget', 'ManipulationWidget']
+
+class WIDGET_TYPES(Enum):
+    WRITER_WIDGET = 'WriterWidget'
+    READER_WIDGET = 'ReaderWidget'
+    MANIPULATION_WIDGET = 'ManipulationWidget'
+    UTILITY_WIDGET = 'UtilityWidget'
 
 
 class RUN_MODE(Enum):

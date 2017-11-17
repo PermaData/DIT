@@ -1,6 +1,6 @@
 execution:
   log_file: './example/example.log'
-  log_level: info
+  log_level: debug
   delete_temp_files: false
   delete_output_files: false
 input:

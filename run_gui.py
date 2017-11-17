@@ -5,8 +5,9 @@ from mako.lookup import TemplateLookup
 
 from dit_gui.widget import *
 from dit_gui.step import *
-from dit_gui.flow import *
+# from dit_gui.flow import *
 # from dit_gui.connection import *
+from widget_factory import WidgetFactory, widget_configs_by_type
 from circuits.web import Controller, Logger, Server, Static
 from dit_gui.templates import Templates
 
@@ -22,7 +23,12 @@ class Root(Controller):
             'missingValues': []
     }
 
+    widget_factory = WidgetFactory()
+
+
     def GET(self, *args, **kwargs):
+        configs = widget_configs_by_type(self.widget_factory.loader)
+        print(configs)
         return Templates.serve_template(self.tpl, **kwargs)
 
 
@@ -37,7 +43,7 @@ class Root(Controller):
 
 app = Server(("0.0.0.0", 8000))
 Logger().register(app)
-Static(docroot="static").register(app)
+Static("/static", docroot="dit_gui/static").register(app)
 Root().register(app)
 widgets.Widgets().register(app)
 step.StepOrder().register(app)
