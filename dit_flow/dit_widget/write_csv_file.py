@@ -1,7 +1,7 @@
 import argparse as ap
 
 from decimal import Decimal
-from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL, DEFAULT_LOG_LEVEL
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 from pathlib import Path
 
 

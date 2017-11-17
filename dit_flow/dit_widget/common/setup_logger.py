@@ -7,6 +7,9 @@ DEFAULT_LOG_LEVEL = logging.INFO
 
 def setup_logger(logger_name, log_file, log_level=logging.ERROR, mode=RUN_MODE.CLI):
 
+    if not hasattr(logging, 'my_handlers'):
+        logging.my_handlers = {}
+
     formatter = logging.Formatter('%(message)s')
     if mode == RUN_MODE.CLI:
         logger = logging.getLogger('')

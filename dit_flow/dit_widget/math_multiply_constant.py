@@ -4,16 +4,26 @@ import argparse as ap
 import csv
 from array import array
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 
 def math_multiply_constant(constant, missing_value, input_data_file=None,
                            output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # multiplies all values in input_data_file by a constant and writes result to
     # output_data_file.
-    logger = setup_logger(__name__, log_file, log_level)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
+    NaN_toggle = True
+    NaN_count = 0
+    record = 0
     with open(input_data_file, newline='') as _in, \
             open(output_data_file, 'w', newline='') as _out:
             logger.info('Multiplying column by {}'.format(constant))
@@ -22,12 +32,23 @@ def math_multiply_constant(constant, missing_value, input_data_file=None,
             for line in reader:
                 new_line = array('f')
                 for item in line:
-                    if float(item) != float(missing_value):
-                        value = float(item) * float(constant)
+                    record = record + 1
+                    if is_number(item):
+                        if float(item) != float(missing_value):
+                            value = float(item) * float(constant)
+                        else:
+                            value = float(missing_value)
+                        new_line.append(value)
                     else:
-                        value = float(missing_value)
-                    new_line.append(value)
+                        NaN_count = NaN_count + 1
+                        if NaN_toggle: # print the legend only once
+                            logger.info('    Records with non-number entry types:'\
+                                        '\n{:>15} {:>20}'.format('Record', 'Value'))
+                            NaN_toggle = False
+                        logger.info('{:15.0f} {:>20}'.format(float(record), item))
+                        new_line.append(missing_value)
                 output.writerow(['{:.2f}'.format(x) for x in new_line])
+            logger.info('    Total number of non-number entries: {}'.format(NaN_count))
 
 
 def parse_arguments():

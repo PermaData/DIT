@@ -1,0 +1,14 @@
+type: manipulation_widget
+description: Merges two files by matching values in two columns
+input_1: in_col1
+input_1_type: int
+input_2: in_col2
+input_2_type: int
+input_3: merge_col1
+input_3_type: int
+input_4: merge_col2
+input_4_type: int
+input_5: map_file
+input_5_type: string
+input_6: merge_file
+input_6_type: string

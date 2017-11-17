@@ -6,7 +6,7 @@ import csv
 from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
-def chk_count_distinct_double(input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
+def chk_count_distinct_double(print_flag, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Counts number of distinct values in a col A
     # then corresponing distinct values in col B in input_data_file.
     logger = logger_message(__name__, log_file, log_level)

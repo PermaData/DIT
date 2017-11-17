@@ -1,10 +1,8 @@
-import pytest
 import os
 
 from dit_flow.dit_widget.cond_if_greater import cond_if_greater
 
 
-@pytest.mark.skip()
 def test_cond_if_greater(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
     in_data_file = os.path.join(this_dir, 'test_cond.in')

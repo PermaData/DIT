@@ -1,5 +1,4 @@
 import argparse as ap
-import logging
 import numpy as np
 import os
 
@@ -11,7 +10,6 @@ from widget_factory import WidgetFactory
 
 
 class RunFlow():
-    logging.my_handlers = {}
 
     def __init__(self, flow_name, log_file=None):
         self.flow_name = flow_name
@@ -138,7 +136,7 @@ class RunFlow():
         elif len(columns) == 0:
             return
         if columns == ['all']:
-            columns = list(range(1, np_data.shape[1]))
+            columns = list(range(1, np_data.shape[1] + 1))
         zero_based_columns = [column - 1 for column in columns]
         row_start = int(not with_header)
         for row_cnt, row in enumerate(manipulated_data):

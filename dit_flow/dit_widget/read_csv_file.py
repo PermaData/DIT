@@ -1,7 +1,7 @@
 import csv
 import argparse as ap
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL, DEFAULT_LOG_LEVEL
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 from dit_flow.dit_widget.common.cast_value import cast_to_decimal
 
 

@@ -1,10 +1,8 @@
 import os
-import pytest
 
 from dit_flow.dit_widget.make_kml_point import make_kml_point
 
 
-@pytest.mark.skip()
 def test_make_kml_point(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
     in_data_file = os.path.join(this_dir, 'test_kml_pt.in')

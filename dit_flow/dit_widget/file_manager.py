@@ -1,6 +1,6 @@
 from pathlib import Path
 from dit_flow.utility_widget import UtilityWidget
-from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL, DEFAULT_LOG_LEVEL
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 
 
 class FileManager(UtilityWidget):

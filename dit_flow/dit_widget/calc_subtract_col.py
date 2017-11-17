@@ -4,12 +4,12 @@ import argparse as ap
 import csv
 from array import array
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
 def calc_subtract_col(missing_value, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # output = in_column_A + in_column_B
-    logger = setup_logger(__name__, log_file, log_level)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     with open(input_data_file, newline='') as _in, \

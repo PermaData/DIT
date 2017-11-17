@@ -6,7 +6,7 @@ import csv
 from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
-def chk_count_distinct(input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
+def chk_count_distinct(print_flag, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Counts number of distinct values in input_data_file.
     logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
@@ -32,14 +32,15 @@ def chk_count_distinct(input_data_file=None, output_data_file=None, log_file=Non
         distinct_values.sort()
 
 # count number records for each value
-        logger.info('{:>5} {:>40} {:>10} {:>10}'.format('Num',
-                                                        'Distinct Value', 'number', 'Percent'))
-        count = 0
-        for value in distinct_values:
-            count = count+1
-            number = original_values.count(value)
-            num_fraction = float(number)/float(record)*100
-            logger.info('{:5.0f} {:>40} {:10.0f} {:10.3f}'.format(count,
+        if print_flag:
+            logger.info('{:>5} {:>40} {:>10} {:>10}'.format('Num',
+                                                            'Distinct Value', 'number', 'Percent'))
+            count = 0
+            for value in distinct_values:
+                count = count+1
+                number = original_values.count(value)
+                num_fraction = float(number)/float(record)*100
+                logger.info('{:5.0f} {:>40} {:10.0f} {:10.3f}'.format(count,
                                                                   value, number, num_fraction))
 
 
