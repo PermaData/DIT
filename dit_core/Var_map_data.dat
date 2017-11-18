@@ -1,8 +1,0 @@
-5
-num  In_var         Out_var     in out  o_in o_out  map_typ    typ         fmt         units           Description                
-1    'Station'      'ID'        t  t    1    1      'copy'     'char'      '(a30)'     '(-)'           'station ID'
-2    'date:time'    'date'      t  t    2    2      'copy'     'char'      '(a30)'     '(yyyy)'        'date and time'
-3    'qc'           'na'        t  f    3    0      'copy'     'char'      '(a30)'     '(-)'           'quality control flag'
-4    'Depth'        'Depth'     t  t    4    3      'copy'     'real'      '(f8.3)'    '(m)'           'depth of measurement'
-5    'Temperature'  'Temp'      t  t    5    4      'copy'     'real'      '(f12.5)'   '(deg C)'       'Temperature'
-
