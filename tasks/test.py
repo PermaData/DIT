@@ -3,7 +3,7 @@ from invoke import task
 
 @task
 def unit(ctx, debug=False):
-    options = ['-vv', '--ignore=systemtests', '--ignore=dit_flow/dit_widget/tests/test_widgets.py']
+    options = ['-vv', '--ignore=systemtests', '--ignore=dit_flow/dit_widget/tests/test_widgets.py', '--ignore=conda', '--ignore=dit_gui']
     if debug:
         options += ['--pdb']
 
