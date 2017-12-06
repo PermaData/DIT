@@ -65,234 +65,173 @@
           <ul class="nav nav-sidebar">
             <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#manipulationWidgetList" aria-expanded="false">Manipulation Widgets<span class="caret"></span></button>
             <ul class="nav nav-pills nav-stacked" id="manipulationWidgetList">
-              <li><a href="">calc_add_col<span class="caret"></span></a></li>
-              <li><a href="">calc_add_quad_col<span class="caret"></span></a></li>
-              <li><a href="">calc_copy_col<span class="caret"></span></a></li>
-              <li><a href="">calc_dec_deg_to_deg_min_sec<span class="caret"></span></a></li>
-              <li><a href="">calc_deg_min_sec_to_dec_deg<span class="caret"></span></a></li>
-              <li><a href="">calc_divide_col<span class="caret"></span></a></li>
-              <li><a href="">calc_multiply_col<span class="caret"></span></a></li>
-              <li><a href="">calc_subtract_col<span class="caret"></span></a></li>
-              <li><a href="">chk_count_distinct<span class="caret"></span></a></li>
-              <li><a href="">chk_count_distinct_double<span class="caret"></span></a></li>
-              <li><a href="">chk_count_valid_records_num<span class="caret"></span></a></li>
-              <li><a href="">chk_count_valid_records_txt<span class="caret"></span></a></li>
-              <li><a href="">chk_nans<span class="caret"></span></a></li>
-              <li><a href="">chk_num_columns<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_equal<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_greater<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_greater_equal<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_in_range<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_in_range_equal<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_less<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_less_equal<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_out_range<span class="caret"></span></a></li>
-              <li><a href="">chk_print_num_out_range_equal<span class="caret"></span></a></li>
-              <li><a href="">chk_statistics<span class="caret"></span></a></li>
-              <li><a href="">cond_if_contains<span class="caret"></span></a></li>
-              <li><a href="">cond_if_equal<span class="caret"></span></a></li>
-              <li><a href="">cond_if_greater<span class="caret"></span></a></li>
-              <li><a href="">cond_if_greater_equal<span class="caret"></span></a></li>
-              <li><a href="">cond_if_less<span class="caret"></span></a></li>
-              <li><a href="">cond_if_less_equal<span class="caret"></span></a></li>
-              <li><a href="">cond_if_not_equal<span class="caret"></span></a></li>
-              <li><a href="">make_kml_point<span class="caret"></span></a></li>
-              <li><a href="">math_absolute_value<span class="caret"></span></a></li>
-              <li><a href="">math_add_constant<span class="caret"></span></a></li>
-              <li><a href="">math_divide_constant<span class="caret"></span></a></li>
-              <li><a href="">math_multiply_constant<span class="caret"></span></a></li>
-              <li><a href="">math_square<span class="caret"></span></a></li>
-              <li><a href="">math_square_root<span class="caret"></span></a></li>
-              <li><a href="">math_subtract_constant<span class="caret"></span></a></li>
-              <li><a href="">reformat_dates_to_gtnp<span class="caret"></span></a></li>
-              <li><a href="">replace_num_equal<span class="caret"></span></a></li>
-              <li><a href="">replace_num_fill<span class="caret"></span></a></li>
-              <li><a href="">replace_num_greater<span class="caret"></span></a></li>
-              <li><a href="">replace_num_greater_equal<span class="caret"></span></a></li>
-              <li><a href="">replace_num_in_range<span class="caret"></span></a></li>
-              <li><a href="">replace_num_in_range_equal<span class="caret"></span></a></li>
-              <li><a href="">replace_num_less<span class="caret"></span></a></li>
-              <li><a href="">replace_num_less_equal<span class="caret"></span></a></li>
-              <li><a href="">replace_num_out_range<span class="caret"></span></a></li>
-              <li><a href="">replace_num_out_range_equal<span class="caret"></span></a></li>
-              <li><a href="">replace_txt_equal<span class="caret"></span></a></li>
-              <li><a href="">replace_txt_exclude<span class="caret"></span></a></li>
-              <li><a href="">replace_txt_fill<span class="caret"></span></a></li>
-              <li><a href="">replace_txt_remove<span class="caret"></span></a></li>
-              <li><a href="">replace_txt_remove_left<span class="caret"></span></a></li>
-              <li><a href="">replace_txt_remove_right<span class="caret"></span></a></li>
-              <li><a href="">rounding<span class="caret"></span></a></li>
-              <li><a href="">sort_by_columns<span class="caret"></span></a></li>
-              <li><a href="">utm_to_latlong<span class="caret"></span></a></li>
-              <li><a href="">variable_map<span class="caret"></span></a></li>
-              <li><a href="">widget_template<span class="caret"></span></a></li>
+               % for widget in configs['ManipulationWidget']:
+                <li><a href="">${widget['name']}<span class="caret"></span></a></li>
+              % endfor
             </ul>
           </ul>
         </div>
+        <form action="/add" method="POST">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Flow Data</h4>
-          <form>
-              <div class="form-inline form-group">
-                <label for="flowNameInput">Flow Name</label>
-                <input type="text" class="form-control" id="flowNameInput" placeholder="Enter a flow name">
-              </div>
-              <div class="form-inline form-group">
-                <label for="logFileInput">Log File</label>
-                <input type="file" class="form-control" id="logFileInput" placeholder="log file">
-              </div>
-              <div class="form-inline form-group">
-                <label for="logLevelInput">Log Level</label>
-                <select class="form-control" id="logLevelInput" placeholder="log level">
-                    <option value="debug">Debug</option>
-                    <option value="info">Info</option>
-                    <option value="warning">Warning</option>
-                    <option value="error">Error</option>
-                    <option value="critical">Critical</option>
-                </select>
-              </div>
-              <div class="form-inline form-group">
-                <label for="deleteTempFiles">Delete temporary files?</label>
-                <input type="checkbox" class="form-control" id="deleteTempFiles">
-              </div>
-              <div class="form-inline form-group">
-                <label for="deleteOutputlFiles">Delete output files?</label>
-                <input type="checkbox" class="form-control" id="deleteOutputFiles">
-              </div>
-          </form>
+          <div class="form-inline form-group">
+            <label for="flowNameInput">Flow Name</label>
+            <input type="text" class="form-control" id="flowNameInput" name="flow_name" value="${config['flow_name']}" placeholder="Enter a flow name">
+          </div>
+          <div class="form-inline form-group">
+            <label for="logFileInput">Log File</label>
+            <input type="file" class="form-control" id="logFileInput" name="execution.log_file" value="${config['execution']['log_file']}" placeholder="log file">
+          </div>
+          <div class="form-inline form-group">
+            <label for="logLevelInput">Log Level</label>
+            <select class="form-control" id="logLevelInput" name="execution.log_level" value="${config['execution']['log_level']}" placeholder="log level">
+                <option value="debug">Debug</option>
+                <option value="info">Info</option>
+                <option value="warning">Warning</option>
+                <option value="error">Error</option>
+                <option value="critical">Critical</option>
+            </select>
+          </div>
+          <div class="form-inline form-group">
+            <label for="clobberTempFiles">Delete temporary files?</label>
+            <input type="checkbox" class="form-control" id="clobberTempFiles" name="execution.clobber_temp_files" 
+            % if config['execution']['clobber_temp_files']:
+             checked
+            % endif
+            >
+          </div>
+          <div class="form-inline form-group">
+            <label for="clobberOutputFiles">Delete output files?</label>
+            <input type="checkbox" class="form-control" name="execution.clobber_output_files" id="clobberOutputFiles"
+            % if config['execution']['clobber_output_files']:
+             checked
+            % endif
+            >
+          </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Input Data</h4>
-          <form class="form-inline">
-              <div class="form-group">
-                <label for="readerWidgetInput">Reader Widget</label>
-                <select class="form-control" id="readerWidgetInput" placeholder="reader widget">
-                    <option value="choose_widget">Choose Widget</option>
-                    <option value="read_csv_file">Read CSV File</option>
-                </select>
-              </div>
-          </form>
-          <form>
-              <div class="form-inline form-group">
-                <label for="dataDirectoryInput">Data Directory</label>
-                <input type="file" class="form-control" id="dataDirectoryInput">
-              </div>
-              <div class="form-inline form-group">
-                <label for="variableMapInput">Variable Map File</label>
-                <input type="file" class="form-control" id="variableMapInput">
-              </div>
-              <div class="form-inline form-group">
-                <label for="missingValueInput">Missing Values</label>
-                [
-                <!-- <div class='row'><input type="text" class="form-control" width="10" id="missingValueInput" value=10></div> -->
-                <div class='row'><input type="text" class="form-control" id="missingValueInput" placeholder='e.g. -999.99'>
-                <button type="button" class="btn btn-default btn-xs btn-number">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button></div>
-                ]
-              </div>
-              <div class="form-inline form-group">
-                <label for="missingCharactersInput">Missing Characters</label>
-                [
-                <div class='row'><input type="text" class="form-control" id="missingCharactersInput" placeholder="e.g. 'na'">
-                <button type="button" class="btn btn-default btn-xs btn-number">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button></div>
-                ]
-              </div>
-          </form>
+          <div class="form-inline form-group">
+            <label for="readerWidgetInput">Reader Widget</label>
+            <select class="form-control" id="readerWidgetInput" placeholder="reader widget">
+                <option value="choose_widget">Choose Widget</option>
+                <option value="read_csv_file">Read CSV File</option>
+            </select>
+          </div>
+          <div class="form-inline form-group">
+            <label for="dataDirectoryInput">Data Directory</label>
+            <input type="file" class="form-control" id="dataDirectoryInput">
+          </div>
+          <div class="form-inline form-group">
+            <label for="variableMapInput">Variable Map File</label>
+            <input type="file" class="form-control" id="variableMapInput">
+          </div>
+          <div class="form-inline form-group">
+            <label for="missingValueInput">Missing Values</label>
+            [
+            <!-- <div class='row'><input type="text" class="form-control" width="10" id="missingValueInput" value=10></div> -->
+            <div class='row'><input type="text" class="form-control" id="missingValueInput" placeholder='e.g. -999.99'>
+            <button type="button" class="btn btn-default btn-xs btn-number">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button></div>
+            ]
+          </div>
+          <div class="form-inline form-group">
+            <label for="missingCharactersInput">Missing Characters</label>
+            [
+            <div class='row'><input type="text" class="form-control" id="missingCharactersInput" placeholder="e.g. 'na'">
+            <button type="button" class="btn btn-default btn-xs btn-number">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button></div>
+            ]
+          </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Input Manipulations</h4>
           <label>Widget #1 - Math Add Constant</label>
           <div class="col-sm-9 col-sm-offset-4 col-md-10 col-md-offset-2 main">
-              <div class="form-inline form-group">
-                <label for="doItFlag">Do the widget?</label>
-                <input type="checkbox" class="form-control" id="doItFlag">
-              </div>
-              <div class="form-inline form-group">
-                <label for="withHeaderFlag">Subset columns for widgets with header row?</label>
-                <input type="checkbox" class="form-control" id="withHeaderFlag">
-              </div>
-              <div class="form-group">
-                  <label for="flowNameInput">Widget Inputs</label></tr>
-                  <div class="form-inline form-group">
-                    <label for="flowNameInput">constant</label>
-                    <input type="text" class="form-control widget-input" id="widgetInput1" placeholder="Enter value">
-                  </div>
-                  <div class="form-inline form-group">
-                    <label for="widgetInput1">missing_value</label>
-                    <input type="text" class="form-control widget-input" id="widgetInput2" placeholder="Enter value">
-                  </div>
-              </div>
-              <div class="form-inline form-group">
-                <label for="inputColumns">Input columns for widget</label>
-                [
-                <div class='row'><input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
-                <button type="button" class="btn btn-default btn-xs btn-number">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button></div>
-                ]
-              </div>
-              <div class="form-inline form-group">
-                <label for="outputColumns">Output columns for widget</label>
-                [
-                <div class='row'><input type="text" class="form-control" id="outputColumns" placeholder="One based column # in output file to be overwritten">
-                <button type="button" class="btn btn-default btn-xs btn-number">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button></div>
-                ]
-              </div>
+            <div class="form-inline form-group">
+              <label for="doItFlag">Do the widget?</label>
+              <input type="checkbox" class="form-control" id="doItFlag">
+            </div>
+            <div class="form-inline form-group">
+              <label for="withHeaderFlag">Subset columns for widgets with header row?</label>
+              <input type="checkbox" class="form-control" id="withHeaderFlag">
+            </div>
+            <div class="form-group">
+                <label for="flowNameInput">Widget Inputs</label></tr>
+                <div class="form-inline form-group">
+                  <label for="flowNameInput">constant</label>
+                  <input type="text" class="form-control widget-input" id="widgetInput1" placeholder="Enter value">
+                </div>
+                <div class="form-inline form-group">
+                  <label for="widgetInput1">missing_value</label>
+                  <input type="text" class="form-control widget-input" id="widgetInput2" placeholder="Enter value">
+                </div>
+            </div>
+            <div class="form-inline form-group">
+              <label for="inputColumns">Input columns for widget</label>
+              [
+              <div class='row'><input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
+              <button type="button" class="btn btn-default btn-xs btn-number">
+                  <span class="glyphicon glyphicon-plus"></span>
+              </button></div>
+              ]
+            </div>
+            <div class="form-inline form-group">
+              <label for="outputColumns">Output columns for widget</label>
+              [
+              <div class='row'><input type="text" class="form-control" id="outputColumns" placeholder="One based column # in output file to be overwritten">
+              <button type="button" class="btn btn-default btn-xs btn-number">
+                  <span class="glyphicon glyphicon-plus"></span>
+              </button></div>
+              ]
+            </div>
           </div>
-          <form>
-              <div class="form-inline form-group">
-                <label for="inputManipulationWidget1">Widget #2</label>
-                <select class="form-control" id="inputManipulationWidget1" placeholder="input manipulation widget">
-                    <option value="None">Choose Widget</option>
-                </select>
-                <button type="button" class="btn btn-default btn-xs btn-number">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-              </div>
-          </form>
+          <div class="form-inline form-group">
+            <label for="inputManipulationWidget1">Widget #2</label>
+            <select class="form-control" id="inputManipulationWidget1" placeholder="input manipulation widget">
+                <option value="None">Choose Widget</option>
+            </select>
+            <button type="button" class="btn btn-default btn-xs btn-number">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Output Data</h4>
-          <form class="form-inline">
-              <div class="form-group">
-                <label for="writerWidgetInput">Writer Widget</label>
-                <select class="form-control" id="writerWidgetInput" placeholder="writer widget">
-                    <option value="choose_widget">Choose Widget</option>
-                    <option value="write_csv_file">Write CSV File</option>
-                </select>
-              </div>
-          </form>
-          <form>
-              <div class="form-inline form-group">
-                <label for="outputDirectoryInput">Output Data Directory</label>
-                <input type="file" class="form-control" id="outputDirectoryInput">
-              </div>
-          </form>
-          <form>
-              <div class="form-inline form-group">
-                <label for="tempDirectoryInput">Temporary Directory</label>
-                <input type="file" class="form-control" id="tempDirectoryInput">
-              </div>
-          </form>
+          <div class="form-inline form-group">
+            <label for="writerWidgetInput">Writer Widget</label>
+            <select class="form-control" id="writerWidgetInput" placeholder="writer widget">
+                <option value="choose_widget">Choose Widget</option>
+                <option value="write_csv_file">Write CSV File</option>
+            </select>
+          </div>
+          <div class="form-inline form-group">
+            <label for="outputDirectoryInput">Output Data Directory</label>
+            <input type="file" class="form-control" id="outputDirectoryInput">
+          </div>
+          <div class="form-inline form-group">
+            <label for="tempDirectoryInput">Temporary Directory</label>
+            <input type="file" class="form-control" id="tempDirectoryInput">
+          </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Output Manipulations</h4>
-          <form class="form-inline">
-              <div class="form-group">
-                <label for="outputManipulationWidget1">Step 1 Widget</label>
-                <select class="form-control" id="outputManipulationWidget1" placeholder="output manipulation widget">
-                    <option value="None">Choose Widget</option>
-                </select>
-                <button type="button" class="btn btn-default btn-xs btn-number">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-              </div>
-          </form>
+            <div class="form-inline form-group">
+            <label for="outputManipulationWidget1">Step 1 Widget</label>
+            <select class="form-control" id="outputManipulationWidget1" placeholder="output manipulation widget">
+                <option value="None">Choose Widget</option>
+            </select>
+            <button type="button" class="btn btn-default btn-xs btn-number">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </div>
         </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <button type="submit" class="btn btn-primary">Save flow</button>
+        </div>
+      </form>
       </div>
     </div>
   </body>

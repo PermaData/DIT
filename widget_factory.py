@@ -50,9 +50,9 @@ def __init__(self, *args, **kwargs):
 def widget_configs_by_type(loader):
     widget_lists = {}
     config_list = loader.find_all_widget_configs()
-    widget_lists[WIDGET_TYPES.READER_WIDGET] = reader_widget_configs(config_list)
-    widget_lists[WIDGET_TYPES.WRITER_WIDGET] = writer_widget_configs(config_list)
-    widget_lists[WIDGET_TYPES.MANIPULATION_WIDGET] = manipulation_widget_configs(config_list)
+    widget_lists[WIDGET_TYPES.READER_WIDGET.value] = reader_widget_configs(config_list)
+    widget_lists[WIDGET_TYPES.WRITER_WIDGET.value] = writer_widget_configs(config_list)
+    widget_lists[WIDGET_TYPES.MANIPULATION_WIDGET.value] = manipulation_widget_configs(config_list)
     return widget_lists
 
 

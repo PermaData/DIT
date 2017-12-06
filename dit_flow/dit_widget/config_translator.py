@@ -1,3 +1,4 @@
+import collections
 import logging
 import os
 import yaml
@@ -9,9 +10,44 @@ from dit_flow.utility_widget import UtilityWidget
 
 class ConfigTranslator(UtilityWidget):
 
+    config = {
+            'flow_name': '',
+            'execution': {
+                'log_file': '',
+                'log_level': 'debug',
+                'clobber_temp_files': True,
+                'clobber_output_files': False
+            },
+            'input': {
+                'reader': '',
+                'data_directory': '',
+                'variable_map': '',
+                'missing_values': [],
+                'missing_characters': [],
+                'manipulations': []
+            },
+            'output': {
+                'writer': '',
+                'data_directory': '',
+                'temp_directory': '',
+                'missing_values': [],
+                'missing_characters': [],
+                'manipulations': []
+            }
+        }
+
+    widget = {
+            'widget': '',
+            'do_it': True,
+            'with_hdeaer': False,
+            'input_columns': [],
+            'inputs': {},
+            'output_columns': []
+        }
+
+
     def __init__(self, *args, **kwargs):
         super(ConfigTranslator, self).__init__(*args, **kwargs)
-        self.config = None
         self.config_file = None
         self.log_file = None
         self.log_level = None
@@ -127,3 +163,11 @@ class ConfigTranslator(UtilityWidget):
 
     def get_with_header_from_widget_config(self, widget_config):
         return self.get_info_from_widget_config(widget_config, 'with_header', 'with header flag')
+
+    def deep_update(self, d, u):
+        for k, v in u.items():
+            if isinstance(v, collections.Mapping):
+                d[k] = self.deep_update(d.get(k, {}), v)
+            else:
+                d[k] = v
+        return d
