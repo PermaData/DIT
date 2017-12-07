@@ -1,6 +1,6 @@
-input name        operation       output name       input column    output column   units         description
-'Station'         'copy'          'Station'         1               1               ''            'Station identifier'
-'date:time'       'modify'        'Date/Time'       2               2               'Y/M/D'       'Date and time of measurement'
-'Depth'           'modify'        'Depth'           3               3               'm'           'Depth of measurement'
-'Quality Code'    'remove'        ''                4               0               ''            'Indicates missing values'
-'Temperature'     'modify'        'Temperature'     5               4               'degrees C'   'Temperature at depth'
+Column Number,Input Name,Operation,Output Name,Input Column,Output Column,Units,Description
+1,Station,copy,Station,1,1,,Station identifier
+2,date:time,modify,Date/Time,2,2,Y/M/D,Date and time of measurement
+3,Depth,modify,Depth,3,3,m,Depth of measurement
+4,Quality Code,remove,,4,0,,Indicates missing values
+5,Temperature,modify,Temperature,5,4,degreesC,Temperature at depth
