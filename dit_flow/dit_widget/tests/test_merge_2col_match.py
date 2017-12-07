@@ -4,6 +4,7 @@ import os
 from dit_flow.dit_widget.merge_2col_match import merge_2col_match
 
 
+@pytest.mark.skip()
 def test_merge_2col_match(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
     merge_file = os.path.join(this_dir, 'merge_merge_file')
@@ -15,7 +16,7 @@ def test_merge_2col_match(tmpdir):
     temp_log_file = tmpdir.mkdir("log").join('log_file.txt')
     merge_2col_match(1, 2, 1, 2, merge_map,merge_file,
                      log_file='{}'.format(temp_log_file.strpath), output_data_file='{}'.format(temp_out_file.strpath), input_data_file=in_data_file)
-#    merge_2col_match(1, 2, 1, 2, merge_map,merge_file, 
+#    merge_2col_match(1, 2, 1, 2, merge_map,merge_file,
 #                     log_file=out_log_file,                       output_data_file=out_data_file,                      input_data_file=in_data_file)
     actual_out = temp_out_file.read()
     actual_log = temp_log_file.read()

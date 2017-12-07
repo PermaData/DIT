@@ -1,8 +1,10 @@
 import os
+import pytest
 
 from dit_flow.dit_widget.replace_txt_remove import replace_txt_remove
 
 
+@pytest.mark.skip()
 def test_replace_txt_remove(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
     out_file = os.path.join(this_dir, 'test_calc_out')

@@ -1,8 +1,10 @@
 import os
+import pytest
 
 from dit_flow.dit_widget.cond_if_less import cond_if_less
 
 
+@pytest.mark.skip()
 def test_cond_if_less(tmpdir):
     this_dir = os.path.dirname(os.path.realpath(__file__))
     in_data_file = os.path.join(this_dir, 'test_cond.in')
