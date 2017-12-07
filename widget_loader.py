@@ -30,7 +30,6 @@ class WidgetLoader(Loader):
         for entry in widget_path.iterdir():
             if str(entry).endswith('.yaml'):
                 widget_configs.append(entry)
-        print(widget_configs)
         return widget_configs
 
     def find_widget(self, widget_name):

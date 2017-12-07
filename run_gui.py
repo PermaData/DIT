@@ -31,11 +31,8 @@ class Add(Controller):
     this_config = {}
 
     def POST(self, *args, **kwargs):
-        print('config: ', self.this_config)
-        print('kwargs: ', kwargs)
         config_translator.deep_update(self.this_config, config_translator.config)
         config_translator.deep_update(self.this_config, kwargs)
-        print('config after: ', self.this_config)
         return Templates.serve_template(tpl, configs=configs, config=self.this_config, widget=config_translator.widget)
 
 
@@ -43,7 +40,7 @@ class Add(Controller):
         return Templates.serve_template(tpl, configs=configs, config=config_translator.config, widget=config_translator.widget)
 
 
-app = Server(("0.0.0.0", 8000))
+app = Server(("172.18.248.121", 8000))
 Logger().register(app)
 Static("/static", docroot="dit_gui/static").register(app)
 Root().register(app)
