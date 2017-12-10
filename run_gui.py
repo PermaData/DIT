@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse as ap
 import os
 import json
 
@@ -40,12 +41,26 @@ class Add(Controller):
         return Templates.serve_template(tpl, configs=configs, config=config_translator.config, widget=config_translator.widget)
 
 
-app = Server(("172.18.248.121", 8000))
-Logger().register(app)
-Static("/static", docroot="dit_gui/static").register(app)
-Root().register(app)
-Add().register(app)
-# widgets.Widgets().register(app)
-# step.StepOrder().register(app)
-# steps.Steps().register(app)
-app.run()
+def run_server(host, port):
+    app = Server((host, port))
+    Logger().register(app)
+    Static("/static", docroot="dit_gui/static").register(app)
+    Root().register(app)
+    Add().register(app)
+    # widgets.Widgets().register(app)
+    # step.StepOrder().register(app)
+    # steps.Steps().register(app)
+    app.run()
+
+def parse_arguments():
+    parser = ap.ArgumentParser(description='Runs the DIT GUI.')
+
+    parser.add_argument('-s', '--host', default='0.0.0.0', help='The hostname to bind to for the server.')
+    parser.add_argument('-p', '--port', type=int, default=8000, help='The port to bind to for the server.')
+
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = parse_arguments()
+
+    run_server(args.host, args.port)
