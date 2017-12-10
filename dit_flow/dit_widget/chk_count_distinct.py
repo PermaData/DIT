@@ -47,6 +47,8 @@ def chk_count_distinct(print_flag, input_data_file=None, output_data_file=None, 
 def parse_arguments():
     parser = ap.ArgumentParser(description="Counts number of distinct values in input_data_file.")
 
+    parser.add_argument('print_flag', type=bool, help='Printing value option.')
+
     parser.add_argument('-i', '--input_data_file',
                         help='Step file containing input data to manipulate.')
     parser.add_argument('-o', '--output_data_file', help='unused')
@@ -58,4 +60,4 @@ def parse_arguments():
 if __name__ == '__main__':
     args = parse_arguments()
 
-    chk_count_distinct(args.input_data_file, args.output_data_file, args.log_file)
+    chk_count_distinct(args.pring_flag, args.input_data_file, args.output_data_file, args.log_file)
