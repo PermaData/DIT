@@ -1,8 +1,7 @@
 #!/bin/bash
 
 echo "Grab DIT zip file and unpack it. Using zip file so git is unnecessary."
-# curl -L https://github.com/PermaData/DIT/archive/master.zip > dit.zip
-curl -L https://github.com/PermaData/DIT/archive/widget_work.zip > dit.zip
+curl -L https://github.com/PermaData/DIT/archive/master.zip > dit.zip
 unzip dit.zip
 cd DIT-widget_work
 
