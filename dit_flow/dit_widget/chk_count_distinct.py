@@ -60,8 +60,4 @@ def parse_arguments():
 if __name__ == '__main__':
     args = parse_arguments()
 
-<<<<<<< HEAD
     chk_count_distinct(args.pring_flag, args.input_data_file, args.output_data_file, args.log_file)
-=======
-    chk_count_distinct(args.input_data_file, args.output_data_file, args.log_file)
->>>>>>> master
