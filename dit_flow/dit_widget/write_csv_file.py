@@ -1,12 +1,12 @@
 import argparse as ap
 
 from decimal import Decimal
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 from pathlib import Path
 
 
-def write_csv_file(output_file, output_data, log_file=None):
-    logger = setup_logger(__name__, log_file)
+def write_csv_file(output_file, output_data, log_file=None, log_level=DEFAULT_LOG_LEVEL):
+    logger = setup_logger(__name__, log_file=log_file, log_level=log_level)
     logger.info('Writing data to file: {}'.format(output_file))
     output_path = Path(output_file)
     with output_path.open('w', newline='\n') as _to:

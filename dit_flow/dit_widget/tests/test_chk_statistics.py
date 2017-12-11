@@ -1,5 +1,5 @@
-import pytest
 import os
+import pytest
 
 from dit_flow.dit_widget.chk_statistics import chk_statistics
 

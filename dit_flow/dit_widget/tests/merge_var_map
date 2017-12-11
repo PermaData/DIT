@@ -1,0 +1,5 @@
+Input Name,Operation,Output Name,Input Column,Output Column,Units,Description
+merg_col1,none,na,1,0,-,junk
+merg_col2,none,na,2,0,-,junk
+merg_col3,copy,merg_col3,3,4,-,junk
+merg_col4,copy,merg_col4,4,5,-,junk

@@ -1,12 +1,12 @@
 import csv
 import argparse as ap
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 from dit_flow.dit_widget.common.cast_value import cast_to_decimal
 
 
-def read_csv_file(file_name, log_file=None):
-    logger = setup_logger(__name__, log_file)
+def read_csv_file(file_name, log_file=None, log_level=DEFAULT_LOG_LEVEL):
+    logger = setup_logger(__name__, log_file=log_file, log_level=log_level)
     logger.info('Reading file: {}'.format(file_name))
     data = []
     with open(file_name, newline='') as _from:

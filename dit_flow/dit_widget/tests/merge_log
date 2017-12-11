@@ -1,0 +1,7 @@
+Merge Files
+	Merge file: /projects/MULTIMOD/PermaData/dit-widget-work/dit_flow.dit_widget/tests/merge_merge_file
+	Map file: /projects/MULTIMOD/PermaData/dit-widget-work/dit_flow.dit_widget/tests/merge_var_map
+	Records merged input file: 4
+	Unmatched records in merge file: 1
+	  Rec                           col1                           col2
+	    5                              5                              c

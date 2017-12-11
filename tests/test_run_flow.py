@@ -1,5 +1,5 @@
-import pytest
 import os
+import logging
 import numpy as np
 
 from collections import OrderedDict
@@ -42,7 +42,7 @@ def test_read_input_data(tmpdir):
 
     flow = RunFlow(config_path)
     flow.setup_utilities()
-    actual = flow.read_input_data(str(datafile), 'test.log')
+    actual = flow.read_input_data(str(datafile), 'test.log', logging.INFO)
 
     actual_list = actual.tolist()
     assert len(actual_list) == 3
@@ -218,7 +218,7 @@ def test_write_output_file():
 
     flow = RunFlow(config_path)
     flow.setup_utilities()
-    flow.write_output_file(datafile, input_data, 'test.log')
+    flow.write_output_file(datafile, input_data, 'test.log', logging.INFO)
     with open(datafile, 'r') as readfile:
         actual = readfile.read()
 

@@ -1,6 +1,7 @@
 from dit_flow.flow_widget import FlowWidget
 from dit_flow.dit_widget.port import PortType
 
+
 class ReaderWidget(FlowWidget):
 
     def __init__(self, *args, **kwargs):
@@ -13,6 +14,6 @@ class ReaderWidget(FlowWidget):
     def go(self, *args, **kwargs):
         super().go(*args, **kwargs)
         # Write out input and output columns to log file.
-        self.logger.info('{} reading input file.'.format(self.channel))
+        self.logger.debug('{} reading input file.'.format(self.channel))
         result = self.widget_method(*args, **kwargs)
         return result

@@ -4,7 +4,7 @@ import argparse as ap
 import ast
 import csv
 
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 from dit_flow.dit_widget.common.cast_value import cast_to_datetime, \
     cast_to_integer, cast_to_real, cast_data_value, gtnp_date_time_format
 
@@ -31,14 +31,14 @@ def create_typed_row(row, column_list, logger):
     return tuple(row_list)
 
 
-def sort_by_columns(column_list, input_data_file=None, output_data_file=None, log_file=None):
+def sort_by_columns(column_list, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     """
     Takes a list of columns to sort by in ascending order.
     :param input_data_file: CSV file to sort
     :param output_data_file: sorted CSV file
     :param column_list: list of tuples (index, type) describing sort columns
     """
-    logger = setup_logger(__name__, log_file)
+    logger = logger_message(__name__, log_file, log_level)
     logger.info('Sorting input file by columns:')
     if isinstance(column_list, str):
         column_list = tuple_list(column_list)

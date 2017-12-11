@@ -4,12 +4,12 @@ import argparse as ap
 import csv
 import simplekml
 
-from dit_flow.dit_widget.common.logger_message import logger_message
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
-def make_kml_point(input_data_file=None, output_data_file=None, log_file=None):
+def make_kml_point(input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Makes a kml point file.
-    logger = logger_message(__name__, log_file)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'A kml point file.'
     with open(input_data_file, newline='') as _in, \

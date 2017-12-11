@@ -8,8 +8,8 @@ def test_chk_count_distinct_double(tmpdir):
     in_data_file = os.path.join(this_dir, 'test_txt2.in')
     out_log_file = os.path.join(this_dir, 'test_print_log')
     temp_log_file = tmpdir.mkdir("log").join('log_file.txt')
-    chk_count_distinct_double(log_file='{}'.format(temp_log_file.strpath), input_data_file=in_data_file)
-#    chk_count_distinct_double(log_file=out_log_file,                       input_data_file=in_data_file)
+    chk_count_distinct_double('true', log_file='{}'.format(temp_log_file.strpath), input_data_file=in_data_file)
+#    chk_count_distinct_double('true', log_file=out_log_file,                       input_data_file=in_data_file)
     actual_log = temp_log_file.read()
     expected_log = 'Count distinct values\n'\
                    '\tTotal number =20\n'\

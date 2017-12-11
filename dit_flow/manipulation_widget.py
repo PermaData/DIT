@@ -9,10 +9,12 @@ class ManipulationWidget(FlowWidget):
         self.channel = 'manipulation_widget'
 
         self.do_it = True
-        self.required_args = {'input_data_file': '', 'output_data_file': '', 'log_file': ''}
+        self.required_args = {'input_data_file': '', 'output_data_file': '',
+                              'log_file': '', 'log_level': ''}
         self.required_arg_types = {'input_data_file': PortType.STR,
                                    'output_data_file': PortType.STR,
-                                   'log_file': PortType.STR}
+                                   'log_file': PortType.STR,
+                                   'log_level': PortType.STR}
         self.input_columns = []
         self.output_columns = []
         self.with_header = False
@@ -30,10 +32,14 @@ class ManipulationWidget(FlowWidget):
         super().go(*args, **kwargs)
         # Write out input and output columns to log file.
         if not ManipulationWidget.columns_exist(self.input_columns):
-            self.logger.info('No input columns, running ' + self.channel + ' without input data.')
+            self.logger.debug('No input columns, running ' + self.channel + ' without input data.')
         elif not ManipulationWidget.columns_exist(self.output_columns):
-            self.logger.info('No output columns, running ' + self.channel + ' without output replacement data.')
+            self.logger.debug('No output columns, running ' + self.channel + ' without output replacement data.')
         else:
             self.logger.info('Running ' + self.channel + ' on input columns: ' + str(self.input_columns) + '  to output columns: ' + str(self.output_columns))
+        if 'log_file' in kwargs.keys():
+            self.required_args['log_file'] = kwargs['log_file']
+        if 'log_level' in kwargs.keys():
+            self.required_args['log_level'] = int(kwargs['log_level'])
         result = self.widget_method(*self.input_args.values(), **self.required_args)
         return result

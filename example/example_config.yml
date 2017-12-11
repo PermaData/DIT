@@ -1,3 +1,8 @@
+execution:
+  log_file: './example/example.log'
+  log_level: debug
+  clobber_temp_files: false
+  clobber_output_files: false
 input:
   reader: read_csv_file
   data_directory: './example/input'

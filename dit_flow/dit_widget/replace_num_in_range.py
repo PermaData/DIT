@@ -4,14 +4,14 @@ import argparse as ap
 import csv
 from array import array
 
-from dit_flow.dit_widget.common.logger_message import logger_message
+from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
 
 def replace_num_in_range(startval, endval, constant, print_flag, input_data_file=None,
-                         output_data_file=None, log_file=None):
+                         output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     # Replaces values between startval and endval with constant in input_data_file
     # and writes result to output_data_file.
-    logger = logger_message(__name__, log_file)
+    logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     assert output_data_file is not None, 'An output CSV file to write new values.'
     record = 0

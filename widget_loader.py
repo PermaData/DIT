@@ -2,6 +2,7 @@ import os
 
 from circuits import Loader
 from itertools import chain
+from pathlib import Path
 
 
 class WidgetLoader(Loader):
@@ -22,6 +23,14 @@ class WidgetLoader(Loader):
     @property
     def widget_dir(self):
         return self._widget_dir
+
+    def find_all_widget_configs(self):
+        widget_path = Path(self._widget_dir)
+        widget_configs = []
+        for entry in widget_path.iterdir():
+            if str(entry).endswith('.yaml'):
+                widget_configs.append(entry)
+        return widget_configs
 
     def find_widget(self, widget_name):
         config_file = widget_name + ".yaml"

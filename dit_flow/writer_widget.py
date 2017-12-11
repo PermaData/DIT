@@ -13,6 +13,6 @@ class WriterWidget(FlowWidget):
 
     def go(self, *args, **kwargs):
         super().go(*args, **kwargs)
-        self.logger.info('{} writing output file.'.format(self.channel))
+        self.logger.debug('{} writing output file.'.format(self.channel))
         result = self.widget_method(*args, **kwargs)
         return result

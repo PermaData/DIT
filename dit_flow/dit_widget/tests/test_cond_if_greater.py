@@ -1,5 +1,5 @@
-import pytest
 import os
+import pytest
 
 from dit_flow.dit_widget.cond_if_greater import cond_if_greater
 

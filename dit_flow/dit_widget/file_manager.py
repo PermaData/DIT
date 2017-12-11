@@ -1,6 +1,6 @@
 from pathlib import Path
 from dit_flow.utility_widget import UtilityWidget
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
 
 
 class FileManager(UtilityWidget):
@@ -9,14 +9,14 @@ class FileManager(UtilityWidget):
         super(FileManager, self).__init__(*args, **kwargs)
         self.widget_method = self.file_manager
 
-    def file_manager(self, filenames, output_dir, temp_dir, log_file=None):
+    def file_manager(self, filenames, output_dir, temp_dir, log_file=None, log_level=DEFAULT_LOG_LEVEL):
         """
         filenames: a sequence of paths to data files
         CURRENT: sends out a sequence of filenames after confirming they exist
         FID: a sequential numeric identifier for each file
         LOGFILE: sends out a sequence of log filenames that correspond to a data file
         """
-        self.logger = setup_logger(__name__, log_file)
+        self.logger = setup_logger(__name__, log_file, log_level)
         step_files = []
         for identifier, name in enumerate(filenames, start=1):
             name_path = Path(name)

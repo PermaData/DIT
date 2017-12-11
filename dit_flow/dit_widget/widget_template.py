@@ -2,17 +2,19 @@ import argparse as ap
 
 # setup_logger is offered as a convenience method for creating Python standard
 # logging file and stream that will duplicate output to the screen.
-from dit_flow.dit_widget.common.setup_logger import setup_logger
+from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LEVEL
+
 
 # The three required keyword arguments (input_data_file, output_data_file, and
-# log_file) will be called by keyword and needn't be used by the widget.
-def widget_template(method_arg_1, method_arg_2, input_data_file=None, output_data_file=None, log_file=None):
+# log_file, log_level) will be called by keyword and needn't be used by the widget.
+def widget_template(method_arg_1, method_arg_2, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
     if log_file:
-        logger = setup_logger(__name__, log_file)
+        logger = setup_logger(__name__, log_file=log_file, log_level=log_level)
         logger.info('I am a widget. Here are my arguments:')
         logger.info('\tinput_data_file = {}'.format(input_data_file))
         logger.info('\toutput_data_file = {}'.format(output_data_file))
         logger.info('\tlog_file = {}'.format(log_file))
+        logger.info('\tlog_level = {}'.format(log_level))
         logger.info('\tmethod_arg_1 = {}'.format(method_arg_1))
         logger.info('\tmethod_arg_2 = {}'.format(method_arg_2))
     else:
@@ -20,6 +22,7 @@ def widget_template(method_arg_1, method_arg_2, input_data_file=None, output_dat
         print('\tinput_data_file = {}'.format(input_data_file))
         print('\toutput_data_file = {}'.format(output_data_file))
         print('\tlog_file = {}'.format(log_file))
+        print('\tlog_level = {}'.format(log_level))
         print('\tmethod_arg_1 = {}'.format(method_arg_1))
         print('\tmethod_arg_2 = {}'.format(method_arg_2))
 
