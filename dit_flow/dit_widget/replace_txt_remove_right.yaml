@@ -1,9 +1,5 @@
 type: manipulation_widget
-<<<<<<< HEAD
 description: "Removes all text to right of text string in infile and writes result to outfile."
-=======
-description: "Removes all text to right of text string in infile and writes result to outfile.
->>>>>>> master
 input_1: target
 input_1_type: string
 input_2: print_flag

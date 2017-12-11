@@ -9,11 +9,7 @@ from dit_flow.dit_widget.common.setup_logger import setup_logger, DEFAULT_LOG_LE
 gtnp_date_time_format = '%Y-%m-%d %H:%M'
 
 
-<<<<<<< HEAD
 def reformat_dates_to_gtnp(date_time_format, input_data_file=None, output_data_file=None, log_file=None, log_level=DEFAULT_LOG_LEVEL):
-=======
-def reformat_dates_to_gtnp(date_time_format, input_data_file=None, output_data_file=None, log_file=None):
->>>>>>> master
     """
     Reformat the date/times.
     :param column_file: file containing date/time column
