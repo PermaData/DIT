@@ -19,6 +19,37 @@ configs = widget_configs_by_type(widget_factory.loader)
 config_translator = widget_factory.create_widget('config_translator')
 
 
+def file_choices_to_string(kwargs):
+    pass
+
+
+def dropdowns_to_string(kwargs):
+    pass
+
+
+def checkboxs_to_boolean(kwargs):
+    pass
+
+
+def string_to_file_choices(kwargs):
+    pass
+
+
+def string_to_dropdowns(kwargs):
+    pass
+
+
+def boolean_to_checkboxs(kwargs):
+    pass
+
+
+def parse_post(config, kwargs):
+    file_choices_to_string(kwargs)
+    dropdowns_to_string(kwargs)
+    checkboxs_to_boolean(kwargs)
+
+
+
 class Root(Controller):
 
 
@@ -32,8 +63,10 @@ class Add(Controller):
     this_config = {}
 
     def POST(self, *args, **kwargs):
+        print('begin post: ', self.this_config)
         config_translator.deep_update(self.this_config, config_translator.config)
         config_translator.deep_update(self.this_config, kwargs)
+        print('before return: ', self.this_config)
         return Templates.serve_template(tpl, configs=configs, config=self.this_config, widget=config_translator.widget)
 
 
