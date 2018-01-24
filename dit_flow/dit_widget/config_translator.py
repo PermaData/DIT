@@ -13,13 +13,13 @@ class ConfigTranslator(UtilityWidget):
     config = {
             'flow_name': '',
             'execution': {
-                'log_file': '',
-                'log_level': 'debug',
+                'log_file': './flow.log',
+                'log_level': 'info',
                 'clobber_temp_files': True,
                 'clobber_output_files': False
             },
             'input': {
-                'reader': '',
+                'reader': 'read_csv_file',
                 'data_directory': '',
                 'variable_map': '',
                 'missing_values': [],
@@ -27,7 +27,7 @@ class ConfigTranslator(UtilityWidget):
                 'manipulations': []
             },
             'output': {
-                'writer': '',
+                'writer': 'write_csv_file',
                 'data_directory': '',
                 'temp_directory': '',
                 'missing_values': [],
@@ -55,7 +55,7 @@ class ConfigTranslator(UtilityWidget):
     def read_config(self, config_file):
         self.config_file = config_file
         with open(self.config_file) as open_config:
-            self.config = yaml.safe_load(open_config)
+            self.config.update(yaml.safe_load(open_config))
         self.logger = setup_logger(__name__, log_file=self.get_log_file(), log_level=self.get_log_level())
         self.logger.debug('Loaded configuration file: {}'.format(config_file))
         return self.config

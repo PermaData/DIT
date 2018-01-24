@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Data Integration Tool (DIT)</title>
+
+    <!-- Bootstrap -->
+    <link href="http://localhost:8000/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost:8000/static/css/dashboard.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://localhost:8000/static/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://localhost:8000/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+    <script type="application/javascript">
+        function get_path(fileInput) {
+
+          if (fileInput.target.files && fileInput.target.files[0]) {
+              var theFile = fileInput.target.files[0]
+              alert("File name: " + theFile.name + "\nFile type: " + theFile.type + "\nFile size: " + theFile.size);
+          }
+        }
+    </script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+          <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#add_flow">Create Flow</a></li>
+                <li><a href="#update_flow">Update Flow</a></li>
+                <li><a href="#">Run Flow</a></li>
+              </ul>
+              <a class="navbar-brand" href="#">Data Integration Tool (DIT)</a>
+            </div>
+          </nav>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <form class="navbar-form nav-sidebar">
+            <input type="text" class="form-control" placeholder="Search for widget...">
+          </form>
+          <ul class="nav nav-sidebar">
+            <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#readerWidgetList" aria-expanded="false">Reader Widgets<span class="caret"></span></button>
+            <ul class="nav nav-pills nav-stacked collapse" id="readerWidgetList">
+              <li><a href="">read_csv_file<span class="caret"></span></a></li>
+            </ul>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#writerWidgetList" aria-expanded="false">Writer Widgets<span class="caret"></span></button>
+            <ul class="nav nav-pills nav-stacked collapse" id="writerWidgetList">
+              <li><a href="">write_csv_file<span class="caret"></span></a></li>
+            </ul>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#manipulationWidgetList" aria-expanded="false">Manipulation Widgets<span class="caret"></span></button>
+            <ul class="nav nav-pills nav-stacked collapse" id="manipulationWidgetList">
+               % for widget in configs['ManipulationWidget']:
+                <li><a href="">${widget['name']}<span class="caret"></span></a></li>
+              % endfor
+            </ul>
+          </ul>
+        </div>
+        <div class="tab-pane col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-horizontal" id="add_flow">
+        <form action="/add" method="POST">
+        <table class="table">
+            <tr>
+                <td>
+          <h4 class="sub-header">Define Flow Data</h4>
+      </td>
+      </tr>
+      <tr>
+          <td class="col-md-4">
+            <label for="flowNameInput" class="control-label">Flow Name</label>
+        </td>
+        <td>
+            <input type="text" class="form-control" id="flowNameInput" name="flow_name" value="${config['flow_name']}" placeholder="Enter a flow name">
+          </td>
+      </tr>
+      <tr>
+          <td class="col-md-4">
+            <label for="logFileInput"  class="control-label">Log File</label>
+           </td>
+           <td>
+            <input type="text" class="form-control" id="logFileInput" name="execution.log_file" value="${config['execution']['log_file']}" placeholder="Enter the path to the log file">
+          </td>
+      </tr>
+      <tr>
+          <td class="col-md-4">
+            <label for="logLevelInput">Log Level</label>
+        </td>
+        <td>
+            <select class="form-control" id="logLevelInput" name="execution.log_level" value="${config['execution']['log_level']}" placeholder="log level">
+                <option value="debug"
+                % if config['execution']['log_level'] == 'debug':
+                    selected="selected"
+                % endif
+                >Debug</option>
+
+                <option value="info"
+                % if config['execution']['log_level'] == 'info':
+                    selected="selected"
+                % endif
+                >Info</option>
+
+                <option value="warning"
+                % if config['execution']['log_level'] == 'warning':
+                    selected="selected"
+                % endif
+                >Warning</option>
+
+                <option value="error"
+                % if config['execution']['log_level'] == 'error':
+                    selected="selected"
+                % endif
+                >Error</option>
+
+                <option value="critical"
+                % if config['execution']['log_level'] == 'critical':
+                    selected="selected"
+                % endif
+                >Critical</option>
+            </select>
+          </td>
+      </tr>
+      <tr>
+          <td class="col-md-4">
+            <label for="clobberTempFiles">Delete temporary files?</label>
+        </td>
+        <td>
+            <input type="checkbox" class="form-control" id="clobberTempFiles" name="execution.clobber_temp_files" 
+            % if config['execution']['clobber_temp_files']:
+             checked
+            % endif
+            >
+          </td>
+      </tr>
+      <tr>
+          <td class="col-md-4">
+            <label for="clobberOutputFiles">Delete output files?</label>
+        </td>
+        <td>
+            <input type="checkbox" class="form-control" name="execution.clobber_output_files" id="clobberOutputFiles"
+            % if config['execution']['clobber_output_files']:
+             checked
+            % endif
+            >
+          </td>
+            </tr>
+            <tr>
+              <td>
+                  <h4 class="sub-header">Define Input Data</h4>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="input.reader">Reader Widget</label>
+              </td>
+              <td>
+                  <select class="form-control" id="input.reader" value="${config['input']['reader']}" placeholder="reader widget">
+                      <option value="choose_widget">Choose Widget</option>
+                     % for widget in configs['ReaderWidget']:
+                      <option value="${widget['name']}"
+                      % if config['input']['reader'] == widget['name']:
+                          selected="selected"
+                      % endif
+                      >${widget['name']}</option>
+                     % endfor
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+            <label for="input.data_directory">Data Directory</label>
+              </td>
+              <td>
+                 <input type="text" class="form-control" id="input.data_directory" name="input.data_directory" value="${config['input']['data_directory']}" placeholder="Enter directory for data">
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="input.variable_map">Variable Map File</label>
+              </td>
+              <td>
+                  <input type="text" class="form-control" id="input.variable_map" name="input.variable_map" value="${config['input']['variable_map']}" placeholder="Enter path to variable mapping file">
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="input.missing_values">Missing Values</label>
+              </td>
+              <td>
+                <div class='input-group'>
+                    <input type="text" class="form-control" id="input.missing_values" name="input.missing_values" value="${config['input']['missing_values']}" placeholder='e.g. -999.99'>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="input.missing_characters">Missing Characters</label>
+              </td>
+              <td>
+                <div class='input-group'>
+                   <input type="text" class="form-control" id="input.missing_characters" name="input.missing_characters" value="${config['input']['missing_characters']}" placeholder="e.g. 'na'">
+                </div>
+              </td>
+            </tr>
+            <tr>
+               <td>
+                   <h4 class="sub-header">Define Input Manipulations</h4>
+               </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+              <label>Widget #1 - Math Add Constant</label>
+              <input type="checkbox" class="input-group-addon form-control" id="doItFlag">
+              </td>
+              </tr>
+          </tr>
+          <tr>
+              <td></td>
+              <td>
+              <label for="withHeaderFlag">Subset columns for widgets with header row?</label>
+              <input type="checkbox" class="input-group-addon form-control" id="withHeaderFlag">
+              </td>
+          </tr>
+          <tr>
+              <td></td>
+              <td>
+                <label for="flowNameInput">Widget Inputs</label>
+                <table>
+                <tr>
+                    <td>
+                <div class="form-inline">
+                      <label for="flowNameInput">constant</label>
+                      <input type="text" class="form-control widget-input" id="widgetInput1" placeholder="Enter value">
+                  </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <div class="form-inline">
+                          <label for="widgetInput1">missing_value</label>
+                          <input type="text" class="form-control widget-input" id="widgetInput2" placeholder="Enter value">
+                      </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-inline">
+                          <label for="inputColumns">Input columns for widget</label>
+                          [
+                          <input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
+                          <div class="input-group-addon form-inline">
+                          <button type="button" class="btn btn-default btn-xs btn-number">
+                              <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                      </div> ]
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-inline">
+                          <label for="inputColumns">Output columns for widget</label>
+                          [
+                          <input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
+                          <div class="input-group-addon form-inline">
+                          <button type="button" class="btn btn-default btn-xs btn-number">
+                              <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                      </div> ]
+                        </div>
+                    </td>
+                </tr>
+            </tr>
+            </table>
+            <tr>
+              <td>
+                  <h4 class="sub-header">Define Output Data</h4>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="output.writer">Writer Widget</label>
+              </td>
+              <td>
+                  <select class="form-control" id="output.writer" value="${config['output']['writer']}" placeholder="writer widget">
+                      <option value="choose_widget">Choose Widget</option>
+                     % for widget in configs['WriterWidget']:
+                      <option value="${widget['name']}"
+                      % if config['output']['writer'] == widget['name']:
+                          selected="selected"
+                      % endif
+                      >${widget['name']}</option>
+                     % endfor
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+            <label for="output.data_directory">Data Directory</label>
+              </td>
+              <td>
+                 <input type="text" class="form-control" id="output.data_directory" name="output.data_directory" value="${config['output']['data_directory']}" placeholder="Enter directory for output data">
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="output.temp_directory">Temporary Directory</label>
+              </td>
+              <td>
+                  <input type="text" class="form-control" id="output.temp_directory" name="output.temp_directory" value="${config['output']['temp_directory']}" placeholder="Enter directory for temporary data">
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="output.missing_values">Missing Values</label>
+              </td>
+              <td>
+                <div class='input-group'>
+                    <input type="text" class="form-control" id="output.missing_values" name="output.missing_values" value="${config['output']['missing_values']}" placeholder='e.g. -999.99'>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-4">
+                  <label for="output.missing_characters">Missing Characters</label>
+              </td>
+              <td>
+                <div class='input-group'>
+                   <input type="text" class="form-control" id="output.missing_characters" name="output.missing_characters" value="${config['input']['missing_characters']}" placeholder="e.g. 'na'">
+                </div>
+              </td>
+            </tr>
+              </td>
+          </tr>
+          <tr>
+              <td><button type="submit" class="btn btn-primary">Save flow</button></td>
+          </tr>
+        </table>
+    </form>
+</div>
+    </div>
+  </body>
+</html>
