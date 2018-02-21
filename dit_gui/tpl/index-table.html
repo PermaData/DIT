@@ -9,20 +9,27 @@
 
     <!-- Bootstrap -->
     <link href="http://localhost:8000/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost:8000/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
     <link href="http://localhost:8000/static/css/dashboard.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="http://localhost:8000/static/js/jquery.min.js"></script>
+    <script type='text/javascript' src="http://localhost:8000/static/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="http://localhost:8000/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="http://localhost:8000/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type='text/javascript'>
+    $(document).ready(function(){
+        $("[data-toggle=popover]").each(function(i, obj) {
 
-    <script type="application/javascript">
-        function get_path(fileInput) {
-
-          if (fileInput.target.files && fileInput.target.files[0]) {
-              var theFile = fileInput.target.files[0]
-              alert("File name: " + theFile.name + "\nFile type: " + theFile.type + "\nFile size: " + theFile.size);
-          }
-        }
+            $(this).popover({
+              html: true,
+              content: function() {
+                var id = $(this).attr('id')
+                var contentId = '#' + id + '-content'
+                return $(contentId).html();
+              }
+            });
+        });
+        $('[data-toggle="popover"]').popover();
+    });
     </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -55,23 +62,90 @@
           <ul class="nav nav-sidebar">
             <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#readerWidgetList" aria-expanded="false">Reader Widgets<span class="caret"></span></button>
             <ul class="nav nav-pills nav-stacked collapse" id="readerWidgetList">
-              <li><a href="">read_csv_file<span class="caret"></span></a></li>
+               % for widget in configs['ReaderWidget']:
+              <li>
+                    <button type="button" class="btn btn-sm btn-block"
+                        data-toggle="popover"
+                        data-container="body"
+                        data-placement="right"
+                        id="${widget['name']}">
+                        ${widget['name']}</button>
+                    <div id="${widget['name']}-content" class="hide">
+                        <p><b>Description:</b> ${widget['description']}</br>
+                            % for in_key, in_val in [(key, widget[key]) for key in widget.keys() if 'input' in key]:
+                                % if 'type' in in_key:
+                                    <b>Type:</b> ${in_val}</br>
+                                % else:
+                                    <b>Input:</b> ${in_val}, 
+                                % endif
+                            % endfor
+                    </div>
+              </li>
+              % endfor
             </ul>
           </ul>
           <ul class="nav nav-sidebar">
             <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#writerWidgetList" aria-expanded="false">Writer Widgets<span class="caret"></span></button>
             <ul class="nav nav-pills nav-stacked collapse" id="writerWidgetList">
-              <li><a href="">write_csv_file<span class="caret"></span></a></li>
+               % for widget in configs['WriterWidget']:
+              <li>
+                    <button type="button" class="btn btn-sm btn-block"
+                        data-toggle="popover"
+                        data-container="body"
+                        data-placement="right"
+                        id="${widget['name']}">
+                        ${widget['name']}</button>
+                    <div id="${widget['name']}-content" class="hide">
+                        <p><b>Description:</b> ${widget['description']}</br>
+                            % for in_key, in_val in [(key, widget[key]) for key in widget.keys() if 'input' in key]:
+                                % if 'type' in in_key:
+                                    <b>Type:</b> ${in_val}</br>
+                                % else:
+                                    <b>Input:</b> ${in_val}, 
+                                % endif
+                            % endfor
+                    </div>
+              </li>
+              % endfor
             </ul>
           </ul>
           <ul class="nav nav-sidebar">
             <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#manipulationWidgetList" aria-expanded="false">Manipulation Widgets<span class="caret"></span></button>
             <ul class="nav nav-pills nav-stacked collapse" id="manipulationWidgetList">
                % for widget in configs['ManipulationWidget']:
-                <li><a href="">${widget['name']}<span class="caret"></span></a></li>
+                <li>
+                    <button type="button" class="btn btn-sm btn-block"
+                        data-toggle="popover"
+                        data-container="body"
+                        data-placement="right"
+                        id="${widget['name']}">
+                        ${widget['name']}</button>
+                    <div id="${widget['name']}-content" class="hide">
+                        <p><b>Description:</b> ${widget['description']}</br>
+                            % for in_key, in_val in [(key, widget[key]) for key in widget.keys() if 'input' in key]:
+                                % if 'type' in in_key:
+                                    <b>Type:</b> ${in_val}</br>
+                                % else:
+                                    <b>Input:</b> ${in_val}, 
+                                % endif
+                            % endfor
+                    </div>
+                </li>
               % endfor
             </ul>
           </ul>
+        </div>
+        <div class="tab-pane col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-horizontal" id="update_flow">
+        <form action="/update" method="POST">
+        <table class="table">
+          <tr>
+              <td class="col-md-4">
+                <label for="flowFilePath" class="control-label">Flow File Path</label>
+            </td>
+            <td>
+                <input type="text" class="form-control" id="flowFilePath" name="config_file_path" value="${config_file_path}" placeholder="Enter the file path for this flow">
+              </td>
+          </tr>
         </div>
         <div class="tab-pane col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-horizontal" id="add_flow">
         <form action="/add" method="POST">
@@ -203,7 +277,7 @@
               </td>
               <td>
                 <div class='input-group'>
-                    <input type="text" class="form-control" id="input.missing_values" name="input.missing_values" value="${config['input']['missing_values']}" placeholder='e.g. -999.99'>
+                    <input type="text" class="form-control" id="input.missing_values" name="input.missing_values" value="${', '.join(map(str, config['input']['missing_values']))}" placeholder='e.g. -999.99'>
                 </div>
               </td>
             </tr>
@@ -213,7 +287,7 @@
               </td>
               <td>
                 <div class='input-group'>
-                   <input type="text" class="form-control" id="input.missing_characters" name="input.missing_characters" value="${config['input']['missing_characters']}" placeholder="e.g. 'na'">
+                   <input type="text" class="form-control" id="input.missing_characters" name="input.missing_characters" value="${', '.join(map(str, config['input']['missing_characters']))}" placeholder="e.g. 'na'">
                 </div>
               </td>
             </tr>
@@ -222,71 +296,19 @@
                    <h4 class="sub-header">Define Input Manipulations</h4>
                </td>
             </tr>
+            % for widget in config['input']['manipulations']:
+                ${make_widget_row(widget)}
+            % endfor
             <tr>
-              <td class="col-md-4">
-              <label>Widget #1 - Math Add Constant</label>
-              <input type="checkbox" class="input-group-addon form-control" id="doItFlag">
-              </td>
-              </tr>
-          </tr>
-          <tr>
-              <td></td>
-              <td>
-              <label for="withHeaderFlag">Subset columns for widgets with header row?</label>
-              <input type="checkbox" class="input-group-addon form-control" id="withHeaderFlag">
-              </td>
-          </tr>
-          <tr>
-              <td></td>
-              <td>
-                <label for="flowNameInput">Widget Inputs</label>
-                <table>
-                <tr>
-                    <td>
-                <div class="form-inline">
-                      <label for="flowNameInput">constant</label>
-                      <input type="text" class="form-control widget-input" id="widgetInput1" placeholder="Enter value">
-                  </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                      <div class="form-inline">
-                          <label for="widgetInput1">missing_value</label>
-                          <input type="text" class="form-control widget-input" id="widgetInput2" placeholder="Enter value">
-                      </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-inline">
-                          <label for="inputColumns">Input columns for widget</label>
-                          [
-                          <input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
-                          <div class="input-group-addon form-inline">
-                          <button type="button" class="btn btn-default btn-xs btn-number">
-                              <span class="glyphicon glyphicon-plus"></span>
-                          </button>
-                      </div> ]
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-inline">
-                          <label for="inputColumns">Output columns for widget</label>
-                          [
-                          <input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
-                          <div class="input-group-addon form-inline">
-                          <button type="button" class="btn btn-default btn-xs btn-number">
-                              <span class="glyphicon glyphicon-plus"></span>
-                          </button>
-                      </div> ]
-                        </div>
-                    </td>
-                </tr>
+                <td>
+                    <select class="form-control" id="input.manipulation" value="${config['output']['writer']}" placeholder="writer widget">
+                       <option value="choose_widget">Choose Widget</option>
+                       % for widget in configs['ManipulationWidget']:
+                          <option value="${widget['name']}" onselect="addWidget()">${widget['name']}</option>
+                       % endfor
+                    </select>
+                </td>
             </tr>
-            </table>
             <tr>
               <td>
                   <h4 class="sub-header">Define Output Data</h4>

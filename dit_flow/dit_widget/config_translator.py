@@ -10,6 +10,8 @@ from dit_flow.utility_widget import UtilityWidget
 
 class ConfigTranslator(UtilityWidget):
 
+    config_file_path = './config.yaml'
+
     config = {
             'flow_name': '',
             'execution': {
@@ -51,6 +53,58 @@ class ConfigTranslator(UtilityWidget):
         self.config_file = None
         self.log_file = None
         self.log_level = None
+
+    def config_to_html_vals(self, config):
+        print('config_to_html_vals input config: ', config)
+        vals_to_convert = {
+                'execution': {
+                    'clobber_temp_files': 'on' if config['execution']['clobber_temp_files'] else 'off',
+                    'clobber_output_files': 'on' if config['execution']['clobber_output_files'] else 'off'
+                    },
+                'input': {
+                    'missing_values': ','.join(config['input']['missing_values']),
+                    'missing_characters': ','.join(config['input']['missing_characters']),
+                    'manipulations': config['input']['manipulations']
+                    },
+                'output': {
+                    'missing_values':  ','.join(config['output']['missing_values']),
+                    'missing_characters': ','.join(config['output']['missing_characters']),
+                    'manipulations': config['input']['manipulations']
+                    }
+                }
+        print('vals_to_convert from config_to_html_vals: ', vals_to_convert)
+        self.deep_update(config, vals_to_convert)
+        print('Return from config_to_html_vals: ', config)
+        return config
+
+    def html_to_config_vals(self, config):
+        print('htmo_to_config_vals input config: ', config)
+        updated_config = self.config.copy()
+        self.deep_update(updated_config, config)
+        vals_to_convert = {
+                'execution': {
+                    'clobber_temp_files': True if 'clobber_temp_files' in config['execution'] else False,
+                    'clobber_output_files': True if 'clobber_output_files' in config['execution'] else False
+                    },
+                'input': {
+                    'missing_values': [missing.strip() for missing in
+                                       updated_config['input']['missing_values'].split(',')],
+                    'missing_characters': [missing.strip() for missing in
+                                           updated_config['input']['missing_characters'].split(',')],
+                    'manipulations': updated_config['input']['manipulations']
+                    },
+                'output': {
+                    'missing_values': [missing.strip() for missing in
+                                       updated_config['output']['missing_values'].split(',')],
+                    'missing_characters': [missing.strip() for missing in
+                                           updated_config['output']['missing_characters'].split(',')],
+                    'manipulations': updated_config['output']['manipulations']
+                    }
+                }
+        print('vals_to_convert from html_to_config_vals: ', vals_to_convert)
+        self.deep_update(updated_config, vals_to_convert)
+        print('Return from html_to_config_vals: ', updated_config)
+        return updated_config
 
     def read_config(self, config_file):
         self.config_file = config_file

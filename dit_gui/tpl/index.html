@@ -11,9 +11,19 @@
     <link href="http://localhost:8000/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://localhost:8000/static/css/dashboard.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="http://localhost:8000/statis/js/jquery.min.js"></script>
+    <script src="http://localhost:8000/static/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://localhost:8000/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+    <script type="application/javascript">
+        function get_path(fileInput) {
+
+          if (fileInput.target.files && fileInput.target.files[0]) {
+              var theFile = fileInput.target.files[0]
+              alert("File name: " + theFile.name + "\nFile type: " + theFile.type + "\nFile size: " + theFile.size);
+          }
+        }
+    </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,28 +33,20 @@
     <![endif]-->
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Data Integration Tool (DIT)</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Create Flow</a></li>
-            <li><a href="#">Update Flow</a></li>
-            <li><a href="#">Run Flow</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
     <div class="container-fluid">
+      <div class="row">
+          <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#add_flow">Create Flow</a></li>
+                <li><a href="#update_flow">Update Flow</a></li>
+                <li><a href="#">Run Flow</a></li>
+              </ul>
+              <a class="navbar-brand" href="#">Data Integration Tool (DIT)</a>
+            </div>
+          </nav>
+      </div>
+
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <form class="navbar-form nav-sidebar">
@@ -71,18 +73,27 @@
             </ul>
           </ul>
         </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main tab-pane active form-horizontal" id="update_flow">
+        <form action="/update" method="POST">
+              <div class="form-inline form-group form-group-sm">
+                <label for="flowNameInput">Flow Name</label>
+                <input type="text" class="form-control" id="flowNameInput" name="flow_name" value="${config['flow_name']}" placeholder="Enter a flow name">
+                <button type="submit" class="btn btn-primary">Load flow</button>
+              </div>
+        </form>
+            </div>
+        <div class="tab-pane col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-horizontal" id="add_flow">
         <form action="/add" method="POST">
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Flow Data</h4>
-          <div class="form-inline form-group">
-            <label for="flowNameInput">Flow Name</label>
+          <div class="form-group form-group-sm">
+            <label for="flowNameInput" class="control-label">Flow Name</label>
             <input type="text" class="form-control" id="flowNameInput" name="flow_name" value="${config['flow_name']}" placeholder="Enter a flow name">
           </div>
-          <div class="form-inline form-group">
-            <label for="logFileInput">Log File</label>
-            <input type="file" class="form-control" id="logFileInput" name="execution.log_file" value="${config['execution']['log_file']}" placeholder="${config['execution']['log_file']}">
+          <div class="form-group form-group-sm">
+            <label for="logFileInput"  class="control-label">Log File</label>
+            <input type="text" class="form-control" id="logFileInput" name="execution.log_file" value="${config['execution']['log_file']}" placeholder="Enter the path to the log file">
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="logLevelInput">Log Level</label>
             <select class="form-control" id="logLevelInput" name="execution.log_level" value="${config['execution']['log_level']}" placeholder="log level">
                 <option value="debug">Debug</option>
@@ -92,7 +103,7 @@
                 <option value="critical">Critical</option>
             </select>
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="clobberTempFiles">Delete temporary files?</label>
             <input type="checkbox" class="form-control" id="clobberTempFiles" name="execution.clobber_temp_files" 
             % if config['execution']['clobber_temp_files']:
@@ -100,7 +111,7 @@
             % endif
             >
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="clobberOutputFiles">Delete output files?</label>
             <input type="checkbox" class="form-control" name="execution.clobber_output_files" id="clobberOutputFiles"
             % if config['execution']['clobber_output_files']:
@@ -111,65 +122,71 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Input Data</h4>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="readerWidgetInput">Reader Widget</label>
             <select class="form-control" id="readerWidgetInput" placeholder="reader widget">
                 <option value="choose_widget">Choose Widget</option>
                 <option value="read_csv_file">Read CSV File</option>
             </select>
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="dataDirectoryInput">Data Directory</label>
             <input type="file" class="form-control" id="dataDirectoryInput">
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="variableMapInput">Variable Map File</label>
             <input type="file" class="form-control" id="variableMapInput">
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="missingValueInput">Missing Values</label>
             [
             <!-- <div class='row'><input type="text" class="form-control" width="10" id="missingValueInput" value=10></div> -->
-            <div class='row'><input type="text" class="form-control" id="missingValueInput" placeholder='e.g. -999.99'>
-            <button type="button" class="btn btn-default btn-xs btn-number">
-                <span class="glyphicon glyphicon-plus"></span>
-            </button></div>
+            <div class='input-group'>
+                <input type="text" class="form-control" id="missingValueInput" placeholder='e.g. -999.99'>
+                <div class="input-group-addon">
+                    <button type="button" class="btn btn-default btn-xs btn-number">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
             ]
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="missingCharactersInput">Missing Characters</label>
-            [
-            <div class='row'><input type="text" class="form-control" id="missingCharactersInput" placeholder="e.g. 'na'">
-            <button type="button" class="btn btn-default btn-xs btn-number">
-                <span class="glyphicon glyphicon-plus"></span>
-            </button></div>
-            ]
+            [ <div class='input-group'>
+                [<input type="text" class="form-control" id="missingCharactersInput" placeholder="e.g. 'na'">
+                <div class="input-group-addon">
+                <button type="button" class="btn btn-default btn-xs btn-number">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>]
+            </div> ]
           </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Input Manipulations</h4>
           <label>Widget #1 - Math Add Constant</label>
           <div class="col-sm-9 col-sm-offset-4 col-md-10 col-md-offset-2 main">
-            <div class="form-inline form-group">
+            <div class="form-inline form-group form-group-sm">
               <label for="doItFlag">Do the widget?</label>
               <input type="checkbox" class="form-control" id="doItFlag">
             </div>
-            <div class="form-inline form-group">
+            <div class="form-inline form-group form-group-sm">
               <label for="withHeaderFlag">Subset columns for widgets with header row?</label>
               <input type="checkbox" class="form-control" id="withHeaderFlag">
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label for="flowNameInput">Widget Inputs</label></tr>
-                <div class="form-inline form-group">
+                <div class="form-inline form-group form-group-sm">
                   <label for="flowNameInput">constant</label>
                   <input type="text" class="form-control widget-input" id="widgetInput1" placeholder="Enter value">
                 </div>
-                <div class="form-inline form-group">
+                <div class="form-inline form-group form-group-sm">
                   <label for="widgetInput1">missing_value</label>
                   <input type="text" class="form-control widget-input" id="widgetInput2" placeholder="Enter value">
                 </div>
             </div>
-            <div class="form-inline form-group">
+            <div class="form-inline form-group form-group-sm">
               <label for="inputColumns">Input columns for widget</label>
               [
               <div class='row'><input type="text" class="form-control" id="inputColumns" placeholder="One based column #">
@@ -178,7 +195,7 @@
               </button></div>
               ]
             </div>
-            <div class="form-inline form-group">
+            <div class="form-inline form-group form-group-sm">
               <label for="outputColumns">Output columns for widget</label>
               [
               <div class='row'><input type="text" class="form-control" id="outputColumns" placeholder="One based column # in output file to be overwritten">
@@ -188,7 +205,7 @@
               ]
             </div>
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="inputManipulationWidget1">Widget #2</label>
             <select class="form-control" id="inputManipulationWidget1" placeholder="input manipulation widget">
                 <option value="None">Choose Widget</option>
@@ -200,25 +217,25 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Output Data</h4>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="writerWidgetInput">Writer Widget</label>
             <select class="form-control" id="writerWidgetInput" placeholder="writer widget">
                 <option value="choose_widget">Choose Widget</option>
                 <option value="write_csv_file">Write CSV File</option>
             </select>
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="outputDirectoryInput">Output Data Directory</label>
             <input type="file" class="form-control" id="outputDirectoryInput">
           </div>
-          <div class="form-inline form-group">
+          <div class="form-inline form-group form-group-sm">
             <label for="tempDirectoryInput">Temporary Directory</label>
             <input type="file" class="form-control" id="tempDirectoryInput">
           </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="sub-header">Define Output Manipulations</h4>
-            <div class="form-inline form-group">
+            <div class="form-inline form-group form-group-sm">
             <label for="outputManipulationWidget1">Step 1 Widget</label>
             <select class="form-control" id="outputManipulationWidget1" placeholder="output manipulation widget">
                 <option value="None">Choose Widget</option>
@@ -232,7 +249,6 @@
           <button type="submit" class="btn btn-primary">Save flow</button>
         </div>
       </form>
-      </div>
     </div>
   </body>
 </html>
