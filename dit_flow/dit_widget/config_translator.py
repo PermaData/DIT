@@ -1,3 +1,4 @@
+import copy
 import collections
 import logging
 import os
@@ -13,39 +14,39 @@ class ConfigTranslator(UtilityWidget):
     config_file_path = './config.yaml'
 
     config = {
-            'flow_name': '',
-            'execution': {
-                'log_file': './flow.log',
-                'log_level': 'info',
-                'clobber_temp_files': True,
-                'clobber_output_files': False
-            },
-            'input': {
-                'reader': 'read_csv_file',
-                'data_directory': '',
-                'variable_map': '',
-                'missing_values': [],
-                'missing_characters': [],
-                'manipulations': []
-            },
-            'output': {
-                'writer': 'write_csv_file',
-                'data_directory': '',
-                'temp_directory': '',
-                'missing_values': [],
-                'missing_characters': [],
-                'manipulations': []
-            }
+        'flow_name': '',
+        'execution': {
+            'log_file': './flow.log',
+            'log_level': 'info',
+            'clobber_temp_files': True,
+            'clobber_output_files': False
+        },
+        'input': {
+            'reader': 'read_csv_file',
+            'data_directory': '',
+            'variable_map': '',
+            'missing_values': [],
+            'missing_characters': [],
+            'manipulations': []
+        },
+        'output': {
+            'writer': 'write_csv_file',
+            'data_directory': '',
+            'temp_directory': '',
+            'missing_values': [],
+            'missing_characters': [],
+            'manipulations': []
         }
+    }
 
     widget = {
-            'widget': '',
-            'do_it': True,
-            'with_hdeaer': False,
-            'input_columns': [],
-            'inputs': {},
-            'output_columns': []
-        }
+        'widget': '',
+        'do_it': True,
+        'with_hdeaer': False,
+        'input_columns': [],
+        'inputs': {},
+        'output_columns': []
+    }
 
 
     def __init__(self, *args, **kwargs):
@@ -62,12 +63,12 @@ class ConfigTranslator(UtilityWidget):
                     'clobber_output_files': 'on' if config['execution']['clobber_output_files'] else 'off'
                     },
                 'input': {
-                    'missing_values': ','.join(config['input']['missing_values']),
+                    'missing_values': ','.join(map(str, config['input']['missing_values'])),
                     'missing_characters': ','.join(config['input']['missing_characters']),
                     'manipulations': config['input']['manipulations']
                     },
                 'output': {
-                    'missing_values':  ','.join(config['output']['missing_values']),
+                    'missing_values':  ','.join(map(str, config['output']['missing_values'])),
                     'missing_characters': ','.join(config['output']['missing_characters']),
                     'manipulations': config['input']['manipulations']
                     }
@@ -78,9 +79,9 @@ class ConfigTranslator(UtilityWidget):
         return config
 
     def html_to_config_vals(self, config):
-        print('htmo_to_config_vals input config: ', config)
+        print('html_to_config_vals input config: ', config)
         updated_config = self.config.copy()
-        self.deep_update(updated_config, config)
+        # self.deep_update(updated_config, config)
         vals_to_convert = {
                 'execution': {
                     'clobber_temp_files': True if 'clobber_temp_files' in config['execution'] else False,
@@ -113,6 +114,12 @@ class ConfigTranslator(UtilityWidget):
         self.logger = setup_logger(__name__, log_file=self.get_log_file(), log_level=self.get_log_level())
         self.logger.debug('Loaded configuration file: {}'.format(config_file))
         return self.config
+
+    def save_config(self, config_file, config):
+        with open(config_file, 'w') as open_config:
+            yaml.dump(config, open_config)
+        self.logger = setup_logger(__name__, log_file=self.get_log_file(), log_level=self.get_log_level())
+        self.logger.debug('Saved configuration file: {}'.format(config_file))
 
     def set_log_file(self, value):
         if self.log_file is None:
@@ -218,8 +225,44 @@ class ConfigTranslator(UtilityWidget):
 
     def deep_update(self, d, u):
         for k, v in u.items():
+            print('looking at: ', k, v)
             if isinstance(v, collections.Mapping):
+                print('calling deep_update with: ', k, '  ', v)
                 d[k] = self.deep_update(d.get(k, {}), v)
             else:
+                print('setting: ', k, ' to ', v)
                 d[k] = v
         return d
+
+#    def deep_update(self, target, src):
+#        """
+#        Deep update target dict with src
+#        For each k,v in src: if k doesn't exist in target, it is deep copied from
+#        src to target. Otherwise, if v is a list, target[k] is extended with
+#        src[k]. If v is a set, target[k] is updated with v, If v is a dict,
+#        recursively deep-update it.
+#
+#        Examples:
+#        >>> t = {'name': 'Ferry', 'hobbies': ['programming', 'sci-fi']}
+#        >>> deep_update(t, {'hobbies': ['gaming']})
+#        >>> print t
+#        {'name': 'Ferry', 'hobbies': ['programming', 'sci-fi', 'gaming']}
+#        """
+#        for k, v in src.items():
+#            if type(v) == list:
+#                if not k in target:
+#                    target[k] = copy.deepcopy(v)
+#                else:
+#                    target[k].extend(v)
+#            elif type(v) == dict:
+#                if not k in target:
+#                    target[k] = copy.deepcopy(v)
+#                else:
+#                    self.deep_update(target[k], v)
+#            elif type(v) == set:
+#                if not k in target:
+#                    target[k] = v.copy()
+#                else:
+#                    target[k].update(v.copy())
+#            else:
+#                target[k] = copy.copy(v)

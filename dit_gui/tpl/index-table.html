@@ -30,6 +30,18 @@
         });
         $('[data-toggle="popover"]').popover();
     });
+
+    function doCreate() {
+        $('#saveForm').append($('#flowFilePath'));
+        window.location.href = '/';
+    }
+
+    function doUpdate() {
+        var config_path = $('#flowFilePath').val();
+        var updateURLstring = '/update?config_file_path=' + config_path;
+        console.log('config_path: ' + config_path + ',  updateURL: ' + updateURLstring);
+        window.location.href = updateURLstring;
+    }
     </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -44,11 +56,6 @@
       <div class="row">
           <nav class="navbar navbar-inverse navbar-fixed-top">
             <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
-                <li><a href="#add_flow">Create Flow</a></li>
-                <li><a href="#update_flow">Update Flow</a></li>
-                <li><a href="#">Run Flow</a></li>
-              </ul>
               <a class="navbar-brand" href="#">Data Integration Tool (DIT)</a>
             </div>
           </nav>
@@ -136,7 +143,6 @@
           </ul>
         </div>
         <div class="tab-pane col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-horizontal" id="update_flow">
-        <form action="/update" method="POST">
         <table class="table">
           <tr>
               <td class="col-md-4">
@@ -144,11 +150,13 @@
             </td>
             <td>
                 <input type="text" class="form-control" id="flowFilePath" name="config_file_path" value="${config_file_path}" placeholder="Enter the file path for this flow">
+                <button class="btn btn-primary" onclick="javascript:doCreate()">Create</button>
+                <button class="btn btn-primary" onclick="javascript:doUpdate()">Update</button>
               </td>
           </tr>
         </div>
+        <form id='saveForm' action="/save" method="POST">
         <div class="tab-pane col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-horizontal" id="add_flow">
-        <form action="/add" method="POST">
         <table class="table">
             <tr>
                 <td>
@@ -277,7 +285,7 @@
               </td>
               <td>
                 <div class='input-group'>
-                    <input type="text" class="form-control" id="input.missing_values" name="input.missing_values" value="${', '.join(map(str, config['input']['missing_values']))}" placeholder='e.g. -999.99'>
+                    <input type="text" class="form-control" id="input.missing_values" name="input.missing_values" value="${config['input']['missing_values']}" placeholder='e.g. -999.99'>
                 </div>
               </td>
             </tr>
@@ -287,7 +295,7 @@
               </td>
               <td>
                 <div class='input-group'>
-                   <input type="text" class="form-control" id="input.missing_characters" name="input.missing_characters" value="${', '.join(map(str, config['input']['missing_characters']))}" placeholder="e.g. 'na'">
+                    <input type="text" class="form-control" id="input.missing_characters" name="input.missing_characters" value="${config['input']['missing_characters']}" placeholder="e.g. 'na'">
                 </div>
               </td>
             </tr>
@@ -296,12 +304,24 @@
                    <h4 class="sub-header">Define Input Manipulations</h4>
                </td>
             </tr>
+            <ul class="nav nav-pills nav-stacked collapse" id="inputWidgetList">
             % for widget in config['input']['manipulations']:
-                ${make_widget_row(widget)}
+              <li>
+                    <button type="button" class="btn btn-sm btn-block"
+                        data-toggle="popover"
+                        data-container="body"
+                        data-placement="right"
+                        id="in-${widget['widget']}">
+                        ${widget['widget']}</button>
+                    <div id="in-${widget['widget']}-content" class="hide">
+                        ${widget}
+                    </div>
+              </li>
             % endfor
+            </ul>
             <tr>
                 <td>
-                    <select class="form-control" id="input.manipulation" value="${config['output']['writer']}" placeholder="writer widget">
+                    <select class="form-control" id="input.manipulation" value="${config['input']['manipulations']}" placeholder="writer widget">
                        <option value="choose_widget">Choose Widget</option>
                        % for widget in configs['ManipulationWidget']:
                           <option value="${widget['name']}" onselect="addWidget()">${widget['name']}</option>
@@ -363,14 +383,14 @@
               </td>
               <td>
                 <div class='input-group'>
-                   <input type="text" class="form-control" id="output.missing_characters" name="output.missing_characters" value="${config['input']['missing_characters']}" placeholder="e.g. 'na'">
+                   <input type="text" class="form-control" id="output.missing_characters" name="output.missing_characters" value="${config['output']['missing_characters']}" placeholder="e.g. 'na'">
                 </div>
               </td>
             </tr>
               </td>
           </tr>
           <tr>
-              <td><button type="submit" class="btn btn-primary">Save flow</button></td>
+              <td><button onclick="javascript:doCreate()" type="submit" class="btn btn-primary">Save flow</button></td>
           </tr>
         </table>
     </form>
