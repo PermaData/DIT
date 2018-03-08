@@ -3,6 +3,7 @@
 import argparse as ap
 import csv
 from array import array
+from decimal import *
 
 from dit_flow.dit_widget.common.logger_message import logger_message, DEFAULT_LOG_LEVEL
 
@@ -30,15 +31,18 @@ def math_divide_constant(constant, missing_value, input_data_file=None,
             logger.info('Dividing column by {}'.format(constant))
             output = csv.writer(_out)
             reader = csv.reader(_in)
+            getcontext().prec = 2
             for line in reader:
-                new_line = array('f')
+                # note: if this is an array of floats, the values get approximated when appended.
+                # Making it an array of decimals avoids this problem.
+                new_line = array('d')
                 for item in line:
                     record = record + 1
                     if is_number(item):
                         if float(item) != float(missing_value):
-                            value = float(item) / float(constant)
+                            value = Decimal(float(item) / constant)
                         else:
-                            value = float(missing_value)
+                            value = missing_value
                         new_line.append(value)
                     else:
                         NaN_count = NaN_count + 1
@@ -48,7 +52,7 @@ def math_divide_constant(constant, missing_value, input_data_file=None,
                             NaN_toggle = False
                         logger.info('{:15.0f} {:>20}'.format(float(record), item))
                         new_line.append(missing_value)
-                output.writerow(['{:.2f}'.format(x) for x in new_line])
+                output.writerow(['{0:.2f}'.format(x) for x in new_line])
             logger.info('    Total number of non-number entries: {}'.format(NaN_count))
 
 

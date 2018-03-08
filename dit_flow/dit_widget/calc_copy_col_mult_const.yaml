@@ -1,0 +1,6 @@
+type: manipulation_widget
+description: Copy column and multiply by constant (out = in * constant)
+input_1: constant
+input_1_type: float
+input_2: missing_value
+input_2_type: float

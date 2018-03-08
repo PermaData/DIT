@@ -59,7 +59,7 @@ def merge_2col_match(in_col1, in_col2, merge_col1, merge_col2, map_file, merge_f
         if (operation[i] == 'copy'):
             copy_from.append(int(in_index[i])-1)
             copy_to.append(int(out_index[i])-1)
-            logger.info('\toperation: {} {} '.format(copy_from[num_copies],copy_to[num_copies]))
+#            logger.info('\toperation: {} {} '.format(copy_from[num_copies],copy_to[num_copies]))
             num_copies = num_copies + 1
     logger.info('\tnum_copies: {} '.format(num_copies))
 
