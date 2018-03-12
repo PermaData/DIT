@@ -9371,3 +9371,3036 @@ I am a widget. Here are my arguments:
 	log_level = 20
 	method_arg_1 = arg_1
 	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-jewe8680/pytest-130/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-130/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Setting up file manager widget
+Setting up reader widget: read_csv_file
+Setting up variable mapper widget
+Setting up writer widget: write_csv_file
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Setting up file manager widget
+Setting up reader widget: read_csv_file
+Setting up variable mapper widget
+Setting up writer widget: write_csv_file
+Reading file: /tmp/pytest-of-jewe8680/pytest-130/test_read_input_data0/input/data_file
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Widgets to be run:
+	widget_template
+No with header flag specified for widget.
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Widgets to be run:
+	widget_template
+	math_add_constant
+	widget_template
+No with header flag specified for widget.
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Subsetting columns with headers: [1, 3]
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Subsetting columns without headers: [1, 3]
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Subsetting columns with headers: [1]
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Subsetting columns with headers: [1, 2, 3, 4]
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Subsetting columns without headers: [1, 2, 3, 4]
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Loaded configuration file: /projects/MULTIMOD/PermaData/dit-kevin/tests/../dit_flow/dit_widget/tests/test_config.yml
+Setup logging into: ./test.log with level: 10
+Setting up file manager widget
+Setting up reader widget: read_csv_file
+Setting up variable mapper widget
+Setting up writer widget: write_csv_file
+Writing data to file: /projects/MULTIMOD/PermaData/dit-kevin/tests/data_file
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-jewe8680/pytest-131/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-131/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-132/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-133/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-jewe8680/pytest-134/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-134/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-jewe8680/pytest-135/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-135/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-jewe8680/pytest-136/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-jewe8680/pytest-136/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-kyma3609/pytest-39/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-kyma3609/pytest-39/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-kyma3609/pytest-40/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-kyma3609/pytest-40/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2
+Copy column and multiply by constant (out = in * constant)
+Convert degrees minutes seconds to decimal degrees
+Convert degrees minutes seconds to decimal degrees
+Divide two columns (out = column_a / column_b)
+Multiply two columns (out = column_a * column_b)
+Subtract two columns (out = column_a +column_b)
+Calculate VWC given TWTT and ALT
+	      twtt (ns)        alt (cm) velocity (cm/ns)  dielectric (-)         vwc (-)
+	     10.0000000      60.0000000      12.0000000       6.2500000       0.1181392
+	     15.0000000      60.0000000       8.0000000      14.0625000       0.2624812
+	     20.0000000      60.0000000       6.0000000      25.0000000       0.4122813
+	     25.0000000      60.0000000       4.8000000      39.0625000       0.5428766
+	     30.0000000      60.0000000       4.0000000      56.2500000       0.6620103
+	     35.0000000      60.0000000       3.4285714      76.5625000       0.8394194
+	     40.0000000      60.0000000       3.0000000     100.0000000       1.0000000
+	     45.0000000      60.0000000       2.6666667     126.5625000       1.0000000
+	     50.0000000      60.0000000       2.4000000     156.2500000       1.0000000
+calculate VWC for 3 layers given 3 depths and three depth average VWC
+	             d3          V_0_d1          V_0_d2          V_0_d3            VWC1            VWC2            VWC3
+	     60.0000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000       0.5000000
+	     60.0000000       0.4000000       0.5000000       0.5000000       0.4000000       0.6500000       0.5000000
+	     60.0000000       0.3000000       0.5000000       0.5000000       0.3000000       0.8000000       0.5000000
+	     60.0000000       0.1000000       0.5000000       0.5000000       0.1000000       1.1000000       0.5000000
+	     60.0000000       0.1000000       0.4000000       0.5000000       0.1000000       0.8500000       0.5500000
+	     60.0000000       0.1000000       0.3000000       0.5000000       0.1000000       0.6000000       0.6000000
+Count distinct values
+	Total number =20
+  Num                           Distinct Value     number    Percent
+    1                                     Crap          7     35.000
+    2                                  Garbage          6     30.000
+    3                                     junk          4     20.000
+    4                                       na          3     15.000
+Count distinct values
+	Total number =20
+  Num                              Col A Value                              Col B Value     number    Percent
+    1                                     Crap                                     blue          3     15.000
+    2                                     Crap                                      red          4     20.000
+    3                                  Garbage                                    green          3     15.000
+    4                                  Garbage                                   orange          3     15.000
+    5                                     junk                                    green          2     10.000
+    6                                     junk                                   orange          2     10.000
+    7                                       na                                     blue          2     10.000
+    8                                       na                                      red          1      5.000
+Print valid values (not -999.0)
+     Total      Valid    Percent
+        20         16     80.000
+Print valid values (not na)
+     Total      Valid    Percent
+        20         17     85.000
+Find values that are not numbers
+    Record               Value
+         4                  na
+        10                  na
+        14                  na
+	Total number =3
+Checking the number of columns
+	Correct number of columns:          3
+    Record          Num Columns
+         3                    4 
+         4                    4 
+         7                    2 
+         8                    2 
+	Total number rows with incorrect number columns=4
+Print values = 1.0
+    Record                Value
+        11                  1.0
+
+	 Total number =1.0:          1
+Print values > 9.0
+    Record                Value
+        20                10.00
+
+	 Total number >9.0:          1
+Print values >= 9.0
+    Record                Value
+        19                  9.0
+        20                10.00
+
+	 Total number >=9.0:          2
+Print values > 1.0 and < 3.0
+    Record                Value
+        12                    2
+
+	 Total number > 1.0 and < 3.0:          1
+Print values >= 1.0 and <= 3.0
+    Record                Value
+        11                  1.0
+        12                    2
+        13                  3.0
+
+	 Total number >= 1.0 and <= 3.0:          3
+Print values < -8.0
+    Record                Value
+         1                 -9.0
+
+	 Total number < -8.0:          1
+Print values <= -8.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+
+	 Total number <=-8.0:          2
+Print values < -8.0 or > 9.0
+    Record                Value
+         1                 -9.0
+        20                10.00
+
+	 Total number < -8.0 or > 9.0:          2
+Print values <= -8.0 or >= 9.0
+    Record                Value
+         1                 -9.0
+         2                -8.00
+        19                  9.0
+        20                10.00
+
+	 Total number <= -8.0 or >= 9.0:          4
+If column A contains 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+        11                   5                Junk                test
+	 Total number =2
+If column A = 1 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         1                   1                Junk                test
+         7                   1                Junk                test
+	 Total number =2
+If column A >= 5 set column B = test
+    Record         Col A Value     Old Col B Value     New Col B Value
+         5                   5                Junk                test
+         6                   6                Junk                test
+        11                   5                Junk                test
+        12                   6                Junk                test
+	 Total number =4
+Make kml wall file: /tmp/pytest-of-kyma3609/pytest-41/test_make_kml_wall0/out/output_file.csv
+Make kml wall file: /projects/MULTIMOD/PermaData/dit-kevin/dit_flow/dit_widget/tests/test_out.kml
+Absolute value of column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Adding 1.0 to the column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Dividing column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Interpolate by Site and relative value
+	Number in records: 16
+	number sites: 3 
+	Interpolate: a
+	Interpolate: b
+	Not enough valid points to interpolate c
+		Number valid points: 1
+	Last point must be valid to interpolate c
+		Last point: -999.0
+Multiplying column by 2.0
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Squares values in column
+    Total number of non-number entries: 0
+Square root of values in column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Subtracting 1.0 from column
+    Records with non-number entry types:
+         Record                Value
+              5                   0A
+              6                   0B
+    Total number of non-number entries: 2
+Replacing 1.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+
+	 Total number =1
+Filling with -999.0
+
+	 Total number =3
+Replacing >2.0 with -999.99
+    Record            Old Value            New Value
+         4                  4.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing >2.0 and <4.0 with -999.99
+    Record            Old Value            New Value
+         3                  3.0              -999.99
+
+	 Total number =1
+Replacing >=2.0 and <=4.0 with -999.99
+    Record            Old Value            New Value
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+
+	 Total number =2
+Replacing <2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =2
+Replacing <=2.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         3              -999.99              -999.99
+
+	 Total number =3
+Replacing values < 2.0 or > 4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         3              -999.99              -999.99
+         5                  5.0              -999.99
+
+	 Total number =3
+Replacing <=2.0 or >=4.0 with -999.99
+    Record            Old Value            New Value
+         1                  1.0              -999.99
+         2                  2.0              -999.99
+         4                  4.0              -999.99
+         5                  5.0              -999.99
+
+	 Total number =4
+Replacing empty string with xyz
+    Record            New Value
+-9.0
+-8.00
+-7.000
+''
+-5.0
+-4
+-3.0
+-2.00
+-1.000
+''
+1.0
+2
+3.0
+''
+5.000
+6.00
+7.0
+8
+9.0
+10.00
+
+	 Total number =0
+Replacing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Replacing fields containing cde with xyz
+    Record            Old Value            New Value
+         1              abcdefg                  xyz
+
+	 Total number =1
+Filling with xyz
+
+	 Total number =3
+Remove text right of crap
+    Record            Old Value            New Value
+         1              crapola                 crap
+         2         load of crap         load of crap
+         3            crap pile                 crap
+
+	 Total number =3
+Sorting input file by columns:
+	(0, 'real')
+	(1, 'real')
+Changed row 0 from: ('621988', '6088495')  to: (-35.3393644819495, -67.65764427168914)
+Changed row 1 from: ('621900', '6089268')  to: (-35.33240705055096, -67.65872754754074)
+Changed row 2 from: ('621534', '6089464')  to: (-35.33068481959214, -67.66278279394442)
+Changed row 3 from: ('621630', '6089558')  to: (-35.3298257715448, -67.661740748294)
+I am a widget. Here are my arguments:
+	input_data_file = None
+	output_data_file = None
+	log_file = /tmp/pytest-of-kyma3609/pytest-41/test_writes_to_log_file0/sub/test.log
+	log_level = 20
+	method_arg_1 = arg_1
+	method_arg_2 = arg_2

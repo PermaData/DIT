@@ -1,1 +1,3 @@
-{}
+{
+  "dit_widget/tests/test_make_kml_wall.py::test_make_kml_wall": true
+}
