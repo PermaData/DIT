@@ -42,7 +42,7 @@ class ConfigTranslator(UtilityWidget):
     widget = {
         'widget': '',
         'do_it': True,
-        'with_hdeaer': False,
+        'with_header': False,
         'input_columns': [],
         'inputs': {},
         'output_columns': []
@@ -73,9 +73,9 @@ class ConfigTranslator(UtilityWidget):
                     'manipulations': config['input']['manipulations']
                     }
                 }
-        print('vals_to_convert from config_to_html_vals: ', vals_to_convert)
+        # print('vals_to_convert from config_to_html_vals: ', vals_to_convert)
         self.deep_update(config, vals_to_convert)
-        print('Return from config_to_html_vals: ', config)
+        # print('Return from config_to_html_vals: ', config)
         return config
 
     def html_to_config_vals(self, config):
