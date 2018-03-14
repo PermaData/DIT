@@ -12,7 +12,7 @@ def chk_statistics(missing_value, input_data_file=None, output_data_file=None, l
     logger = logger_message(__name__, log_file, log_level)
     assert input_data_file is not None, 'An input CSV file with columns of values.'
     with open(input_data_file, newline='') as _in:
-        logger.info('Count distinct values')
+        logger.info('Calculate Statistics')
         reader = csv.reader(_in)
         original_values = []
 
@@ -28,8 +28,8 @@ def chk_statistics(missing_value, input_data_file=None, output_data_file=None, l
         logger.info('\tTotal number ={}'.format(column))
 
 # extract valid values each column and calculate statistics
-        logger.info('{:>10}{:>10}{:>10}{:>10}{:>10}{:>10}{:>10}'
-                    .format('Col', 'nrec', 'Mean', 'Stdev', 'Median', 'Min', 'Max'))
+        logger.info('{:>4}{:>6}{:>10}{:>10}{:>10}{:>10}{:>10}{:>10}{:>10}'
+                    .format('Col', 'nrec', 'Mean', 'Stdev', 'Min', '1st_qrtl', 'Median', '3rd_qrtl', 'Max'))
         for i in range(column):
             Column_valid = []
             count = 0
@@ -37,13 +37,17 @@ def chk_statistics(missing_value, input_data_file=None, output_data_file=None, l
                 if float(line[i]) != float(missing_value):
                     count = count + 1
                     Column_valid.append(float(line[i]))
+            Column_valid.sort()
+            middle = int(count/2.)
             mean = statistics.mean(Column_valid)
             stdev = statistics.stdev(Column_valid)
-            median = statistics.median(Column_valid)
             minimum = min(Column_valid)
+            percentile_25 = statistics.median(Column_valid[:middle])
+            median = statistics.median(Column_valid)
+            percentile_75 = statistics.median(Column_valid[middle:])
             maximum = max(Column_valid)
-            logger.info('{:>10.0f}{:>10.0f}{:>10.3f}{:>10.3f}{:>10.3f}{:>10.3f}{:>10.3f}'
-                        .format(i+1, count, mean, stdev, median, minimum, maximum))
+            logger.info('{:>4.0f}{:>6.0f}{:>10.3f}{:>10.3f}{:>10.3f}{:>10.3f}{:>10.3f}{:>10.3f}{:>10.3f}'
+                        .format(i+1, count, mean, stdev, minimum, percentile_25, median, percentile_75, maximum))
 
 
 def parse_arguments():

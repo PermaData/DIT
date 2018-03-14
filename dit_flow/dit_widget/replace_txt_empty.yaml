@@ -1,0 +1,6 @@
+type: manipulation_widget
+description: Replaces values = criteria with constant in infile and writes result to outfile.
+input_1: replace
+input_1_type: string
+input_2: print_flag
+input_2_type: bool
