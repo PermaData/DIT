@@ -3,7 +3,7 @@
 echo "Grab DIT zip file and unpack it. Using zip file so git is unnecessary."
 curl -L https://github.com/PermaData/DIT/archive/master.zip > dit.zip
 unzip dit.zip
-cd DIT-widget_work
+cd DIT
 
 echo "Download and install conda."
 curl -L https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > miniconda.sh
