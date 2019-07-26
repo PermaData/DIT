@@ -2,6 +2,7 @@ name: dit
 channels:
 - https://conda.anaconda.org/conda-forge/channel/main
 dependencies:
+- python=3.6
 - flake8
 - mako
 - openssl
